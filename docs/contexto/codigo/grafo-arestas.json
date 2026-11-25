@@ -4295,6 +4295,9 @@
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/validation.ts"
   ],
+  "supabase/functions/natural-language-query/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/notify-dispute-decision/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],

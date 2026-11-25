@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a0e851cb3a049b8218b450ef792b14a385cda433",
+  "commit": "31353a3c742f65a01c9814f675722d0b672f35db",
   "branch": "main",
-  "data_commit": "2026-11-25T16:38:53-03:00",
+  "data_commit": "2026-11-25T17:10:46-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "31353a3c7",
+    "data": "2026-11-25",
+    "assunto": "fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)"
+   },
    {
     "sha": "a0e851cb3",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "76b120114",
     "data": "2026-11-24",
     "assunto": "fix: analise de IA filtra e gera por funcionario de verdade (#296)"
-   },
-   {
-    "sha": "48c727774",
-    "data": "2026-11-24",
-    "assunto": "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)"
    }
   ],
   "arquivos_mudados_7d": 334,
@@ -156,12 +156,12 @@
     "mudancas": 18
    },
    {
-    "pasta": "package-lock.json",
-    "mudancas": 15
+    "pasta": "supabase/functions/_shared",
+    "mudancas": 16
    },
    {
-    "pasta": "supabase/functions/_shared",
-    "mudancas": 14
+    "pasta": "package-lock.json",
+    "mudancas": 15
    },
    {
     "pasta": "package.json",
@@ -246,6 +246,14 @@
     "mudancas": 7
    },
    {
+    "arquivo": "supabase/functions/behavior-pattern/index.ts",
+    "mudancas": 6
+   },
+   {
+    "arquivo": "supabase/functions/summarize-activity/index.ts",
+    "mudancas": 6
+   },
+   {
     "arquivo": "src/index.css",
     "mudancas": 5
    },
@@ -258,11 +266,11 @@
     "mudancas": 5
    },
    {
-    "arquivo": "supabase/functions/behavior-pattern/index.ts",
+    "arquivo": "supabase/functions/_shared/auth.ts",
     "mudancas": 5
    },
    {
-    "arquivo": "supabase/functions/summarize-activity/index.ts",
+    "arquivo": "supabase/functions/natural-language-query/index.ts",
     "mudancas": 5
    },
    {
@@ -286,22 +294,14 @@
     "mudancas": 4
    },
    {
-    "arquivo": "supabase/functions/_shared/auth.ts",
-    "mudancas": 4
-   },
-   {
     "arquivo": "supabase/functions/award-gamification-points/index.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "supabase/functions/escalate-dispute-sla/index.ts",
     "mudancas": 4
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 216
+    "commits": 217
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1860,
   "arquivos_codigo": 1406,
-  "linhas_codigo": 159744,
+  "linhas_codigo": 159915,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 67,
-   "linhas": 10980
+   "linhas": 11151
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -606,7 +606,7 @@
   }
  ],
  "qualidade": {
-  "any": 162,
+  "any": 159,
   "console_log": 66,
   "ts_ignore": 0,
   "eslint_disable": 1,

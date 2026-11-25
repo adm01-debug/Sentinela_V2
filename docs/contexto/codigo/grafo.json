@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1316,
- "arestas": 2887,
+ "arestas": 2888,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -65,11 +65,11 @@
    "importado_por": 36
   },
   {
-   "arquivo": "src/hooks/useAuth.ts",
-   "importado_por": 28
+   "arquivo": "supabase/functions/_shared/auth.ts",
+   "importado_por": 29
   },
   {
-   "arquivo": "supabase/functions/_shared/auth.ts",
+   "arquivo": "src/hooks/useAuth.ts",
    "importado_por": 28
   },
   {

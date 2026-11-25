@@ -101,7 +101,7 @@
    "nome": "analyze-activity",
    "entrada": "supabase/functions/analyze-activity/index.ts",
    "arquivos": 1,
-   "linhas": 191,
+   "linhas": 207,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -169,7 +169,7 @@
    "nome": "behavior-pattern",
    "entrada": "supabase/functions/behavior-pattern/index.ts",
    "arquivos": 1,
-   "linhas": 214,
+   "linhas": 221,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -723,7 +723,7 @@
    "nome": "natural-language-query",
    "entrada": "supabase/functions/natural-language-query/index.ts",
    "arquivos": 1,
-   "linhas": 210,
+   "linhas": 225,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -742,7 +742,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useCommandSearch.ts"
    ],
@@ -892,7 +894,7 @@
    "nome": "predict-anomaly",
    "entrada": "supabase/functions/predict-anomaly/index.ts",
    "arquivos": 1,
-   "linhas": 160,
+   "linhas": 167,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1499,7 +1501,7 @@
    "nome": "smart-recommendations",
    "entrada": "supabase/functions/smart-recommendations/index.ts",
    "arquivos": 1,
-   "linhas": 219,
+   "linhas": 229,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1532,7 +1534,7 @@
    "nome": "summarize-activity",
    "entrada": "supabase/functions/summarize-activity/index.ts",
    "arquivos": 1,
-   "linhas": 227,
+   "linhas": 231,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1600,7 +1602,7 @@
    "nome": "trend-forecasting",
    "entrada": "supabase/functions/trend-forecasting/index.ts",
    "arquivos": 1,
-   "linhas": 220,
+   "linhas": 233,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

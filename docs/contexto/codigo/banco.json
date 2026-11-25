@@ -18712,7 +18712,7 @@
   {
    "nome": "get_user_company_id",
    "definida": true,
-   "usada_em": 1
+   "usada_em": 2
   },
   {
    "nome": "get_user_permissions",

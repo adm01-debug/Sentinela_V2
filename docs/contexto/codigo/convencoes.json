@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)",
    "fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)",
    "chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)",
    "feat: mapa real dos aparelhos no monitoramento mobile (#320)",
-   "feat: assina eventos e mostra entregas na tela de webhooks (#318)",
-   "fix(desktop-agent): tira os requires inline e o import morto (#316)"
+   "feat: assina eventos e mostra entregas na tela de webhooks (#318)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
