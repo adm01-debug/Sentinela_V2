@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8b6e821af4ae5d85a185fcc618113d88937406ed` (2026-11-25T18:01:14-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6d7b244083f9fc9e1472d412b87419afb3593fd1` (2026-11-25T18:11:28-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1408 |
-| linhas_codigo | 160230 |
+| linhas_codigo | 160246 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -218,7 +218,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `slack-weekly-digest` — tabelas: edge_function_logs, security_violations, slack_integrations, slack_notification_dlq, slack_webhook_mttr, violation_disputes; chamada por 1 arquivo(s) do front, por SQL/cron
 - `smart-recommendations` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `summarize-activity` — tabelas: keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
-- `sync-whatsapp-templates` — tabelas: whatsapp_config, whatsapp_templates; chamada por 1 arquivo(s) do front
+- `sync-whatsapp-templates` — tabelas: user_roles, whatsapp_config, whatsapp_templates; chamada por 1 arquivo(s) do front
 - `trend-forecasting` — tabelas: keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `upload-recording-chunk` (verify_jwt=false) — tabelas: agent_keys, data_retention_policies, employees, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front
 - `validate-agent-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `6d7b24408` fix: sincronizacao de templates do WhatsApp exige admin (#329)
 - 2026-11-25 `8b6e821af` fix: admin so pontua funcionario da propria empresa (#328)
 - 2026-11-25 `ef7078fc3` fix: exige admin e escopo de empresa no send-scheduled-report (#327)
 - 2026-11-25 `27c44f6f5` fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `19a780dec` feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)
 - 2026-11-25 `3ef51c691` feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)
 - 2026-11-25 `a8fb66069` fix: liga as operacoes reais da tela de escalas de trabalho (#311)
-- 2026-11-25 `235f94b1c` feat: liga busca em dados reais na paleta de comandos (#310)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

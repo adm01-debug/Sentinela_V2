@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8b6e821af4ae5d85a185fcc618113d88937406ed",
+  "commit": "6d7b244083f9fc9e1472d412b87419afb3593fd1",
   "branch": "main",
-  "data_commit": "2026-11-25T18:01:14-03:00",
+  "data_commit": "2026-11-25T18:11:28-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "6d7b24408",
+    "data": "2026-11-25",
+    "assunto": "fix: sincronizacao de templates do WhatsApp exige admin (#329)"
+   },
    {
     "sha": "8b6e821af",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "1e1756acb",
     "data": "2026-11-24",
     "assunto": "fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)"
-   },
-   {
-    "sha": "43719a106",
-    "data": "2026-11-24",
-    "assunto": "fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)"
    }
   ],
   "arquivos_mudados_7d": 336,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 221
+    "commits": 222
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1408,
-  "linhas_codigo": 160230,
+  "linhas_codigo": 160246,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 11466
+   "linhas": 11482
   },
   "vite.config.ts": {
    "arquivos": 1,

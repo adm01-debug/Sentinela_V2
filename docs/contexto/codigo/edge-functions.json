@@ -1575,10 +1575,11 @@
    "nome": "sync-whatsapp-templates",
    "entrada": "supabase/functions/sync-whatsapp-templates/index.ts",
    "arquivos": 1,
-   "linhas": 118,
+   "linhas": 134,
    "verify_jwt": true,
    "metodos": [],
    "tabelas": [
+    "user_roles",
     "whatsapp_config",
     "whatsapp_templates"
    ],

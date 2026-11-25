@@ -16419,7 +16419,8 @@
    "usada_em_edges": [
     "award-gamification-points",
     "rate-limit-logs",
-    "send-scheduled-report"
+    "send-scheduled-report",
+    "sync-whatsapp-templates"
    ],
    "triggers": [],
    "sem_rls": false,
