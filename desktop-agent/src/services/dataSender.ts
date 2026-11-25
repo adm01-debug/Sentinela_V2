@@ -1,3 +1,4 @@
+import { app } from 'electron';
 import log from 'electron-log';
 import { CONFIG } from '../config';
 
@@ -58,7 +59,7 @@ export class DataSender {
             data_type: item.data_type,
             data: item.data,
             timestamp: item.timestamp,
-            agent_version: require('electron').app.getVersion(),
+            agent_version: app.getVersion(),
           }),
         });
 

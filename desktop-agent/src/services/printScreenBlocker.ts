@@ -1,5 +1,5 @@
 import log from 'electron-log';
-import { globalShortcut, clipboard, nativeImage } from 'electron';
+import { globalShortcut, clipboard } from 'electron';
 import { DataSender } from './dataSender';
 
 export class PrintScreenBlocker {
