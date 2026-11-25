@@ -27,6 +27,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Testes do leitor
         run: node --test scripts/ci/checar-cron.unit.mjs
