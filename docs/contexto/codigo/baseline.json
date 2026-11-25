@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "ce03e8e63b496e34e1a63891149ebf3bad24199f",
+  "commit": "58db514402a55f0dcb347da821c01fc357e6a78c",
   "branch": "main",
-  "data_commit": "2026-11-25T18:14:12-03:00",
+  "data_commit": "2026-11-25T18:23:19-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "58db51440",
+    "data": "2026-11-25",
+    "assunto": "fix: exige service_role no process-violation-alert (#331)"
+   },
    {
     "sha": "ce03e8e63",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "2d3ed6cd1",
     "data": "2026-11-24",
     "assunto": "fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)"
-   },
-   {
-    "sha": "716934523",
-    "data": "2026-11-24",
-    "assunto": "fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)"
    }
   ],
   "arquivos_mudados_7d": 337,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 223
+    "commits": 224
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1408,
-  "linhas_codigo": 160260,
+  "linhas_codigo": 160261,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 11496
+   "linhas": 11497
   },
   "vite.config.ts": {
    "arquivos": 1,

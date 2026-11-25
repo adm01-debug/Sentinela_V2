@@ -931,7 +931,7 @@
    "nome": "process-violation-alert",
    "entrada": "supabase/functions/process-violation-alert/index.ts",
    "arquivos": 1,
-   "linhas": 193,
+   "linhas": 194,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
