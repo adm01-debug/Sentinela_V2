@@ -801,7 +801,7 @@
    "nome": "notify-new-device",
    "entrada": "supabase/functions/notify-new-device/index.ts",
    "arquivos": 1,
-   "linhas": 199,
+   "linhas": 208,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
