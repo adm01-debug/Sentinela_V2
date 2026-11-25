@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `48ac518be346ab9f4125770be12b6be5b81798d1` (2026-11-25T18:36:28-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a90ee69b7956f3c1a216bd1ebe7cdd7bac1839b9` (2026-11-25T18:39:56-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1408 |
-| linhas_codigo | 160285 |
+| linhas_codigo | 160304 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `a90ee69b7` fix: escopo de empresa no notify-dispute-decision (#333)
 - 2026-11-25 `48ac518be` fix: exige admin no send-whatsapp (#332)
 - 2026-11-25 `58db51440` fix: exige service_role no process-violation-alert (#331)
 - 2026-11-25 `ce03e8e63` fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `75c587118` feat: mapa real dos aparelhos no monitoramento mobile (#320)
 - 2026-11-25 `335cb7d14` feat: assina eventos e mostra entregas na tela de webhooks (#318)
 - 2026-11-25 `1c198e947` fix(desktop-agent): tira os requires inline e o import morto (#316)
-- 2026-11-25 `e8007929e` fix: useEmployeeSchedule devolve a escala vigente do funcionario (#315)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -763,7 +763,7 @@
    "nome": "notify-dispute-decision",
    "entrada": "supabase/functions/notify-dispute-decision/index.ts",
    "arquivos": 1,
-   "linhas": 143,
+   "linhas": 162,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS",
@@ -775,7 +775,8 @@
     "violation_disputes"
    ],
    "rpcs": [
-    "has_role"
+    "has_role",
+    "user_in_company"
    ],
    "env": [
     "FCM_SERVER_KEY",
