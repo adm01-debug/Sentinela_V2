@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "d7001a7a6e00fddeb5b7922574ec3984cc1cfd87",
+  "commit": "c3d33e9cc235ce9d50261a609ebb2623130ba8da",
   "branch": "main",
-  "data_commit": "2026-11-25T19:59:39-03:00",
+  "data_commit": "2026-11-25T20:17:33-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c3d33e9cc",
+    "data": "2026-11-25",
+    "assunto": "fix: tira super_admin inexistente dos gates de admin (#341)"
+   },
    {
     "sha": "d7001a7a6",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "75c587118",
     "data": "2026-11-25",
     "assunto": "feat: mapa real dos aparelhos no monitoramento mobile (#320)"
-   },
-   {
-    "sha": "335cb7d14",
-    "data": "2026-11-25",
-    "assunto": "feat: assina eventos e mostra entregas na tela de webhooks (#318)"
    }
   ],
   "arquivos_mudados_7d": 355,
@@ -250,6 +250,10 @@
     "mudancas": 6
    },
    {
+    "arquivo": "supabase/functions/award-gamification-points/index.ts",
+    "mudancas": 6
+   },
+   {
     "arquivo": "supabase/functions/behavior-pattern/index.ts",
     "mudancas": 6
    },
@@ -274,11 +278,15 @@
     "mudancas": 5
    },
    {
-    "arquivo": "supabase/functions/award-gamification-points/index.ts",
+    "arquivo": "supabase/functions/natural-language-query/index.ts",
     "mudancas": 5
    },
    {
-    "arquivo": "supabase/functions/natural-language-query/index.ts",
+    "arquivo": "supabase/functions/send-webhook/index.ts",
+    "mudancas": 5
+   },
+   {
+    "arquivo": "supabase/functions/send-whatsapp/index.ts",
     "mudancas": 5
    },
    {
@@ -288,20 +296,12 @@
    {
     "arquivo": ".github/workflows/release.yml",
     "mudancas": 4
-   },
-   {
-    "arquivo": ".github/workflows/update-deps.yml",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "AGENTS.md",
-    "mudancas": 4
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 237
+    "commits": 238
    },
    {
     "autor": "dependabot[bot]",
