@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireUserOrServiceRole } from "../_shared/auth.ts";
+import { callerCompanyScope, withCompanyScope } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -33,8 +34,9 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -46,6 +48,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
+    // service_role ignora RLS: sem este escopo as analises leem logs de todas as empresas
+    const scope = await callerCompanyScope(supabase, auth);
 
     const { employeeName: employeeNameBody, employeeId, analysisPeriod = 30 } = await req.json();
     // `employeeId` segue aceito como alias: o bundle em cache envia o nome nesse campo.
@@ -55,7 +59,10 @@ serve(async (req) => {
     // Fetch activities
     let query = supabase.from("keystroke_logs").select("*").gte("recorded_at", since);
     if (employeeName) query = query.eq("employee_name", employeeName);
-    const { data: activitiesRaw } = await query.order("recorded_at", { ascending: true });
+    const { data: activitiesRaw } = await withCompanyScope(
+      query.order("recorded_at", { ascending: true }),
+      scope
+    );
     const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     const patterns: BehaviorPattern[] = [];
