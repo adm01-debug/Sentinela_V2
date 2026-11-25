@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "63e0317b6c0a7a17c4122b6237792d9455adf91b",
+  "commit": "235f94b1c23b3c07dbb07fb2553d04b6fc11ad90",
   "branch": "main",
-  "data_commit": "2026-11-25T08:53:03-03:00",
+  "data_commit": "2026-11-25T09:32:27-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "235f94b1c",
+    "data": "2026-11-25",
+    "assunto": "feat: liga busca em dados reais na paleta de comandos (#310)"
+   },
    {
     "sha": "63e0317b6",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "7794226d5",
     "data": "2026-11-24",
     "assunto": "fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)"
-   },
-   {
-    "sha": "1762098b7",
-    "data": "2026-11-24",
-    "assunto": "fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)"
    }
   ],
-  "arquivos_mudados_7d": 312,
+  "arquivos_mudados_7d": 315,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 206
+    "commits": 207
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1852,
-  "arquivos_codigo": 1398,
-  "linhas_codigo": 157369,
+  "arquivos_total": 1854,
+  "arquivos_codigo": 1400,
+  "linhas_codigo": 157615,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 58,
   "componentes": 470,
-  "hooks": 524,
+  "hooks": 525,
   "edge_functions": 50,
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 86,
+  "testes": 87,
   "workflows": 14,
   "scripts": 35,
   "docs_md": 176
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 394,
-   "linhas": 45651
+   "linhas": 45719
   },
   "src/constants": {
    "arquivos": 7,
@@ -435,8 +435,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 479,
-   "linhas": 32408
+   "arquivos": 480,
+   "linhas": 32490
   },
   "src/i18n": {
    "arquivos": 1,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 55,
-   "linhas": 10095
+   "arquivos": 56,
+   "linhas": 10191
   },
   "src/types": {
    "arquivos": 57,
@@ -664,7 +664,6 @@
    "get-employee-timeline",
    "mcp-query",
    "mobile-collector",
-   "natural-language-query",
    "notify-dispute-decision",
    "rate-limit-logs",
    "validate-agent-key"

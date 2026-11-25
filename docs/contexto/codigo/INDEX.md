@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `63e0317b6c0a7a17c4122b6237792d9455adf91b` (2026-11-25T08:53:03-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `235f94b1c23b3c07dbb07fb2553d04b6fc11ad90` (2026-11-25T09:32:27-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1372), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
+- linguagens: TypeScript (1374), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,21 +34,21 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1852 |
-| arquivos_codigo | 1398 |
-| linhas_codigo | 157369 |
+| arquivos_total | 1854 |
+| arquivos_codigo | 1400 |
+| linhas_codigo | 157615 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 58 |
 | componentes | 470 |
-| hooks | 524 |
+| hooks | 525 |
 | edge_functions | 50 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 86 |
+| testes | 87 |
 | workflows | 14 |
 | scripts | 35 |
 | docs_md | 176 |
@@ -56,9 +56,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Onde ficam as coisas
 - telas: src/pages (59)
 - componentes: src/components (359), src/pages (93), src/providers (8)
-- hooks: src/hooks (477), src/stores (33), src/lib (5)
+- hooks: src/hooks (478), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (9)
+- testes: co-localizado (*.test) (55), co-localizado (__tests__) (22), outro (9)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (7), scripts/ai-context (2), scripts/inventario (2)
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 101 | 87 | 4 | 20 |
+| components | 0 | 0 | 101 | 88 | 5 | 20 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 4 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -82,7 +82,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 479 | 495 | 20 | 86 |
+| hooks | 0 | 0 | 480 | 496 | 21 | 86 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
 | pages | 4 | 38 | 68 | 162 | 14 | 68 |
@@ -194,7 +194,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `live-view-authorize` (verify_jwt=false) — tabelas: agent_keys, live_view_audit, live_view_sessions; chamada por 0 arquivo(s) do front
 - `mcp-query` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `mobile-collector` — tabelas: agent_keys, employees, mobile_activity_logs, mobile_devices; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `natural-language-query` — tabelas: employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `natural-language-query` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `notify-dispute-decision` — tabelas: mobile_devices, settings_audit_log, violation_disputes; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-new-device` — tabelas: login_security_events; chamada por 1 arquivo(s) do front
 - `ocr-screenshot` — tabelas: screen_captures, sensitive_keywords; chamada por 1 arquivo(s) do front
@@ -247,7 +247,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - rotas_sem_arquivo: 0
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
-- edges_orfas: 9 — ex.: agent-collector, get-employee-schedule, get-employee-timeline
+- edges_orfas: 8 — ex.: agent-collector, get-employee-schedule, get-employee-timeline
 - edges_chamadas_sem_pasta: 1 — ex.: _gate
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 0
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `235f94b1c` feat: liga busca em dados reais na paleta de comandos (#310)
 - 2026-11-25 `63e0317b6` ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)
 - 2026-11-25 `217616fef` fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)
 - 2026-11-25 `c23267cd8` docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `fe1d96c79` infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)
 - 2026-11-24 `2d1c0b173` fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)
 - 2026-11-24 `76b120114` fix: analise de IA filtra e gera por funcionario de verdade (#296)
-- 2026-11-24 `48c727774` fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

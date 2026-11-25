@@ -223,7 +223,8 @@
    "src/hooks/useCountUp.ts"
   ],
   "src/components/CommandPalette.tsx": [
-   "src/components/ui/command.tsx"
+   "src/components/ui/command.tsx",
+   "src/hooks/useCommandSearch.ts"
   ],
   "src/components/ConfirmDialog.tsx": [
    "src/components/ui/alert-dialog.tsx"
@@ -2243,6 +2244,9 @@
   ],
   "src/hooks/useCommandPalette.ts": [
    "src/stores/commandStore.ts"
+  ],
+  "src/hooks/useCommandSearch.ts": [
+   "src/integrations/supabase/client.ts"
   ],
   "src/hooks/useCompanyAppUsage.ts": [
    "src/hooks/useAppCategories.ts",
