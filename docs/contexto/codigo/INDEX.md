@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `75c5871183374a08cf1e11d90c7ab241d27c089f` (2026-11-25T15:45:33-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a0e851cb3a049b8218b450ef792b14a385cda433` (2026-11-25T16:38:53-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1860 |
 | arquivos_codigo | 1406 |
-| linhas_codigo | 159741 |
+| linhas_codigo | 159744 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -313,7 +313,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Documentos (raiz e docs/)
 - `.github/pull_request_template.md` (17 linhas)
-- `AGENTS.md` — AGENTS.md — Sentinela V2 (134 linhas)
+- `AGENTS.md` — AGENTS.md — Sentinela V2 (140 linhas)
 - `AUDITORIA_ENTERPRISE_SENTINELA.md` — RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2 (85 linhas)
 - `CHANGELOG.md` — Changelog (63 linhas)
 - `CLAUDE.md` (2 linhas)
@@ -427,6 +427,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `a0e851cb3` fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)
+- 2026-11-25 `2982afb3f` chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)
 - 2026-11-25 `75c587118` feat: mapa real dos aparelhos no monitoramento mobile (#320)
 - 2026-11-25 `335cb7d14` feat: assina eventos e mostra entregas na tela de webhooks (#318)
 - 2026-11-25 `1c198e947` fix(desktop-agent): tira os requires inline e o import morto (#316)
@@ -440,8 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `c23267cd8` docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)
 - 2026-11-25 `cc25e3612` feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)
 - 2026-11-25 `af9d004da` chore: remove as 38 edges legadas sem chamador do repo (#305)
-- 2026-11-25 `0dada9e58` fix: exigir admin para notificar decisao de contestacao (#303)
-- 2026-11-24 `2d3ed6cd1` fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

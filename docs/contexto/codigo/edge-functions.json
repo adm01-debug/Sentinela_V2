@@ -398,7 +398,7 @@
    "nome": "generate-insights",
    "entrada": "supabase/functions/generate-insights/index.ts",
    "arquivos": 1,
-   "linhas": 218,
+   "linhas": 221,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -411,7 +411,6 @@
    "rpcs": [],
    "env": [
     "SUPABASE_ANON_KEY",
-    "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
    ],
    "buckets": [],

@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)",
+   "chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)",
    "feat: mapa real dos aparelhos no monitoramento mobile (#320)",
    "feat: assina eventos e mostra entregas na tela de webhooks (#318)",
-   "fix(desktop-agent): tira os requires inline e o import morto (#316)",
-   "fix: useEmployeeSchedule devolve a escala vigente do funcionario (#315)",
-   "feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)"
+   "fix(desktop-agent): tira os requires inline e o import morto (#316)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

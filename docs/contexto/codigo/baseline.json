@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "75c5871183374a08cf1e11d90c7ab241d27c089f",
+  "commit": "a0e851cb3a049b8218b450ef792b14a385cda433",
   "branch": "main",
-  "data_commit": "2026-11-25T15:45:33-03:00",
+  "data_commit": "2026-11-25T16:38:53-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a0e851cb3",
+    "data": "2026-11-25",
+    "assunto": "fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)"
+   },
+   {
+    "sha": "2982afb3f",
+    "data": "2026-11-25",
+    "assunto": "chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)"
+   },
    {
     "sha": "75c587118",
     "data": "2026-11-25",
@@ -121,19 +131,9 @@
     "sha": "48c727774",
     "data": "2026-11-24",
     "assunto": "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)"
-   },
-   {
-    "sha": "1a0e0bcdc",
-    "data": "2026-11-24",
-    "assunto": "feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)"
-   },
-   {
-    "sha": "07e505075",
-    "data": "2026-11-24",
-    "assunto": "fix: resumo de atividades volta a alimentar os graficos (#292)"
    }
   ],
-  "arquivos_mudados_7d": 332,
+  "arquivos_mudados_7d": 334,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -266,6 +266,10 @@
     "mudancas": 5
    },
    {
+    "arquivo": "AGENTS.md",
+    "mudancas": 4
+   },
+   {
     "arquivo": "desktop-agent/src/main.ts",
     "mudancas": 4
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "supabase/functions/escalate-dispute-sla/index.ts",
     "mudancas": 4
-   },
-   {
-    "arquivo": "supabase/functions/get-employee-timeline/index.ts",
-    "mudancas": 4
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 214
+    "commits": 216
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1860,
   "arquivos_codigo": 1406,
-  "linhas_codigo": 159741,
+  "linhas_codigo": 159744,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 67,
-   "linhas": 10977
+   "linhas": 10980
   },
   "vite.config.ts": {
    "arquivos": 1,
