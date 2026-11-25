@@ -65,10 +65,13 @@ serve(async (req) => {
       });
     }
 
-    // Use service-role client for data access (scoped to authenticated user's company via RLS)
+    // Service role ignora RLS, entao as consultas abaixo devolviam dados de todas
+    // as empresas para qualquer usuario logado. O client com o JWT do chamador
+    // respeita as policies de tenant (company_id) e de papel.
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      { global: { headers: { Authorization: authHeader } } }
     );
 
     const { insightTypes = ["trend", "anomaly", "recommendation"] } = await req.json();
