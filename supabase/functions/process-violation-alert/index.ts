@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
-import { requireUserOrServiceRole } from '../_shared/auth.ts';
+import { requireServiceRole } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,11 +27,12 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // verify_jwt = false no config.toml. Aceita JWT de usuario (front) e a
-  // service_role key (check-geofence, ocr-screenshot e risk-score-calculator
-  // invocam esta funcao server-to-server); bloqueia o resto.
+  // verify_jwt = false no config.toml. Funcao server-to-server: check-geofence,
+  // ocr-screenshot e risk-score-calculator invocam com a service_role key.
+  // Antes aceitava JWT de usuario, entao qualquer usuario logado criava
+  // violacao para qualquer employee_name e disparava a notificacao aos gestores.
   try {
-    await requireUserOrServiceRole(req);
+    await requireServiceRole(req);
   } catch {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
