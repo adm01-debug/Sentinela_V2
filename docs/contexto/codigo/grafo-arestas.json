@@ -4244,6 +4244,7 @@
    "supabase/functions/_shared/rateLimiting.ts"
   ],
   "supabase/functions/award-gamification-points/index.ts": [
+   "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],
   "supabase/functions/behavior-pattern/index.ts": [

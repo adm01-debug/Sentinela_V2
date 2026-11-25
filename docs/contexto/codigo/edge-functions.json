@@ -138,13 +138,14 @@
    "nome": "award-gamification-points",
    "entrada": "supabase/functions/award-gamification-points/index.ts",
    "arquivos": 1,
-   "linhas": 142,
+   "linhas": 167,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
     "employee_points",
+    "employees",
     "points_history",
     "user_roles"
    ],
@@ -157,6 +158,7 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [

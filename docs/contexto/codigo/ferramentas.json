@@ -1580,6 +1580,10 @@
     "ocorrencias": 1
    },
    {
+    "papel": "super_admin",
+    "ocorrencias": 1
+   },
+   {
     "papel": "supervisor",
     "ocorrencias": 1
    },

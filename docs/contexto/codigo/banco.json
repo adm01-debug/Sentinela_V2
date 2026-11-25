@@ -5460,6 +5460,7 @@
    "usada_no_front": 17,
    "usada_em_edges": [
     "agent-collector",
+    "award-gamification-points",
     "generate-insights",
     "get-employee-timeline",
     "health-check",
