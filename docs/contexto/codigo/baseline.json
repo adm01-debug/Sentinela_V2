@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "335cb7d14048f45f86be2ec68d1cdc2fe0ff8481",
+  "commit": "75c5871183374a08cf1e11d90c7ab241d27c089f",
   "branch": "main",
-  "data_commit": "2026-11-25T15:06:48-03:00",
+  "data_commit": "2026-11-25T15:45:33-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "75c587118",
+    "data": "2026-11-25",
+    "assunto": "feat: mapa real dos aparelhos no monitoramento mobile (#320)"
+   },
    {
     "sha": "335cb7d14",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "07e505075",
     "data": "2026-11-24",
     "assunto": "fix: resumo de atividades volta a alimentar os graficos (#292)"
-   },
-   {
-    "sha": "cde1021d0",
-    "data": "2026-11-24",
-    "assunto": "fix: diagnostico de ICE usa a mesma fonte do live view (#291)"
    }
   ],
-  "arquivos_mudados_7d": 328,
+  "arquivos_mudados_7d": 332,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -176,6 +176,10 @@
     "mudancas": 9
    },
    {
+    "pasta": "src/pages/admin",
+    "mudancas": 9
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 8
    },
@@ -185,10 +189,6 @@
    },
    {
     "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 8
-   },
-   {
-    "pasta": "src/pages/admin",
     "mudancas": 8
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 213
+    "commits": 214
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1858,
-  "arquivos_codigo": 1404,
-  "linhas_codigo": 159225,
+  "arquivos_total": 1860,
+  "arquivos_codigo": 1406,
+  "linhas_codigo": 159741,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "modulos": 58,
-  "componentes": 470,
+  "modulos": 59,
+  "componentes": 471,
   "hooks": 527,
   "edge_functions": 50,
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 89,
+  "testes": 90,
   "workflows": 14,
   "scripts": 35,
   "docs_md": 176
@@ -415,8 +415,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 394,
-   "linhas": 45721
+   "arquivos": 395,
+   "linhas": 46084
   },
   "src/constants": {
    "arquivos": 7,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 22178
+   "linhas": 22220
   },
   "src/providers": {
    "arquivos": 9,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 58,
-   "linhas": 10656
+   "arquivos": 59,
+   "linhas": 10767
   },
   "src/types": {
    "arquivos": 57,
@@ -723,7 +723,6 @@
    "src/components/KeyboardShortcutsHelp.tsx",
    "src/components/KPIWidget.tsx",
    "src/components/LoadingState.tsx",
-   "src/components/MobileDevicesMap.tsx",
    "src/components/MonitoringNotice.tsx",
    "src/components/NavLink.tsx",
    "src/components/NotificationCenter.tsx",

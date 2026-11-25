@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 470,
- "orfaos": 94,
+ "total": 471,
+ "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
    "src/components/ActivityHeatmap.tsx",
@@ -2274,12 +2274,27 @@
     "LocationMap"
    ],
    "export_default": "LocationMap",
-   "linhas": 54,
+   "linhas": 74,
    "dominio": "components",
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
    "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/map/OsmMap.tsx",
+   "exports": [
+    "OsmMap",
+    "OsmMapMarker"
+   ],
+   "export_default": "OsmMap",
+   "linhas": 302,
+   "dominio": "components/map",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
    "orfao": false
   },
   {
@@ -2331,16 +2346,17 @@
   {
    "arquivo": "src/components/MobileDevicesMap.tsx",
    "exports": [
-    "MobileDevicesMap"
+    "MobileDevicesMap",
+    "MobileDevicesMapDevice"
    ],
    "export_default": "MobileDevicesMap",
-   "linhas": 35,
+   "linhas": 76,
    "dominio": "components",
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/MonitoringNotice.tsx",
@@ -3876,7 +3892,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 188,
+   "usado_por": 189,
    "orfao": false
   },
   {
@@ -6350,7 +6366,7 @@
     "MobileMonitoringPage"
    ],
    "export_default": "MobileMonitoringPage",
-   "linhas": 410,
+   "linhas": 452,
    "dominio": "pages/admin",
    "hooks_locais": [
     "useMobileMonitoringPage"

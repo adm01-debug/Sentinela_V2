@@ -652,8 +652,10 @@
    "edges": [],
    "canais_realtime": [],
    "flags": [],
-   "papeis": [],
-   "arquivos_puxados": 26
+   "papeis": [
+    "application"
+   ],
+   "arquivos_puxados": 28
   },
   {
    "protegida": true,

@@ -1030,7 +1030,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 171,
+   "usado_por": 172,
    "usado_por_modulos": [
     "components",
     "components/auth",
@@ -1039,6 +1039,7 @@
     "components/employees",
     "components/forms",
     "components/layout",
+    "components/map",
     "components/recordings",
     "components/security",
     "components/ueba",

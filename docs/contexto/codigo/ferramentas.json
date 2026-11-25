@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1378)",
+   "TypeScript (1380)",
    "Markdown (176)",
    "SQL (128)",
    "JSON (45)",
@@ -1319,6 +1319,10 @@
     "arquivos": 2
    },
    {
+    "host": "www.openstreetmap.org",
+    "arquivos": 2
+   },
+   {
     "host": "x.supabase.co",
     "arquivos": 2
    },
@@ -1403,11 +1407,11 @@
     "arquivos": 1
    },
    {
-    "host": "www.google.com",
+    "host": "tile.openstreetmap.org",
     "arquivos": 1
    },
    {
-    "host": "www.openstreetmap.org",
+    "host": "www.google.com",
     "arquivos": 1
    },
    {
@@ -1529,6 +1533,10 @@
    },
    {
     "papel": "agent",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "application",
     "ocorrencias": 1
    },
    {
