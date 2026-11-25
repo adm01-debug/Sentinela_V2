@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { format, subDays, addDays, parseISO } from "date-fns";
-import { ChevronLeft, ChevronRight, FileDown } from "lucide-react";
+import { Calendar, CheckCircle, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
 import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from "@/hooks/useEmployees";
 import { EmployeeHeader } from "@/components/EmployeeHeader";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
@@ -11,6 +11,8 @@ import { ViolationDetailDialog } from "@/components/violations/ViolationDetailDi
 import { TeamComparisonCard } from "@/components/timeline/TeamComparisonCard";
 import { EntityVersionsPanel } from "@/components/versions/EntityVersionsPanel";
 import { useDailyJourney } from "@/hooks/useDailyJourney";
+import { useEmployeeSchedule } from "@/hooks/useWorkSchedules";
+import { formatWorkDays } from "@/hooks/useWorkSchedulesPage";
 import { useTeamProductivityAverage } from "@/hooks/useTeamProductivityAverage";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/Skeleton";
@@ -35,6 +37,10 @@ export default function EmployeeDetailPage() {
     setJourneyDate((d) => format(addDays(parseISO(d), delta), "yyyy-MM-dd"));
 
   const { data: journey, isLoading: journeyLoading } = useDailyJourney(id!, journeyDate);
+  const { schedule: escalaVigente, assignment: escalaAtribuicao } = useEmployeeSchedule(
+    id!,
+    journeyDate
+  );
   const journeyEvents = journey?.events ?? [];
   const journeyClicks = journey?.clicks ?? [];
   const journeySummary = journey?.summary;
@@ -57,6 +63,41 @@ export default function EmployeeDetailPage() {
       />
 
       <EmployeeHeader employee={employee} />
+
+      <div className="bg-card flex flex-wrap items-center gap-x-6 gap-y-2 rounded-lg border p-4">
+        <div className="flex items-center gap-2">
+          {escalaAtribuicao ? (
+            <CheckCircle className="h-4 w-4 text-green-600" />
+          ) : (
+            <Calendar className="text-muted-foreground h-4 w-4" />
+          )}
+          <span className="text-sm font-medium">
+            {escalaVigente?.name ??
+              escalaAtribuicao?.schedule_name ??
+              "Sem escala vigente nesta data"}
+          </span>
+        </div>
+        <span className="text-muted-foreground text-sm">Escala vigente em {journeyDate}</span>
+        {escalaVigente && (
+          <span className="text-muted-foreground text-sm">
+            {formatWorkDays(escalaVigente.work_days ?? [])} · {escalaVigente.start_time} às{" "}
+            {escalaVigente.end_time}
+          </span>
+        )}
+        {escalaVigente?.lunch_start && escalaVigente.lunch_end && (
+          <span className="text-muted-foreground text-sm">
+            Almoço {escalaVigente.lunch_start} às {escalaVigente.lunch_end}
+          </span>
+        )}
+        {escalaAtribuicao && (
+          <span className="text-muted-foreground text-xs">
+            Atribuída desde {escalaAtribuicao.effective_from.slice(0, 10)}
+            {escalaAtribuicao.effective_until
+              ? ` até ${escalaAtribuicao.effective_until.slice(0, 10)}`
+              : ""}
+          </span>
+        )}
+      </div>
 
       <Tabs defaultValue="timeline" className="w-full">
         <TabsList className="grid w-full max-w-[720px] grid-cols-4">
