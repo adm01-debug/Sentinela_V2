@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: exige dono do relatorio e escopo de empresa na generate-report (#325)",
    "fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)",
    "fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)",
    "chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)",
-   "feat: mapa real dos aparelhos no monitoramento mobile (#320)",
-   "feat: assina eventos e mostra entregas na tela de webhooks (#318)"
+   "feat: mapa real dos aparelhos no monitoramento mobile (#320)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

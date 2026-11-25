@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `31353a3c742f65a01c9814f675722d0b672f35db` (2026-11-25T17:10:46-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `976dba3a1ce1eec1c3d3fd66f57314fc1f9d9e58` (2026-11-25T17:36:46-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1380), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
+- linguagens: TypeScript (1382), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1860 |
-| arquivos_codigo | 1406 |
-| linhas_codigo | 159915 |
+| arquivos_total | 1862 |
+| arquivos_codigo | 1408 |
+| linhas_codigo | 160159 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -276,9 +276,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/components/AppSidebar.tsx (8)
 - docs/prod-readiness.md (7)
 - supabase/config.toml (7)
+- supabase/functions/_shared/auth.ts (6)
 - supabase/functions/behavior-pattern/index.ts (6)
 - supabase/functions/summarize-activity/index.ts (6)
-- src/index.css (5)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `976dba3a1` fix: exige dono do relatorio e escopo de empresa na generate-report (#325)
 - 2026-11-25 `31353a3c7` fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)
 - 2026-11-25 `a0e851cb3` fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)
 - 2026-11-25 `2982afb3f` chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `63e0317b6` ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)
 - 2026-11-25 `217616fef` fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)
 - 2026-11-25 `c23267cd8` docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)
-- 2026-11-25 `cc25e3612` feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

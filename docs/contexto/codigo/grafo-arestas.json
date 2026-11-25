@@ -4228,6 +4228,9 @@
   "supabase/functions/_shared/iceServers_test.ts": [
    "supabase/functions/_shared/iceServers.ts"
   ],
+  "supabase/functions/_shared/reportAccess_test.ts": [
+   "supabase/functions/_shared/reportAccess.ts"
+  ],
   "supabase/functions/agent-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"
   ],
@@ -4265,7 +4268,8 @@
    "supabase/functions/_shared/logger.ts"
   ],
   "supabase/functions/generate-report/index.ts": [
-   "supabase/functions/_shared/auth.ts"
+   "supabase/functions/_shared/auth.ts",
+   "supabase/functions/_shared/reportAccess.ts"
   ],
   "supabase/functions/get-employee-schedule/index.ts": [
    "supabase/functions/_shared/auth.ts",

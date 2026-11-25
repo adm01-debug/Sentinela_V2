@@ -18727,7 +18727,7 @@
   {
    "nome": "has_role",
    "definida": true,
-   "usada_em": 7
+   "usada_em": 8
   },
   {
    "nome": "is_ip_blocked",

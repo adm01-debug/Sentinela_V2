@@ -26,6 +26,8 @@
   "supabase/functions/_shared/iceServers_test.ts",
   "supabase/functions/_shared/logger.ts",
   "supabase/functions/_shared/rateLimiting.ts",
+  "supabase/functions/_shared/reportAccess.ts",
+  "supabase/functions/_shared/reportAccess_test.ts",
   "supabase/functions/_shared/schemas.ts",
   "supabase/functions/_shared/validation.ts",
   "supabase/functions/_shared/whatsapp-evolution.ts"
@@ -429,7 +431,7 @@
    "nome": "generate-report",
    "entrada": "supabase/functions/generate-report/index.ts",
    "arquivos": 1,
-   "linhas": 212,
+   "linhas": 287,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
@@ -442,7 +444,9 @@
     "reports",
     "security_violations"
    ],
-   "rpcs": [],
+   "rpcs": [
+    "has_role"
+   ],
    "env": [
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
@@ -451,7 +455,8 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
-    "auth.ts"
+    "auth.ts",
+    "reportAccess.ts"
    ],
    "chamada_pelo_front": [
     "src/hooks/useReportsPage.ts",
