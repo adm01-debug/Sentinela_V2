@@ -10,6 +10,10 @@ import {
   useEmployeeSchedules,
   useAssignEmployeeSchedule,
   useRemoveEmployeeSchedule,
+  escalaVigenteEm,
+  situacaoDaAtribuicao,
+  type EmployeeScheduleRow,
+  type SituacaoAtribuicao,
 } from "@/hooks/useEmployeeSchedules";
 import {
   useOvertimeRequests,
@@ -151,6 +155,7 @@ export function useWorkSchedulesPage() {
   // Search & Filters
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("schedules");
+  const [dataVigente, setDataVigente] = useState(initialAssignForm.effective_date);
 
   // Dialog states
   const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false);
@@ -187,6 +192,30 @@ export function useWorkSchedulesPage() {
   const pendingOvertimeRequests = useMemo(() => {
     return overtimeRequests.filter((r) => r.status === "pending");
   }, [overtimeRequests]);
+
+  // Escala em vigor na data escolhida (por funcionario) e situacao de cada atribuicao
+  const vigentesPorFuncionario = useMemo(() => {
+    const mapa: Record<string, EmployeeScheduleRow | null> = {};
+    for (const es of employeeSchedules) {
+      if (!(es.employee_id in mapa)) {
+        mapa[es.employee_id] = escalaVigenteEm(employeeSchedules, es.employee_id, dataVigente);
+      }
+    }
+    return mapa;
+  }, [employeeSchedules, dataVigente]);
+
+  const situacoesPorAtribuicao = useMemo(() => {
+    const mapa: Record<string, SituacaoAtribuicao> = {};
+    for (const es of employeeSchedules) {
+      mapa[es.id] = situacaoDaAtribuicao(es, employeeSchedules, dataVigente);
+    }
+    return mapa;
+  }, [employeeSchedules, dataVigente]);
+
+  const funcionariosComVigente = useMemo(
+    () => Object.values(vigentesPorFuncionario).filter((linha) => linha !== null).length,
+    [vigentesPorFuncionario]
+  );
 
   // Stats
   const stats = useMemo(
@@ -339,8 +368,15 @@ export function useWorkSchedulesPage() {
     setSearchTerm,
     activeTab,
     setActiveTab,
+    dataVigente,
+    setDataVigente,
     selectedSchedule,
     scheduleToDelete,
+
+    // Escala vigente
+    vigentesPorFuncionario,
+    situacoesPorAtribuicao,
+    funcionariosComVigente,
 
     // Forms
     scheduleForm,
