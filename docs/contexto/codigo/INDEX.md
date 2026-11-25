@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `de3fb1a1e42da25daa9b5af882e36431d7007cee` (2026-11-25T19:28:24-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2f67831c59b956c47ae4caecd279fe1fdb9f113e` (2026-11-25T19:42:05-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1385), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (29), Shell (22), HTML (4)
+- linguagens: TypeScript (1385), Markdown (176), SQL (129), JSON (45), YAML (37), JavaScript (29), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1866 |
+| arquivos_total | 1867 |
 | arquivos_codigo | 1412 |
-| linhas_codigo | 161418 |
+| linhas_codigo | 161441 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 527 |
 | edge_functions | 48 |
 | tabelas | 180 |
-| migrations | 124 |
+| migrations | 125 |
 | cron_jobs | 5 |
 | testes | 91 |
 | workflows | 14 |
@@ -249,7 +249,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_chamadas_sem_pasta: 1 — ex.: _gate
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 0
-- tabelas_com_drift_migration_vs_types: 11 — ex.: badges, click_logs, employee_points
+- tabelas_com_drift_migration_vs_types: 14 — ex.: badges, click_logs, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 93 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
 - componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
@@ -269,7 +269,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/prettier-baseline.json (20)
 - .github/workflows/deploy.yml (19)
 - src/routes/AppRoutes.tsx (13)
-- .github/workflows/ci.yml (9)
+- .github/workflows/ci.yml (10)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
 - supabase/config.toml (8)
@@ -425,6 +425,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `2f67831c5` ci: trava consulta sem escopo de empresa nas edges de analise (#324)
+- 2026-11-25 `767bfe5a3` infra: company_id nas tabelas sem tenant (#338)
 - 2026-11-25 `de3fb1a1e` feat: liga push no navegador com Web Push/VAPID (#319)
 - 2026-11-25 `0e3b73ab6` chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)
 - 2026-11-25 `fb72235cf` ci: detecta chave embutida no comando dos jobs do agendador (#309)
@@ -438,8 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `58db51440` fix: exige service_role no process-violation-alert (#331)
 - 2026-11-25 `ce03e8e63` fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)
 - 2026-11-25 `6d7b24408` fix: sincronizacao de templates do WhatsApp exige admin (#329)
-- 2026-11-25 `8b6e821af` fix: admin so pontua funcionario da propria empresa (#328)
-- 2026-11-25 `ef7078fc3` fix: exige admin e escopo de empresa no send-scheduled-report (#327)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

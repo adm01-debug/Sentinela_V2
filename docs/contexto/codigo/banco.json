@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 124,
+ "migrations": 125,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -6270,6 +6270,13 @@
      "default": "'alert'",
      "ref": null
     },
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
     "created_at": {
      "tipo": "timestamp with time zone",
      "nn": true,
@@ -6347,9 +6354,20 @@
      "comando": "select",
      "para": "public",
      "tipo": "permissive"
+    },
+    {
+     "nome": "Escopo de empresa",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "restrictive"
     }
    ],
    "indices": [
+    {
+     "nome": "idx_geofence_violations_company_id",
+     "colunas": "company_id",
+     "unico": false
+    },
     {
      "nome": "idx_geofence_violations_created_at",
      "colunas": "created_at DESC",
@@ -6357,6 +6375,7 @@
     }
    ],
    "fks": [
+    "company_id->companies",
     "nearest_geofence_id->geofences"
    ],
    "criada_em": "20251218154715_bcf24300-ec90-401b-b268-45487f1b8351.sql",
@@ -6373,7 +6392,9 @@
     "nearest_geofence_id": "string | null"
    },
    "drift": {
-    "so_na_migration": [],
+    "so_na_migration": [
+     "company_id"
+    ],
     "so_no_types": []
    },
    "usada_no_front": 3,
@@ -8892,6 +8913,13 @@
      "default": null,
      "ref": null
     },
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
     "created_at": {
      "tipo": "timestamp with time zone",
      "nn": true,
@@ -8997,10 +9025,24 @@
      "comando": "select",
      "para": "public",
      "tipo": "permissive"
+    },
+    {
+     "nome": "Escopo de empresa",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "restrictive"
     }
    ],
-   "indices": [],
-   "fks": [],
+   "indices": [
+    {
+     "nome": "idx_mobile_devices_company_id",
+     "colunas": "company_id",
+     "unico": false
+    }
+   ],
+   "fks": [
+    "company_id->companies"
+   ],
    "criada_em": "20251218164131_5f4d0d38-c69f-481c-ac9d-9ab0126ee26b.sql",
    "colunas_types": {
     "app_version": "string | null",
@@ -9019,7 +9061,9 @@
     "updated_at": "string"
    },
    "drift": {
-    "so_na_migration": [],
+    "so_na_migration": [
+     "company_id"
+    ],
     "so_no_types": []
    },
    "usada_no_front": 4,
@@ -13324,6 +13368,12 @@
      "tipo": "permissive"
     },
     {
+     "nome": "Escopo de empresa",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "restrictive"
+    },
+    {
      "nome": "Users can view own company violations",
      "comando": "select",
      "para": "authenticated",
@@ -17593,6 +17643,13 @@
   },
   "webhooks": {
    "colunas": {
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
     "created_at": {
      "tipo": "timestamp with time zone",
      "nn": true,
@@ -17724,9 +17781,20 @@
      "comando": "select",
      "para": "public",
      "tipo": "permissive"
+    },
+    {
+     "nome": "Escopo de empresa",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "restrictive"
     }
    ],
    "indices": [
+    {
+     "nome": "idx_webhooks_company_id",
+     "colunas": "company_id",
+     "unico": false
+    },
     {
      "nome": "idx_webhooks_events",
      "colunas": "events",
@@ -17739,6 +17807,7 @@
     }
    ],
    "fks": [
+    "company_id->companies",
     "created_by->auth"
    ],
    "criada_em": "20251219145831_6f99315a-90bc-43fc-80e5-aeff3300c994.sql",
@@ -17760,7 +17829,9 @@
     "url": "string"
    },
    "drift": {
-    "so_na_migration": [],
+    "so_na_migration": [
+     "company_id"
+    ],
     "so_no_types": []
    },
    "usada_no_front": 3,
