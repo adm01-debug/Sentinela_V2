@@ -1,3 +1,4 @@
+import * as os from 'os';
 import log from 'electron-log';
 import { CONFIG } from '../config';
 
@@ -33,7 +34,7 @@ export class AuthService {
           deviceInfo: {
             platform: process.platform,
             arch: process.arch,
-            hostname: require('os').hostname(),
+            hostname: os.hostname(),
           },
         }),
       });
