@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)",
+   "ci: detecta chave embutida no comando dos jobs do agendador (#309)",
+   "ci: nao persiste credencial do checkout nos jobs que nao dao push (#317)",
    "fix: gate de admin no send-webhook (#337)",
-   "fix: identidade do JWT no notify-new-device (#336)",
-   "fix: escopo de empresa no check-geofence (#335)",
-   "fix: escopo de empresa e trava de URL no ocr-screenshot (#334)",
-   "fix: escopo de empresa no notify-dispute-decision (#333)"
+   "fix: identidade do JWT no notify-new-device (#336)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `fffff3c15430e03b99d985cc1f9e65e10a7a3027` (2026-11-25T19:18:09-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `0e3b73ab6a8d4d16af9d106b1a0acf0766de6208` (2026-11-25T19:25:14-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1382), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
+- linguagens: TypeScript (1380), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1862 |
-| arquivos_codigo | 1408 |
-| linhas_codigo | 160356 |
+| arquivos_total | 1860 |
+| arquivos_codigo | 1406 |
+| linhas_codigo | 160287 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -44,7 +44,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | modulos | 59 |
 | componentes | 471 |
 | hooks | 527 |
-| edge_functions | 50 |
+| edge_functions | 48 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
@@ -186,8 +186,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `export-data` — tabelas: -; chamada por 1 arquivo(s) do front
 - `generate-insights` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `generate-report` (verify_jwt=false) — tabelas: ai_analysis_reports, attendance_records, keystroke_logs, productivity_logs, reports, security_violations; chamada por 2 arquivo(s) do front
-- `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `get-employee-timeline` — tabelas: click_logs, employees, keystroke_logs, screen_captures, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-mapbox-token` — tabelas: -; chamada por 1 arquivo(s) do front
 - `health-check` (verify_jwt=false) — tabelas: employees; chamada por 0 arquivo(s) do front
 - `ingest-file-transfer` (verify_jwt=false) — tabelas: agent_keys, dlp_incidents, dlp_policies, employees, file_transfers; chamada por 0 arquivo(s) do front
@@ -238,7 +236,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), dialog (2), group (2), list (2), region (2), Admin (1), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), dialog (2), group (2), list (2), region (2), Admin (1), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 25 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -247,7 +245,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - rotas_sem_arquivo: 0
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
-- edges_orfas: 8 — ex.: agent-collector, get-employee-schedule, get-employee-timeline
+- edges_orfas: 6 — ex.: agent-collector, mcp-query, mobile-collector
 - edges_chamadas_sem_pasta: 1 — ex.: _gate
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 0
@@ -266,16 +264,16 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
+- docs/pendencias/_linha-de-base.md (22)
 - scripts/ci/eslint-baseline.json (22)
-- docs/pendencias/_linha-de-base.md (21)
-- scripts/ci/prettier-baseline.json (19)
-- .github/workflows/deploy.yml (18)
+- scripts/ci/prettier-baseline.json (20)
+- .github/workflows/deploy.yml (19)
 - src/routes/AppRoutes.tsx (13)
-- .github/workflows/ci.yml (8)
+- .github/workflows/ci.yml (9)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
+- supabase/config.toml (8)
 - docs/prod-readiness.md (7)
-- supabase/config.toml (7)
 - supabase/functions/_shared/auth.ts (6)
 - supabase/functions/behavior-pattern/index.ts (6)
 - supabase/functions/summarize-activity/index.ts (6)
@@ -321,7 +319,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `CONTRIBUTING.md` — Contributing to Sentinela (47 linhas)
 - `DOCUMENTATION_API_CONTRACTS.md` — Documentação de Contratos de API - Edge Functions & Webhooks (115 linhas)
 - `DOCUMENTATION_EDGE_FUNCTIONS.md` — Documentação Técnica: Edge Functions (51 linhas)
-- `ESTADO_ATUAL.md` — ESTADO ATUAL DO SISTEMA — SENTINELA V2 (977 linhas)
+- `ESTADO_ATUAL.md` — ESTADO ATUAL DO SISTEMA — SENTINELA V2 (983 linhas)
 - `MIGRATION_PLAN_FOR_CLAUDE_WEB.md` — PROMPT PARA CLAUDE WEB — ANÁLISE DE MIGRAÇÃO SENTINELA V2 (255 linhas)
 - `README.md` — Sentinela (37 linhas)
 - `ROADMAP.md` — SENTINELA — Roadmap Executivo 2026 (35 linhas)
@@ -427,6 +425,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `0e3b73ab6` chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)
+- 2026-11-25 `fb72235cf` ci: detecta chave embutida no comando dos jobs do agendador (#309)
+- 2026-11-25 `d8d0f15c8` ci: nao persiste credencial do checkout nos jobs que nao dao push (#317)
 - 2026-11-25 `fffff3c15` fix: gate de admin no send-webhook (#337)
 - 2026-11-25 `183a97593` fix: identidade do JWT no notify-new-device (#336)
 - 2026-11-25 `5af2975df` fix: escopo de empresa no check-geofence (#335)
@@ -439,9 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `8b6e821af` fix: admin so pontua funcionario da propria empresa (#328)
 - 2026-11-25 `ef7078fc3` fix: exige admin e escopo de empresa no send-scheduled-report (#327)
 - 2026-11-25 `27c44f6f5` fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)
-- 2026-11-25 `976dba3a1` fix: exige dono do relatorio e escopo de empresa na generate-report (#325)
-- 2026-11-25 `31353a3c7` fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)
-- 2026-11-25 `a0e851cb3` fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

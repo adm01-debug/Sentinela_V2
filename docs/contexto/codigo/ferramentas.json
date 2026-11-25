@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1382)",
+   "TypeScript (1380)",
    "Markdown (176)",
    "SQL (128)",
    "JSON (45)",
@@ -588,7 +588,7 @@
   {
    "arquivo": "ESTADO_ATUAL.md",
    "titulo": "ESTADO ATUAL DO SISTEMA — SENTINELA V2",
-   "linhas": 977
+   "linhas": 983
   },
   {
    "arquivo": "MIGRATION_PLAN_FOR_CLAUDE_WEB.md",
@@ -1573,6 +1573,10 @@
    },
    {
     "papel": "separator",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "string",
     "ocorrencias": 1
    },
    {

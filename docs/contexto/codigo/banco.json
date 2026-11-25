@@ -2530,7 +2530,6 @@
    "usada_em_edges": [
     "agent-collector",
     "analyze-activity",
-    "get-employee-timeline",
     "risk-score-calculator"
    ],
    "triggers": [],
@@ -5132,9 +5131,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "get-employee-schedule"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -5462,7 +5459,6 @@
     "agent-collector",
     "award-gamification-points",
     "generate-insights",
-    "get-employee-timeline",
     "health-check",
     "ingest-file-transfer",
     "natural-language-query",
@@ -7208,7 +7204,6 @@
     "behavior-pattern",
     "generate-insights",
     "generate-report",
-    "get-employee-timeline",
     "natural-language-query",
     "predict-anomaly",
     "risk-score-calculator",
@@ -12993,7 +12988,6 @@
    "usada_no_front": 6,
    "usada_em_edges": [
     "agent-collector",
-    "get-employee-timeline",
     "ocr-screenshot"
    ],
    "triggers": [],
@@ -13413,7 +13407,6 @@
     "acknowledge-violation",
     "generate-insights",
     "generate-report",
-    "get-employee-timeline",
     "natural-language-query",
     "pending-employee-violations",
     "process-violation-alert",

@@ -79,7 +79,7 @@
   {
    "arquivo": "scripts/ci/checar-cron.mjs",
    "descricao": "Cruza os jobs do agendador de producao (`cron.job`) com `supabase/functions/`. Os jobs criados pelo painel vivem no banco, nao no repositorio: foi assim que",
-   "linhas": 146,
+   "linhas": 209,
    "env": [
     "SUPABASE_PROJECT_REF"
    ],

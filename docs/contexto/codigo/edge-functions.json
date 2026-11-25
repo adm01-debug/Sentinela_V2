@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 50,
+ "total": 48,
  "verify_jwt_false": [
   "acknowledge-violation",
   "dlp-incident-report",
@@ -467,69 +467,6 @@
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
    "orfa": false,
-   "testes": 0
-  },
-  {
-   "nome": "get-employee-schedule",
-   "entrada": "supabase/functions/get-employee-schedule/index.ts",
-   "arquivos": 1,
-   "linhas": 97,
-   "verify_jwt": true,
-   "metodos": [
-    "OPTIONS"
-   ],
-   "tabelas": [
-    "employee_schedules"
-   ],
-   "rpcs": [],
-   "env": [
-    "SUPABASE_SERVICE_ROLE_KEY",
-    "SUPABASE_URL"
-   ],
-   "buckets": [],
-   "chama_edges": [],
-   "hosts_externos": [],
-   "usa_shared": [
-    "auth.ts",
-    "rateLimiting.ts"
-   ],
-   "chamada_pelo_front": [],
-   "chamada_por_edges": [],
-   "chamada_por_sql_ou_cron": false,
-   "orfa": true,
-   "testes": 0
-  },
-  {
-   "nome": "get-employee-timeline",
-   "entrada": "supabase/functions/get-employee-timeline/index.ts",
-   "arquivos": 1,
-   "linhas": 83,
-   "verify_jwt": true,
-   "metodos": [
-    "OPTIONS"
-   ],
-   "tabelas": [
-    "click_logs",
-    "employees",
-    "keystroke_logs",
-    "screen_captures",
-    "security_violations"
-   ],
-   "rpcs": [],
-   "env": [
-    "SUPABASE_SERVICE_ROLE_KEY",
-    "SUPABASE_URL"
-   ],
-   "buckets": [],
-   "chama_edges": [],
-   "hosts_externos": [],
-   "usa_shared": [
-    "auth.ts"
-   ],
-   "chamada_pelo_front": [],
-   "chamada_por_edges": [],
-   "chamada_por_sql_ou_cron": false,
-   "orfa": true,
    "testes": 0
   },
   {
