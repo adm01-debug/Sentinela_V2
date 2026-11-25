@@ -40,6 +40,8 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       # Versao fixada: `latest` faz o setup-cli resolver a release pela API do
       # GitHub, e o rate limit do runner derrubou o job migrate em 261122
       # ("Failed to resolve latest Supabase CLI release: rate limit exceeded").
@@ -76,6 +78,8 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: supabase/setup-cli@v1
         with:
           version: 3.2.0
