@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `af9d004da3976cbafb8dc7b2dd41878036c2ca67` (2026-11-25T08:05:44-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cc25e3612286dd0ccd212fffb4d70d171ad409dd` (2026-11-25T08:06:03-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1372), Markdown (176), SQL (128), JSON (44), YAML (36), JavaScript (24), Shell (22), HTML (4)
+- linguagens: TypeScript (1372), Markdown (176), SQL (128), JSON (45), YAML (36), JavaScript (26), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1846 |
-| arquivos_codigo | 1394 |
-| linhas_codigo | 156766 |
+| arquivos_total | 1849 |
+| arquivos_codigo | 1396 |
+| linhas_codigo | 157160 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,9 +48,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 84 |
+| testes | 85 |
 | workflows | 13 |
-| scripts | 33 |
+| scripts | 34 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
@@ -58,10 +58,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (359), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (7)
+- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (8)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
-- scripts: scripts/ci (5), scripts/ai-context (2), scripts/inventario (2)
+- scripts: scripts/ci (6), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
 - nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (100%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
@@ -271,9 +271,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/prettier-baseline.json (19)
 - .github/workflows/deploy.yml (18)
 - src/routes/AppRoutes.tsx (13)
+- .github/workflows/ci.yml (8)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
-- .github/workflows/ci.yml (7)
 - supabase/config.toml (7)
 - docs/prod-readiness.md (6)
 - src/index.css (5)
@@ -426,6 +426,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `cc25e3612` feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)
 - 2026-11-25 `af9d004da` chore: remove as 38 edges legadas sem chamador do repo (#305)
 - 2026-11-25 `0dada9e58` fix: exigir admin para notificar decisao de contestacao (#303)
 - 2026-11-24 `2d3ed6cd1` fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)
@@ -440,7 +441,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `1a0e0bcdc` feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)
 - 2026-11-24 `07e505075` fix: resumo de atividades volta a alimentar os graficos (#292)
 - 2026-11-24 `cde1021d0` fix: diagnostico de ICE usa a mesma fonte do live view (#291)
-- 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

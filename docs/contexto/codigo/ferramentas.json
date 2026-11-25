@@ -6,9 +6,9 @@
    "TypeScript (1372)",
    "Markdown (176)",
    "SQL (128)",
-   "JSON (44)",
+   "JSON (45)",
    "YAML (36)",
-   "JavaScript (24)",
+   "JavaScript (26)",
    "Shell (22)",
    "HTML (4)"
   ],
@@ -135,7 +135,8 @@
     "test",
     "deno-contract-tests",
     "deno-typecheck-ratchet",
-    "agent-instructions-guard"
+    "agent-instructions-guard",
+    "edge-gate-guard"
    ],
    "permissoes": [
     "contents: read"
@@ -143,6 +144,7 @@
    "scripts_usados": [
     "scripts/ci/check-claude-md-integrity.mjs",
     "scripts/ci/deno-check-ratchet.mjs",
+    "scripts/ci/edge-gate-guard.mjs",
     "scripts/ci/lint-ratchet.mjs",
     "scripts/ci/typecheck-ratchet.mjs",
     "scripts/generate-audit-pdf.js"

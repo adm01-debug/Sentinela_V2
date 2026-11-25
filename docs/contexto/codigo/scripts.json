@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 33,
+ "total": 34,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -96,6 +96,17 @@
    "env": [
     "DENO_BIN"
    ],
+   "npm_scripts": [],
+   "workflows": [
+    "ci.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/edge-gate-guard.mjs",
+   "descricao": "Gate de credencial nas edge functions. Por que existe: a chave publicavel do app (`sb_publishable_...`) vai no bundle",
+   "linhas": 288,
+   "env": [],
    "npm_scripts": [],
    "workflows": [
     "ci.yml"

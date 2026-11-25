@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "af9d004da3976cbafb8dc7b2dd41878036c2ca67",
+  "commit": "cc25e3612286dd0ccd212fffb4d70d171ad409dd",
   "branch": "main",
-  "data_commit": "2026-11-25T08:05:44-03:00",
+  "data_commit": "2026-11-25T08:06:03-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "cc25e3612",
+    "data": "2026-11-25",
+    "assunto": "feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)"
+   },
    {
     "sha": "af9d004da",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "17070eb55",
     "data": "2026-11-24",
     "assunto": "infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)"
-   },
-   {
-    "sha": "2c025d913",
-    "data": "2026-11-24",
-    "assunto": "fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)"
    }
   ],
-  "arquivos_mudados_7d": 303,
+  "arquivos_mudados_7d": 306,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -172,6 +172,10 @@
     "mudancas": 13
    },
    {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 8
+   },
+   {
     "pasta": "scripts/ci/deno-check-baseline.json",
     "mudancas": 8
    },
@@ -182,10 +186,6 @@
    {
     "pasta": "src/pages/admin",
     "mudancas": 8
-   },
-   {
-    "pasta": ".github/workflows/ci.yml",
-    "mudancas": 7
    },
    {
     "pasta": "src/components/ui",
@@ -226,16 +226,16 @@
     "mudancas": 13
    },
    {
+    "arquivo": ".github/workflows/ci.yml",
+    "mudancas": 8
+   },
+   {
     "arquivo": "scripts/ci/deno-check-baseline.json",
     "mudancas": 8
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
     "mudancas": 8
-   },
-   {
-    "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 7
    },
    {
     "arquivo": "supabase/config.toml",
@@ -270,6 +270,10 @@
     "mudancas": 4
    },
    {
+    "arquivo": "scripts/ci/README.md",
+    "mudancas": 4
+   },
+   {
     "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
     "mudancas": 4
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "supabase/functions/natural-language-query/index.ts",
     "mudancas": 4
-   },
-   {
-    "arquivo": "supabase/functions/slack-notify/index.ts",
-    "mudancas": 4
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 202
+    "commits": 203
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1846,
-  "arquivos_codigo": 1394,
-  "linhas_codigo": 156766,
+  "arquivos_total": 1849,
+  "arquivos_codigo": 1396,
+  "linhas_codigo": 157160,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,9 +328,9 @@
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 84,
+  "testes": 85,
   "workflows": 13,
-  "scripts": 33,
+  "scripts": 34,
   "docs_md": 176
  },
  "por_pasta": {
@@ -391,8 +391,8 @@
    "linhas": 1458
   },
   "scripts/ci": {
-   "arquivos": 9,
-   "linhas": 3607
+   "arquivos": 11,
+   "linhas": 4001
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,
@@ -607,7 +607,7 @@
  ],
  "qualidade": {
   "any": 162,
-  "console_log": 52,
+  "console_log": 57,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,

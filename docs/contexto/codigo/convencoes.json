@@ -23,12 +23,12 @@
   "testes": [
    "co-localizado (*.test) (54)",
    "co-localizado (__tests__) (22)",
-   "outro (7)"
+   "outro (8)"
   ],
   "edge_functions": "supabase/functions",
   "migrations": "supabase/migrations",
   "scripts": [
-   "scripts/ci (5)",
+   "scripts/ci (6)",
    "scripts/ai-context (2)",
    "scripts/inventario (2)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)",
    "chore: remove as 38 edges legadas sem chamador do repo (#305)",
    "fix: exigir admin para notificar decisao de contestacao (#303)",
    "fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)",
-   "fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)",
-   "fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)"
+   "fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
