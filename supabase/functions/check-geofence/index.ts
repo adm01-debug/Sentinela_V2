@@ -258,6 +258,9 @@ serve(async (req) => {
 
       // Registra o estado atual em geofence_violations (action_taken guarda o estado)
       await supabase.from("geofence_violations").insert({
+        // a cerca carrega o dono da empresa; `employee_name` aqui recebe o id do
+        // funcionario, então o trigger de preenchimento não consegue resolver
+        company_id: geofence.company_id ?? scope,
         employee_name: employee_id,
         device: device_id,
         nearest_geofence_id: geofence.id,
