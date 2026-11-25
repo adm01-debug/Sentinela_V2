@@ -93,13 +93,37 @@ serve(async (req) => {
 
   // verify_jwt = false no config.toml: sem este gate qualquer pessoa na
   // internet envia WhatsApp pelo numero da empresa usando o service_role.
+  let auth: { user: { id: string } | null; isServiceRole: boolean };
   try {
-    await requireUserOrServiceRole(req);
+    auth = await requireUserOrServiceRole(req);
   } catch {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
+  }
+
+  // whatsapp_config e admin-only (RLS) e a unica tela que envia e a de
+  // integracao (/integrations/whatsapp, sem guard de rota). Sem este gate
+  // qualquer funcionario logado dispara WhatsApp pelo numero oficial da
+  // empresa para qualquer destino (custo no provider e spam em nome da marca).
+  if (!auth.isServiceRole && auth.user) {
+    const adminClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+    const { data: roles, error: rolesError } = await adminClient
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", auth.user.id)
+      .in("role", ["admin", "super_admin"]);
+
+    if (rolesError || !roles || roles.length === 0) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
   }
 
   try {
