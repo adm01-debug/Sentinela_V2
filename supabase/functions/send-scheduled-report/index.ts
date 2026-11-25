@@ -138,7 +138,7 @@ serve(async (req) => {
     // Generate report data based on type
     let reportData;
     switch (report.report_type) {
-      case 'violations':
+      case 'violations': {
         const { data: violations } = await withCompanyScope(
           supabase
             .from('security_violations')
@@ -148,13 +148,15 @@ serve(async (req) => {
         );
         reportData = violations;
         break;
-      case 'productivity':
+      }
+      case 'productivity': {
         const { data: productivity } = await dataClient
           .from('productivity_metrics')
           .select('*')
           .gte('date', new Date().toISOString().split('T')[0]);
         reportData = productivity;
         break;
+      }
       default:
         reportData = { message: 'Report generated' };
     }
