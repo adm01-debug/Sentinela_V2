@@ -370,14 +370,12 @@
    "nome": "export-data",
    "entrada": "supabase/functions/export-data/index.ts",
    "arquivos": 1,
-   "linhas": 120,
+   "linhas": 118,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
-   "tabelas": [
-    "user_companies"
-   ],
+   "tabelas": [],
    "rpcs": [],
    "env": [
     "SUPABASE_ANON_KEY",
@@ -387,7 +385,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/pages/DataExportPage.tsx"
    ],

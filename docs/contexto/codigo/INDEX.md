@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `976dba3a1ce1eec1c3d3fd66f57314fc1f9d9e58` (2026-11-25T17:36:46-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `27c44f6f5825453c383bf48807500f8691ef3cf6` (2026-11-25T17:43:33-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1408 |
-| linhas_codigo | 160159 |
+| linhas_codigo | 160157 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -183,7 +183,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `dlp-policy-sync` (verify_jwt=false) — tabelas: agent_keys, dlp_classifiers, dlp_policies; chamada por 0 arquivo(s) do front
 - `escalate-dispute-sla` — tabelas: edge_function_logs, mobile_devices, violation_disputes; chamada por 1 arquivo(s) do front
 - `expire-recordings` — tabelas: data_retention_policies, file_transfers, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front, por SQL/cron
-- `export-data` — tabelas: user_companies; chamada por 1 arquivo(s) do front
+- `export-data` — tabelas: -; chamada por 1 arquivo(s) do front
 - `generate-insights` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `generate-report` (verify_jwt=false) — tabelas: ai_analysis_reports, attendance_records, keystroke_logs, productivity_logs, reports, security_violations; chamada por 2 arquivo(s) do front
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `27c44f6f5` fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)
 - 2026-11-25 `976dba3a1` fix: exige dono do relatorio e escopo de empresa na generate-report (#325)
 - 2026-11-25 `31353a3c7` fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)
 - 2026-11-25 `a0e851cb3` fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `235f94b1c` feat: liga busca em dados reais na paleta de comandos (#310)
 - 2026-11-25 `63e0317b6` ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)
 - 2026-11-25 `217616fef` fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)
-- 2026-11-25 `c23267cd8` docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -4267,6 +4267,9 @@
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/logger.ts"
   ],
+  "supabase/functions/export-data/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/generate-report/index.ts": [
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/reportAccess.ts"
