@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: exige admin no send-whatsapp (#332)",
    "fix: exige service_role no process-violation-alert (#331)",
    "fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)",
    "fix: sincronizacao de templates do WhatsApp exige admin (#329)",
-   "fix: admin so pontua funcionario da propria empresa (#328)",
-   "fix: exige admin e escopo de empresa no send-scheduled-report (#327)"
+   "fix: admin so pontua funcionario da propria empresa (#328)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

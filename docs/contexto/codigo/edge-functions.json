@@ -1245,12 +1245,13 @@
    "nome": "send-whatsapp",
    "entrada": "supabase/functions/send-whatsapp/index.ts",
    "arquivos": 2,
-   "linhas": 384,
+   "linhas": 408,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
+    "user_roles",
     "whatsapp_config"
    ],
    "rpcs": [],
