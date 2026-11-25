@@ -3,6 +3,13 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Session as SupaSession, User as SupaUser } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
 
+/**
+ * Papeis elevados de `public.app_role` (enum real: admin, user, Admin, Analyst,
+ * Manager, User). Mesma lista de ELEVATED_ROLES em send-push-notification e das
+ * permissoes de 'manager' no seed granular de roles.
+ */
+const ELEVATED_ROLES = ['admin', 'Admin', 'Manager'] as const;
+
 // ============================================================
 // TYPES
 // ============================================================
@@ -14,7 +21,7 @@ export interface User {
   role?: string;
   avatar?: string;
   isAdmin?: boolean;
-  /** true quando role veio de user_roles; metadata nunca conta como papel. */
+  /** true quando user_roles tem papel elevado (admin/Admin/Manager) para o usuario. */
   roleFromDb?: boolean;
   onboardingCompleted?: boolean;
   createdAt?: string;
@@ -96,6 +103,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       let queryDone = false;
       let resolvedIsAdmin = false;
       let resolvedRole = 'user';
+      let resolvedRoleFromDb = false;
 
       supabase
         .from('user_roles')
@@ -105,14 +113,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // | User. Nao existe 'supervisor': o filtro inteiro abortava com 22P02
         // ("invalid input value for enum app_role"), o catch deixava isAdmin=false
         // e TODO admin era rebaixado para 'user' na UI (AdminGuard -> /dashboard).
-        .in('role', ['admin'])
+        // `order('role').limit(1)` mantem 1 linha quando o usuario acumula mais de
+        // um papel elevado (UNIQUE e (user_id, role)) — sem isso o maybeSingle
+        // devolvia PGRST116 e o admin tambem caia para 'user'.
+        .in('role', [...ELEVATED_ROLES])
+        .order('role')
+        .limit(1)
         .maybeSingle()
         .then((res) => {
           if (res.error && res.error.code !== 'PGRST116') {
             logger.warn(`[AuthProvider] Role check warning for ${mapped.id}:`, res.error.message);
           }
-          resolvedIsAdmin = res.data?.role === 'admin';
+          resolvedIsAdmin = res.data?.role === 'admin' || res.data?.role === 'Admin';
           resolvedRole = res.data?.role ?? 'user';
+          // Só papel elevado de user_roles marca a flag: o SupervisorGuard
+          // libera area de gestor por ela, e usuario comum precisa ficar false.
+          resolvedRoleFromDb = !!res.data?.role;
         })
         .catch((err) => {
           logger.error('[AuthProvider] checkAdminRole failed:', err);
@@ -127,7 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             return {
               ...current,
               isAdmin: resolvedIsAdmin,
-              roleFromDb: true,
+              roleFromDb: resolvedRoleFromDb,
               // user_metadata e editavel pelo proprio usuario (updateUser), entao
               // o papel NUNCA pode ser herdado dele: so user_roles decide.
               role: resolvedRole,

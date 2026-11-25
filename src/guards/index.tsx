@@ -62,8 +62,9 @@ export function SupervisorGuard({ children }: GuardProps) {
 
   // `user.role` pode vir de user_metadata (editavel pelo proprio usuario via
   // updateUser). Por isso o guard nao confia no papel solto: exige isAdmin
-  // resolvido por user_roles (admin) ou a marca explicita de papel vindo do
-  // banco (roleFromDb). Sem isso, qualquer conta se promove a supervisor.
+  // resolvido por user_roles, ou roleFromDb — que so e true quando user_roles
+  // tem papel elevado (admin/Admin/Manager). Usuario comum fica false; quando
+  // a flag era sempre true, qualquer conta entrava na area de gestor.
   const hasAccess =
     user?.isAdmin === true ||
     user?.roleFromDb === true ||
