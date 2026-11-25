@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a90ee69b7956f3c1a216bd1ebe7cdd7bac1839b9",
+  "commit": "4fdfa8fd4035d7b59b6e4189a541edf511ef4bcb",
   "branch": "main",
-  "data_commit": "2026-11-25T18:39:56-03:00",
+  "data_commit": "2026-11-25T19:00:57-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "4fdfa8fd4",
+    "data": "2026-11-25",
+    "assunto": "fix: escopo de empresa e trava de URL no ocr-screenshot (#334)"
+   },
    {
     "sha": "a90ee69b7",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "cc25e3612",
     "data": "2026-11-25",
     "assunto": "feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)"
-   },
-   {
-    "sha": "af9d004da",
-    "data": "2026-11-25",
-    "assunto": "chore: remove as 38 edges legadas sem chamador do repo (#305)"
    }
   ],
   "arquivos_mudados_7d": 337,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 226
+    "commits": 227
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1408,
-  "linhas_codigo": 160304,
+  "linhas_codigo": 160315,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 11540
+   "linhas": 11551
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -607,7 +607,7 @@
  ],
  "qualidade": {
   "any": 159,
-  "console_log": 66,
+  "console_log": 64,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,

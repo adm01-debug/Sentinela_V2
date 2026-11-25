@@ -835,7 +835,7 @@
    "nome": "ocr-screenshot",
    "entrada": "supabase/functions/ocr-screenshot/index.ts",
    "arquivos": 1,
-   "linhas": 286,
+   "linhas": 297,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
