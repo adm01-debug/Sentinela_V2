@@ -2,6 +2,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import { checkRateLimit } from "../_shared/rateLimiting.ts";
+import { callerCompanyId } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -56,18 +57,19 @@ serve(async (req) => {
       });
     }
 
-    const isAdmin = await supabase
+    const { data: roles, error: rolesError } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
-      .in("role", ["admin", "super_admin"])
-      .maybeSingle();
-    if (isAdmin.error || !isAdmin.data) {
+      .in("role", ["admin", "super_admin"]);
+    if (rolesError || !roles || roles.length === 0) {
       return new Response(JSON.stringify({ error: "Forbidden: admin role required" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    const isSuperAdmin = roles.some((r) => r.role === "super_admin");
 
     let payload: z.infer<typeof AwardSchema>;
     try {
@@ -80,6 +82,29 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
+    }
+
+    // O id do funcionario vem do corpo e a escrita roda com service_role (RLS nao
+    // vale aqui), entao o vinculo com a empresa do chamador precisa ser checado.
+    const callerCompany = await callerCompanyId(supabase, { user, isServiceRole: false });
+    const { data: employee } = await supabase
+      .from("employees")
+      .select("id, company_id")
+      .eq("id", payload.employee_id)
+      .maybeSingle();
+
+    if (!employee) {
+      return new Response(JSON.stringify({ error: "Employee not found" }), {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (!isSuperAdmin && employee.company_id && employee.company_id !== callerCompany) {
+      return new Response(JSON.stringify({ error: "Employee belongs to another company" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const today = new Date().toISOString().slice(0, 10);
