@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 export interface WorkSchedule {
   id: string;
@@ -33,7 +33,9 @@ export interface CreateWorkScheduleInput {
   start_time: string;
   end_time: string;
   work_days?: number[];
-  description?: string;
+  description?: string | null;
+  lunch_start?: string | null;
+  lunch_end?: string | null;
   allow_overtime?: boolean;
   auto_block_enabled?: boolean;
   grace_period_minutes?: number;
@@ -45,7 +47,9 @@ export interface UpdateWorkScheduleInput {
   start_time?: string;
   end_time?: string;
   work_days?: number[];
-  description?: string;
+  description?: string | null;
+  lunch_start?: string | null;
+  lunch_end?: string | null;
   allow_overtime?: boolean;
   auto_block_enabled?: boolean;
   grace_period_minutes?: number;
@@ -56,9 +60,9 @@ export function useWorkSchedules() {
     queryKey: queryKeys.workSchedules.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('work_schedules')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("work_schedules")
+        .select("*")
+        .order("name", { ascending: true });
       if (error) throw error;
       return data as WorkSchedule[];
     },
@@ -73,9 +77,9 @@ export function useEmployeeSchedule(_employeeId: string | undefined) {
     queryKey: queryKeys.workSchedules.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('work_schedules')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("work_schedules")
+        .select("*")
+        .order("name", { ascending: true });
       if (error) throw error;
       return data as WorkSchedule[];
     },
@@ -88,16 +92,20 @@ export function useCreateWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async (input: CreateWorkScheduleInput) => {
-      const { data, error } = await supabase.from('work_schedules').insert(input).select().maybeSingle();
+      const { data, error } = await supabase
+        .from("work_schedules")
+        .insert(input)
+        .select()
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
       invalidateRelated.workSchedules(queryClient);
-      toast({ title: 'Horário criado' });
+      toast({ title: "Horário criado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -107,16 +115,21 @@ export function useUpdateWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateWorkScheduleInput) => {
-      const { data, error } = await supabase.from('work_schedules').update(input).eq('id', id).select().maybeSingle();
+      const { data, error } = await supabase
+        .from("work_schedules")
+        .update(input)
+        .eq("id", id)
+        .select()
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
       invalidateRelated.workSchedules(queryClient);
-      toast({ title: 'Horário atualizado' });
+      toast({ title: "Horário atualizado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -126,15 +139,15 @@ export function useDeleteWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('work_schedules').delete().eq('id', id);
+      const { error } = await supabase.from("work_schedules").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.workSchedules(queryClient);
-      toast({ title: 'Horário excluído' });
+      toast({ title: "Horário excluído" });
     },
     onError: (error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 }
