@@ -1961,10 +1961,6 @@
       "sha256": "7905dfbc16ab4b68f58bb53e6c0233a956d4642e0eba6567bbac3747233e6ba3"
     },
     {
-      "path": "src/test/external-db-bridge.test.ts",
-      "sha256": "1bc2a5f5bbfad4c2ad2f62e6b6449db26a5ee1e8d801ed125e1952979b9189c6"
-    },
-    {
       "path": "src/test/gap-audit.test.ts",
       "sha256": "8447ce21812feb02350a6dcd478b58a9e5378070ceee48d8b6aea265828d626e"
     },
@@ -2073,14 +2069,6 @@
       "sha256": "ce3418f11eb254ae1926669f98bd7427ba3ed4d3880c4cd433a338a8d9d6381f"
     },
     {
-      "path": "supabase/functions/auto-categorize/index.ts",
-      "sha256": "4d4e7e5b2b0d46872cc374b4f1fefe5138c84e7c38711f582684c182a4030d86"
-    },
-    {
-      "path": "supabase/functions/create-monthly-partitions/index.ts",
-      "sha256": "41d92b2b072632e0d1507eca53306581747f5d7e84033ba3960ff5348972a5c3"
-    },
-    {
       "path": "supabase/functions/dlp-incident-report/index.ts",
       "sha256": "182137bd6498a973126fc455d0cd1259d5660eaa15c8493f3eaef4e091c2b3aa"
     },
@@ -2091,10 +2079,6 @@
     {
       "path": "supabase/functions/escalate-dispute-sla/index.ts",
       "sha256": "d8b819f02d10692b84c1fe85a6949736352f1e5661cfdcc91e8e4788d0e1b736"
-    },
-    {
-      "path": "supabase/functions/external-db-bridge/index.ts",
-      "sha256": "57ee212dcb593f01b7abfd2b4ab91ae73308b7d0185ec2841bb2ded9451008b9"
     },
     {
       "path": "supabase/functions/generate-insights/index.ts",
@@ -2110,11 +2094,7 @@
     },
     {
       "path": "supabase/functions/notify-dispute-decision/index.ts",
-      "sha256": "996d32912fb44524d654b39352b0b6819690b502d69a50cb90074a5e5fd88607"
-    },
-    {
-      "path": "supabase/functions/notify-mobile-violation/index.ts",
-      "sha256": "4ec5888b289bea3f1bad814951b674f1ec33adb0598a23c1c3ac2180fb931197"
+      "sha256": "ef9170ab5a4a40d5fd56af00c15aca7b3d07d3ce5d0f770f83eeabab628b54d1"
     },
     {
       "path": "supabase/functions/notify-new-device/index.ts",
@@ -17513,62 +17493,6 @@
       "contextHash": "649ab88c0630448c98a36ea798c45bd6635b79ff50e9e4e7a381c19f97aba179"
     },
     {
-      "file": "src/test/external-db-bridge.test.ts",
-      "line": 14,
-      "column": 39,
-      "endLine": 14,
-      "endColumn": 42,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "dee084d2bb4a2c23057d09756102da5799aa90139945c1f0e54bfde66ba3319a",
-      "contextHash": "928015a8031850c118c769fda0b1d69e1376ae13826885375cc4c54db328076d"
-    },
-    {
-      "file": "src/test/external-db-bridge.test.ts",
-      "line": 50,
-      "column": 15,
-      "endLine": 50,
-      "endColumn": 18,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "d82969bf4e79e82173c432ee150c963bf29f9ee6f37c0d25f710b4b60c7963d0",
-      "contextHash": "fb269204879c0f4c147a0ff6d8735c41a0cca3eb7e53503ce7384b0716dd7826"
-    },
-    {
-      "file": "src/test/external-db-bridge.test.ts",
-      "line": 609,
-      "column": 50,
-      "endLine": 609,
-      "endColumn": 53,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "d0bb29dd7139d558e2acea409e12527605fb029e60324021b2a2b3deb201a9ad",
-      "contextHash": "dd7c2f1f00500b97b580951d2250de73001838ec810a15bf5b0fb3a02b5acb05"
-    },
-    {
-      "file": "src/test/external-db-bridge.test.ts",
-      "line": 896,
-      "column": 46,
-      "endLine": 896,
-      "endColumn": 49,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "968c3b19c1dbf1e4736c22254db8bae0f2b81bb88ab0ed0f47f1ab2d7fbf98b3",
-      "contextHash": "02ec4b672321ad6551ff6eb092950b7eb7476658b2dfd54873dd76a77e8d76bc"
-    },
-    {
       "file": "src/test/gap-audit.test.ts",
       "line": 31,
       "column": 10,
@@ -18843,76 +18767,6 @@
       "contextHash": "a0d8b2da4f280b052b0a92426867a197618e7badec533f84ada8d7398cc93a27"
     },
     {
-      "file": "supabase/functions/auto-categorize/index.ts",
-      "line": 2,
-      "column": 10,
-      "endLine": 2,
-      "endColumn": 22,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'createClient' is defined but never used.",
-      "spanHash": "e5499f20703129809a0ea009235a9975666a5c50910295782001020991e66155",
-      "lineHash": "8cdf917f8f9a8d529af162160e77fd7417d3750c887534df99d7fc4e37ba43f9",
-      "contextHash": "a019656de3c14710120795bfe3a8dc80c3ce648c7018cd3079fb7387ceed0dc7"
-    },
-    {
-      "file": "supabase/functions/create-monthly-partitions/index.ts",
-      "line": 27,
-      "column": 5,
-      "endLine": 27,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "2ea1b2b5a93bc08e16c32bb427950232fe215f605e8833ef036c69b68c45e8fa",
-      "contextHash": "c5a86115a04d360ad3ef3526fa7d5fcb1254396fa7783e99dc52f914f090e5cd"
-    },
-    {
-      "file": "supabase/functions/create-monthly-partitions/index.ts",
-      "line": 38,
-      "column": 9,
-      "endLine": 38,
-      "endColumn": 20,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "0c0564ad7b207dc07d1b00fa74ce43f88e57ebd5a8a8053caac73eea5c10dd23",
-      "contextHash": "1e875a89246d674e9d5c19d9a670e87db6bed925b47ec82cd0c08492fa8e928b"
-    },
-    {
-      "file": "supabase/functions/create-monthly-partitions/index.ts",
-      "line": 49,
-      "column": 11,
-      "endLine": 49,
-      "endColumn": 22,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "fde20108bcdff9265df583065065cb38ba25317e00c656ae3eaade0ab6ac1ad8",
-      "contextHash": "26fcbacb1cb99ffeb0b498224c57359b149515add79789f3cc222c3137c750b8"
-    },
-    {
-      "file": "supabase/functions/create-monthly-partitions/index.ts",
-      "line": 59,
-      "column": 5,
-      "endLine": 59,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "b263e5f8c8531331379af39daaddf95d8154b417efedc46b589f4c834ae24258",
-      "contextHash": "5183c42b94288bc3679524a4dc6718df7b354c3f955b78792ff69f49ca409291"
-    },
-    {
       "file": "supabase/functions/dlp-incident-report/index.ts",
       "line": 45,
       "column": 36,
@@ -18967,34 +18821,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "a8a31f38f7b873ff6f2f73a725cec4f2718cc7c0b1fac21bdfc66d46d05162b1",
       "contextHash": "518cf0771429a9689fb4a20131883aa58410f388b0b8168102dc914a595e7c3f"
-    },
-    {
-      "file": "supabase/functions/external-db-bridge/index.ts",
-      "line": 103,
-      "column": 5,
-      "endLine": 103,
-      "endColumn": 17,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "dbf4e28b4b113aaa85ed153caf9ef43e838d93f99aff269be9a5b53932551c99",
-      "lineHash": "be5d631787866081f3a68ae0f8940cb3ef7d0dff1020d72108f8948dcfb75052",
-      "contextHash": "9e2400d0d7446973268db50f2221d8dc17976e2e85ed6368a0d29ef39d02e0d5"
-    },
-    {
-      "file": "supabase/functions/external-db-bridge/index.ts",
-      "line": 115,
-      "column": 12,
-      "endLine": 115,
-      "endColumn": 15,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'err' is defined but never used.",
-      "spanHash": "d9eb253e06987fa74a5d3189f73d9f7a8104cca786fafbb52bc9555972f5477f",
-      "lineHash": "e1be4fdef0777b6419a857a596ee0e6d60ee93858aea1ea66fe44ad2252f708e",
-      "contextHash": "18696dc18a526e0804003d49006b6e4a42fa9aacf76be46f4a0080601d970f18"
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
@@ -19180,9 +19006,9 @@
     },
     {
       "file": "supabase/functions/notify-dispute-decision/index.ts",
-      "line": 114,
+      "line": 131,
       "column": 10,
-      "endLine": 114,
+      "endLine": 131,
       "endColumn": 13,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19194,9 +19020,9 @@
     },
     {
       "file": "supabase/functions/notify-dispute-decision/index.ts",
-      "line": 57,
+      "line": 74,
       "column": 18,
-      "endLine": 57,
+      "endLine": 74,
       "endColumn": 21,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19208,9 +19034,9 @@
     },
     {
       "file": "supabase/functions/notify-dispute-decision/index.ts",
-      "line": 67,
+      "line": 84,
       "column": 38,
-      "endLine": 67,
+      "endLine": 84,
       "endColumn": 41,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19219,34 +19045,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "5270a27568643617354ba412f0769575f52d69a94c5819ff7d44fea68c2fa4cb",
       "contextHash": "08267a7a2d06ac2d18bad9b3123b7ff4269cb5255398d4c5884edee25b968c44"
-    },
-    {
-      "file": "supabase/functions/notify-mobile-violation/index.ts",
-      "line": 136,
-      "column": 10,
-      "endLine": 136,
-      "endColumn": 13,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "ac210b39527b0482a0bab3ec6e5fb405d90f7cf09f2f62b77aa16996a2b84168",
-      "contextHash": "e228fd8f364b7d921d75d8cca1db25f52392e3e27a598a5275241bbf08c2c359"
-    },
-    {
-      "file": "supabase/functions/notify-mobile-violation/index.ts",
-      "line": 76,
-      "column": 17,
-      "endLine": 76,
-      "endColumn": 20,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "5097cc437cda23267c5a36cd8e2df710c230e7aa5952f302f96e21b4a97e4396",
-      "contextHash": "f59dc04d84143ea7329f2f04ad0e969d74a38bf05a5d6ace183a7c289c549a77"
     },
     {
       "file": "supabase/functions/notify-new-device/index.ts",
