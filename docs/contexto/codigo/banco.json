@@ -18841,7 +18841,7 @@
   {
    "nome": "has_role",
    "definida": true,
-   "usada_em": 9
+   "usada_em": 10
   },
   {
    "nome": "is_ip_blocked",

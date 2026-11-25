@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2d3ed6cd11723786999d159f998f36c319346dcf",
+  "commit": "0dada9e5895809c36e1a53f2e9431d2b4211d4bf",
   "branch": "main",
-  "data_commit": "2026-11-24T19:56:32-03:00",
+  "data_commit": "2026-11-25T07:24:14-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "0dada9e58",
+    "data": "2026-11-25",
+    "assunto": "fix: exigir admin para notificar decisao de contestacao (#303)"
+   },
    {
     "sha": "2d3ed6cd1",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "3778ffeea",
     "data": "2026-11-24",
     "assunto": "chore: baixa baselines de lint e format apos a divida paga (#279)"
-   },
-   {
-    "sha": "d4038b31f",
-    "data": "2026-11-24",
-    "assunto": "infra: ratchet de deno check nas edge functions do CI (#278)"
    }
   ],
   "arquivos_mudados_7d": 301,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 200
+    "commits": 201
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1884,
   "arquivos_codigo": 1433,
-  "linhas_codigo": 160728,
+  "linhas_codigo": 160738,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 105,
-   "linhas": 13946
+   "linhas": 13956
   },
   "vite.config.ts": {
    "arquivos": 1,

@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: exigir admin para notificar decisao de contestacao (#303)",
    "fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)",
    "fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)",
    "fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)",
-   "fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)",
-   "fix: behavior-pattern recebe o nome do funcionario no campo certo (#298)"
+   "fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
