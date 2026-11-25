@@ -204,7 +204,7 @@
    "nome": "check-geofence",
    "entrada": "supabase/functions/check-geofence/index.ts",
    "arquivos": 2,
-   "linhas": 399,
+   "linhas": 407,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

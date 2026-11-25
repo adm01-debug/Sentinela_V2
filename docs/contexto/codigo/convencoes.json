@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: escopo de empresa no check-geofence (#335)",
    "fix: escopo de empresa e trava de URL no ocr-screenshot (#334)",
    "fix: escopo de empresa no notify-dispute-decision (#333)",
    "fix: exige admin no send-whatsapp (#332)",
-   "fix: exige service_role no process-violation-alert (#331)",
-   "fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)"
+   "fix: exige service_role no process-violation-alert (#331)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
