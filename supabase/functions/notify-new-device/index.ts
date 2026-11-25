@@ -30,8 +30,9 @@ const handler = async (req: Request): Promise<Response> => {
 
   // verify_jwt = true aceita a chave publicavel no gateway; sem este gate
   // qualquer visitante envia e-mail para qualquer endereco via Resend.
+  let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
   try {
-    await requireUserOrServiceRole(req);
+    auth = await requireUserOrServiceRole(req);
   } catch {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
@@ -46,8 +47,16 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
     const body = await req.json().catch(() => ({}));
-    const { userId, email, loginTime = new Date().toISOString() } = (body ?? {}) as Partial<NewDeviceNotification>;
-    const deviceInfo = ((body ?? {}) as Partial<NewDeviceNotification>).deviceInfo ?? ({} as NewDeviceNotification["deviceInfo"]);
+    const requested = (body ?? {}) as Partial<NewDeviceNotification>;
+    const deviceInfo = requested.deviceInfo ?? ({} as NewDeviceNotification["deviceInfo"]);
+
+    // A identidade vem do JWT: sem isso qualquer usuario logado mandava e-mail
+    // de alerta de seguranca para qualquer endereco e forjava `login_security_events`
+    // de outro usuario (a edge grava com service_role). service_role segue livre
+    // para notificar qualquer usuario a partir de automacao.
+    const userId = auth.isServiceRole ? requested.userId : auth.user?.id;
+    const email = auth.isServiceRole ? requested.email : (auth.user?.email ?? undefined);
+    const loginTime = requested.loginTime ?? new Date().toISOString();
 
     if (!userId || !email) {
       return new Response(
