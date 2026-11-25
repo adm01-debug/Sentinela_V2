@@ -66,23 +66,43 @@ jobs:
           fi
           while read -r fn; do
             echo "::group::delete $fn"
-            bash scripts/lib/supabase-retry.sh supabase functions delete --yes --remote=jgnmwvzephsozsqmcpzb "$fn"
+            saida=$(mktemp)
+            if bash scripts/lib/supabase-retry.sh supabase functions delete --yes --remote=jgnmwvzephsozsqmcpzb "$fn" >"$saida" 2>&1; then
+              cat "$saida"
+            elif grep -qiE 'not found|does not exist|404' "$saida"; then
+              # Reexecucao: a funcao ja saiu numa execucao anterior (o run de
+              # 261125 parou so na confirmacao). Apagar de novo nao e erro.
+              echo "$fn ja nao existe em producao; seguindo."
+            else
+              cat "$saida"
+              echo "::error::falha ao apagar $fn."
+              exit 1
+            fi
             echo "::endgroup::"
           done < /tmp/names.txt
-      - name: Confirmar que sumiram
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      - name: Confirmar que sumiram da superficie publica
+        # A prova e o endpoint publico, nao a tabela do CLI: funcao apagada
+        # responde 404 e funcao viva responde 401 (o gateway exige JWT). O run
+        # de 261125 falhou por um falso vermelho aqui - grep -w "health" casa
+        # com o nome "health-check" - entao a comparacao passou a ser por URL.
         run: |
           set -euo pipefail
-          bash scripts/lib/supabase-retry.sh supabase functions list --remote=jgnmwvzephsozsqmcpzb > /tmp/depois.txt
-          sobrou=0
+          vivo=0
           while read -r fn; do
-            if grep -qw "$fn" /tmp/depois.txt; then
-              echo "::error::$fn continua listada em producao."
-              sobrou=1
+            codigo=000
+            for _ in 1 2 3; do
+              codigo=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jgnmwvzephsozsqmcpzb.supabase.co/functions/v1/$fn")
+              if [ "$codigo" = "404" ]; then break; fi
+              sleep 5
+            done
+            if [ "$codigo" = "404" ]; then
+              echo "$fn -> 404 (fora do ar)"
+            else
+              echo "::error::$fn ainda responde HTTP $codigo em producao."
+              vivo=1
             fi
           done < /tmp/names.txt
-          if [ "$sobrou" -ne 0 ]; then
+          if [ "$vivo" -ne 0 ]; then
             exit 1
           fi
-          echo "OK: nenhuma das funcoes apagadas segue listada em producao."
+          echo "OK: todas as funcoes da lista responderam 404."
