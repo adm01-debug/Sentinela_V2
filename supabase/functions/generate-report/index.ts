@@ -1,6 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { requireUserOrServiceRole } from "../_shared/auth.ts";
+import {
+  callerClient,
+  callerCompanyId,
+  companyScope,
+  requireUserOrServiceRole,
+  withCompanyScope,
+} from "../_shared/auth.ts";
+import { canAccessReport } from "../_shared/reportAccess.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,8 +23,9 @@ serve(async (req) => {
 
   // verify_jwt = false no config.toml: sem este gate qualquer pessoa na
   // internet gera relatorios pelo service_role.
+  let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
   try {
-    await requireUserOrServiceRole(req);
+    auth = await requireUserOrServiceRole(req);
   } catch {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
@@ -31,6 +39,11 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
+    // Tenant oficial do chamador (mesma fonte das policies). Chamador interno
+    // (service_role) nao recebe filtro: e cron/interno e varre todas as empresas.
+    const callerCompany = await callerCompanyId(supabase, auth);
+    const scope = auth.isServiceRole ? null : companyScope(callerCompany);
+
     const body = await req.json();
     // Contratos do front: { reportId } (useReportsPage), { report_id } (useScheduledReportsPage),
     // { name, type, description } (CustomReportsPage) e o legado { type, startDate, endDate }.
@@ -39,14 +52,54 @@ serve(async (req) => {
     let endDate: string | undefined = body.endDate;
     const reportId: string | undefined = body.reportId ?? body.report_id;
 
-    if (reportId && !type) {
+    if (reportId) {
       const { data: row, error: rowError } = await supabase
         .from('reports')
-        .select('type')
+        .select('type, requested_by')
         .eq('id', reportId)
         .maybeSingle();
       if (rowError) throw rowError;
-      type = row?.type ?? undefined;
+      if (!row) {
+        return new Response(JSON.stringify({ error: 'Relatorio nao encontrado' }), {
+          status: 404,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // A RLS de `reports` deixa o admin ver todos e o solicitante ver o seu; a
+      // edge roda com service_role, entao a mesma regra e aplicada aqui.
+      let isAdmin = false;
+      let requesterCompany: string | null = null;
+      if (!auth.isServiceRole && auth.user && row.requested_by !== auth.user.id) {
+        const { data: adminFlag } = await supabase.rpc('has_role', {
+          _user_id: auth.user.id,
+          _role: 'admin',
+        });
+        isAdmin = adminFlag === true;
+        if (isAdmin && row.requested_by) {
+          requesterCompany = await callerCompanyId(supabase, {
+            user: { id: row.requested_by },
+            isServiceRole: false,
+          });
+        }
+      }
+
+      const allowed = canAccessReport({
+        isServiceRole: auth.isServiceRole,
+        callerUserId: auth.user?.id ?? null,
+        isAdmin,
+        callerCompanyId: callerCompany,
+        requestedBy: row.requested_by ?? null,
+        requesterCompanyId: requesterCompany,
+      });
+      if (!allowed) {
+        return new Response(JSON.stringify({ error: 'Sem acesso a este relatorio' }), {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (!type) type = row.type ?? undefined;
     }
 
     if (!type) {
@@ -73,14 +126,17 @@ serve(async (req) => {
     const reportData: Record<string, unknown> = {};
 
     if (type === "productivity") {
-      const { data, count } = await supabase
-        .from("productivity_logs")
-        .select(
-          "employee_name, productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used",
-          { count: "exact" }
-        )
-        .gte("recorded_date", startDate)
-        .lte("recorded_date", endDate);
+      const { data, count } = await withCompanyScope(
+        supabase
+          .from("productivity_logs")
+          .select(
+            "employee_name, productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used",
+            { count: "exact" }
+          )
+          .gte("recorded_date", startDate)
+          .lte("recorded_date", endDate),
+        scope
+      );
 
       const totalProductive = data?.reduce((s, r) => s + (r.productive_time_seconds || 0), 0) || 0;
       const totalUnproductive =
@@ -94,29 +150,39 @@ serve(async (req) => {
           ? Math.round((totalProductive / (totalProductive + totalUnproductive)) * 100)
           : 0;
     } else if (type === "violations") {
-      const { data, count } = await supabase
-        .from("security_violations")
-        .select("*", { count: "exact" })
-        .gte("created_at", startDate)
-        .lte("created_at", endDate);
+      const { data, count } = await withCompanyScope(
+        supabase
+          .from("security_violations")
+          .select("*", { count: "exact" })
+          .gte("created_at", startDate)
+          .lte("created_at", endDate),
+        scope
+      );
 
       reportData.totalViolations = count || 0;
       reportData.violations = data;
     } else if (type === 'activity' || type === 'keystroke') {
-      const { data, count } = await supabase
-        .from("keystroke_logs")
-        .select("employee_name, keystrokes_count, active_time_seconds, idle_time_seconds", {
-          count: "exact",
-        })
-        .gte("recorded_at", startDate)
-        .lte("recorded_at", endDate);
+      const { data, count } = await withCompanyScope(
+        supabase
+          .from("keystroke_logs")
+          .select("employee_name, keystrokes_count, active_time_seconds, idle_time_seconds", {
+            count: "exact",
+          })
+          .gte("recorded_at", startDate)
+          .lte("recorded_at", endDate),
+        scope
+      );
 
       reportData.records = count || 0;
       reportData.total_keystrokes = data?.reduce((s, r) => s + (r.keystrokes_count || 0), 0) || 0;
       reportData.total_active_seconds =
         data?.reduce((s, r) => s + (r.active_time_seconds || 0), 0) || 0;
     } else if (type === "attendance") {
-      const { data, count } = await supabase
+      // attendance_records nao tem company_id; a policy escopa pelo join com
+      // employees. Para o usuario usamos o client dele (RLS vale); chamador
+      // interno segue no service_role.
+      const attendanceClient = auth.isServiceRole ? supabase : callerClient(req);
+      const { data, count } = await attendanceClient
         .from("attendance_records")
         .select(
           "employee_id, actual_start, actual_end, status, late_minutes, total_worked_minutes",
@@ -129,21 +195,30 @@ serve(async (req) => {
       reportData.attendance = data;
     } else if (type === "summary") {
       const [productivity, violations, keystrokes] = await Promise.all([
-        supabase
-          .from("productivity_logs")
-          .select("productive_time_seconds, unproductive_time_seconds", { count: "exact" })
-          .gte("recorded_date", startDate)
-          .lte("recorded_date", endDate),
-        supabase
-          .from("security_violations")
-          .select("id", { count: "exact" })
-          .gte("created_at", startDate)
-          .lte("created_at", endDate),
-        supabase
-          .from("keystroke_logs")
-          .select("keystrokes_count", { count: "exact" })
-          .gte("recorded_at", startDate)
-          .lte("recorded_at", endDate),
+        withCompanyScope(
+          supabase
+            .from("productivity_logs")
+            .select("productive_time_seconds, unproductive_time_seconds", { count: "exact" })
+            .gte("recorded_date", startDate)
+            .lte("recorded_date", endDate),
+          scope
+        ),
+        withCompanyScope(
+          supabase
+            .from("security_violations")
+            .select("id", { count: "exact" })
+            .gte("created_at", startDate)
+            .lte("created_at", endDate),
+          scope
+        ),
+        withCompanyScope(
+          supabase
+            .from("keystroke_logs")
+            .select("keystrokes_count", { count: "exact" })
+            .gte("recorded_at", startDate)
+            .lte("recorded_at", endDate),
+          scope
+        ),
       ]);
 
       const prod = productivity.data ?? [];

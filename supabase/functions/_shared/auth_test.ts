@@ -1,5 +1,6 @@
 import { assertEquals, assertRejects } from "https://deno.land/std@0.168.0/testing/asserts.ts";
 import {
+  callerCompanyId,
   callerCompanyScope,
   companyScope,
   requireServiceRole,
@@ -133,5 +134,30 @@ Deno.test("callerCompanyScope - usuario sem empresa nao ve dados de terceiros", 
   assertEquals(
     await callerCompanyScope(admin, { user: { id: "user-2" }, isServiceRole: false }),
     "company_id.is.null"
+  );
+});
+
+Deno.test("callerCompanyId - service_role nao consulta empresa", async () => {
+  const admin = {
+    rpc: () => {
+      throw new Error("nao deve consultar a empresa do chamador");
+    },
+  };
+  assertEquals(await callerCompanyId(admin, { user: null, isServiceRole: true }), null);
+});
+
+Deno.test("callerCompanyId - devolve a empresa do usuario logado", async () => {
+  const admin = { rpc: () => Promise.resolve({ data: "empresa-9", error: null }) };
+  assertEquals(
+    await callerCompanyId(admin, { user: { id: "user-1" }, isServiceRole: false }),
+    "empresa-9"
+  );
+});
+
+Deno.test("callerCompanyId - resposta vazia vira null (usuario sem empresa)", async () => {
+  const admin = { rpc: () => Promise.resolve({ data: "", error: null }) };
+  assertEquals(
+    await callerCompanyId(admin, { user: { id: "user-3" }, isServiceRole: false }),
+    null
   );
 });
