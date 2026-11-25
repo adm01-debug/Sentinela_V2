@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5a2118ffaad9928a97a885d2b5b76667226987a9` (2026-11-25T20:17:38-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `701a41206484a970ad2beca7831b56adcce8ecf8` (2026-11-25T20:35:22-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1868 |
 | arquivos_codigo | 1412 |
-| linhas_codigo | 161444 |
+| linhas_codigo | 161448 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -425,6 +425,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `701a41206` fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)
 - 2026-11-25 `5a2118ffa` feat: preenche company_id automatico nas escritas de tenant (#339)
 - 2026-11-25 `c3d33e9cc` fix: tira super_admin inexistente dos gates de admin (#341)
 - 2026-11-25 `d7001a7a6` fix: usa admin do app_role na policy de tenant (#340)
@@ -439,7 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `5af2975df` fix: escopo de empresa no check-geofence (#335)
 - 2026-11-25 `4fdfa8fd4` fix: escopo de empresa e trava de URL no ocr-screenshot (#334)
 - 2026-11-25 `a90ee69b7` fix: escopo de empresa no notify-dispute-decision (#333)
-- 2026-11-25 `48ac518be` fix: exige admin no send-whatsapp (#332)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

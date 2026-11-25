@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "5a2118ffaad9928a97a885d2b5b76667226987a9",
+  "commit": "701a41206484a970ad2beca7831b56adcce8ecf8",
   "branch": "main",
-  "data_commit": "2026-11-25T20:17:38-03:00",
+  "data_commit": "2026-11-25T20:35:22-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "701a41206",
+    "data": "2026-11-25",
+    "assunto": "fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)"
+   },
    {
     "sha": "5a2118ffa",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "a0e851cb3",
     "data": "2026-11-25",
     "assunto": "fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)"
-   },
-   {
-    "sha": "2982afb3f",
-    "data": "2026-11-25",
-    "assunto": "chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)"
    }
   ],
   "arquivos_mudados_7d": 356,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 239
+    "commits": 240
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1868,
   "arquivos_codigo": 1412,
-  "linhas_codigo": 161444,
+  "linhas_codigo": 161448,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -472,7 +472,7 @@
   },
   "src/providers": {
    "arquivos": 9,
-   "linhas": 525
+   "linhas": 529
   },
   "src/routes": {
    "arquivos": 1,
@@ -618,7 +618,7 @@
   "console_log": 70,
   "ts_ignore": 0,
   "eslint_disable": 1,
-  "todos": 5,
+  "todos": 6,
   "arquivos_acima_500_linhas": 14
  },
  "todos": [
@@ -633,6 +633,12 @@
    "linha": 222,
    "tipo": "TODO",
    "texto": "|FIXME|HACK|XXX)\\b[:\\s-]*([^\\n]{0,100})/.exec(l); return m ? { linha: i + 1, tipo: m[1], texto: m[2]"
+  },
+  {
+   "arquivo": "src/providers/AuthProvider.tsx",
+   "linha": 107,
+   "tipo": "TODO",
+   "texto": "admin era rebaixado para 'user' na UI (AdminGuard -> /dashboard)."
   },
   {
    "arquivo": "src/test/gap-audit.test.ts",
