@@ -7,8 +7,8 @@
    "Markdown (176)",
    "SQL (128)",
    "JSON (45)",
-   "YAML (36)",
-   "JavaScript (26)",
+   "YAML (37)",
+   "JavaScript (28)",
    "Shell (22)",
    "HTML (4)"
   ],
@@ -247,6 +247,35 @@
    "actions": [
     "actions/checkout",
     "actions/setup-node"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/estado-cron.yml",
+   "nome": "Estado do agendador",
+   "gatilhos": [
+    "schedule",
+    "workflow_dispatch"
+   ],
+   "crons": [
+    "17 11 * * 1"
+   ],
+   "branches": [],
+   "jobs": [
+    "agendador"
+   ],
+   "permissoes": [
+    "contents: read"
+   ],
+   "scripts_usados": [
+    "scripts/ci/checar-cron.mjs",
+    "scripts/lib/supabase-retry.sh"
+   ],
+   "npm_scripts": [],
+   "secrets": [
+    "SUPABASE_ACCESS_TOKEN"
+   ],
+   "actions": [
+    "actions/checkout"
    ]
   },
   {
@@ -559,7 +588,7 @@
   {
    "arquivo": "ESTADO_ATUAL.md",
    "titulo": "ESTADO ATUAL DO SISTEMA — SENTINELA V2",
-   "linhas": 942
+   "linhas": 977
   },
   {
    "arquivo": "MIGRATION_PLAN_FOR_CLAUDE_WEB.md",
@@ -1054,7 +1083,7 @@
   {
    "arquivo": "docs/prod-readiness.md",
    "titulo": null,
-   "linhas": 121
+   "linhas": 126
   },
   {
    "arquivo": "docs/troubleshooting.md",
@@ -1282,6 +1311,10 @@
     "arquivos": 2
    },
    {
+    "host": "jgnmwvzephsozsqmcpzb.supabase.co",
+    "arquivos": 2
+   },
+   {
     "host": "releases.sentinela.app",
     "arquivos": 2
    },
@@ -1339,10 +1372,6 @@
    },
    {
     "host": "hooks.slack.com",
-    "arquivos": 1
-   },
-   {
-    "host": "jgnmwvzephsozsqmcpzb.supabase.co",
     "arquivos": 1
    },
    {

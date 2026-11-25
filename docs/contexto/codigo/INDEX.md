@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cc25e3612286dd0ccd212fffb4d70d171ad409dd` (2026-11-25T08:06:03-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `63e0317b6c0a7a17c4122b6237792d9455adf91b` (2026-11-25T08:53:03-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1372), Markdown (176), SQL (128), JSON (45), YAML (36), JavaScript (26), Shell (22), HTML (4)
+- linguagens: TypeScript (1372), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1849 |
-| arquivos_codigo | 1396 |
-| linhas_codigo | 157160 |
+| arquivos_total | 1852 |
+| arquivos_codigo | 1398 |
+| linhas_codigo | 157369 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,9 +48,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 85 |
-| workflows | 13 |
-| scripts | 34 |
+| testes | 86 |
+| workflows | 14 |
+| scripts | 35 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
@@ -58,10 +58,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (359), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (8)
+- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (9)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
-- scripts: scripts/ci (6), scripts/ai-context (2), scripts/inventario (2)
+- scripts: scripts/ci (7), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
 - nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (100%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
@@ -233,7 +233,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
-- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, evolution-go-rxj2.srv1481814.hstgr.cloud
+- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com
 - webhooks recebidos: acknowledge-violation, dlp-incident-report, dlp-policy-sync, generate-report, health-check, ingest-file-transfer, live-view-authorize, pending-employee-violations, process-violation-alert, send-whatsapp, upload-recording-chunk, webrtc-ice-config
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
@@ -267,15 +267,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (26)
 - package.json (25)
 - scripts/ci/eslint-baseline.json (22)
-- docs/pendencias/_linha-de-base.md (20)
+- docs/pendencias/_linha-de-base.md (21)
 - scripts/ci/prettier-baseline.json (19)
 - .github/workflows/deploy.yml (18)
 - src/routes/AppRoutes.tsx (13)
 - .github/workflows/ci.yml (8)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
+- docs/prod-readiness.md (7)
 - supabase/config.toml (7)
-- docs/prod-readiness.md (6)
 - src/index.css (5)
 - src/test/gap-audit.test.ts (5)
 - src/test/improvements-verification.test.ts (5)
@@ -285,6 +285,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `contexto.yml` — Contexto para agentes de IA (30 min) (push, schedule, workflow_dispatch; cron 7-59/30 * * * *)
 - `deploy.yml` — Deploy (push, workflow_dispatch)
 - `desktop-build.yml` — Desktop Build (push)
+- `estado-cron.yml` — Estado do agendador (schedule, workflow_dispatch; cron 17 11 * * 1)
 - `inventario-estado-semanal.yml` — Inventário do estado real (semanal) (schedule, workflow_dispatch; cron 31 10 * * 1)
 - `lint.yml` — Lint (pull_request, push)
 - `performance.yml` — Performance (push)
@@ -320,7 +321,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `CONTRIBUTING.md` — Contributing to Sentinela (47 linhas)
 - `DOCUMENTATION_API_CONTRACTS.md` — Documentação de Contratos de API - Edge Functions & Webhooks (115 linhas)
 - `DOCUMENTATION_EDGE_FUNCTIONS.md` — Documentação Técnica: Edge Functions (51 linhas)
-- `ESTADO_ATUAL.md` — ESTADO ATUAL DO SISTEMA — SENTINELA V2 (942 linhas)
+- `ESTADO_ATUAL.md` — ESTADO ATUAL DO SISTEMA — SENTINELA V2 (977 linhas)
 - `MIGRATION_PLAN_FOR_CLAUDE_WEB.md` — PROMPT PARA CLAUDE WEB — ANÁLISE DE MIGRAÇÃO SENTINELA V2 (255 linhas)
 - `README.md` — Sentinela (37 linhas)
 - `ROADMAP.md` — SENTINELA — Roadmap Executivo 2026 (35 linhas)
@@ -419,13 +420,16 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/deployment.md` — Deployment Guide (81 linhas)
 - `docs/faq.md` — FAQ (52 linhas)
 - `docs/installation.md` — Installation Guide (53 linhas)
-- `docs/prod-readiness.md` (121 linhas)
+- `docs/prod-readiness.md` (126 linhas)
 - `docs/troubleshooting.md` — Troubleshooting Guide (60 linhas)
 - `docs/user-guide.md` — User Guide (67 linhas)
 - subpastas de docs/: docs/guides (10), docs/tutorials (10), docs/adr (9), docs/examples (8), docs/agentes (7), docs/pendencias (2), docs/agent (1)
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `63e0317b6` ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)
+- 2026-11-25 `217616fef` fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)
+- 2026-11-25 `c23267cd8` docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)
 - 2026-11-25 `cc25e3612` feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)
 - 2026-11-25 `af9d004da` chore: remove as 38 edges legadas sem chamador do repo (#305)
 - 2026-11-25 `0dada9e58` fix: exigir admin para notificar decisao de contestacao (#303)
@@ -438,9 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `2d1c0b173` fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)
 - 2026-11-24 `76b120114` fix: analise de IA filtra e gera por funcionario de verdade (#296)
 - 2026-11-24 `48c727774` fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)
-- 2026-11-24 `1a0e0bcdc` feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)
-- 2026-11-24 `07e505075` fix: resumo de atividades volta a alimentar os graficos (#292)
-- 2026-11-24 `cde1021d0` fix: diagnostico de ICE usa a mesma fonte do live view (#291)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

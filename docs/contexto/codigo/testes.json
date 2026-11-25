@@ -5,11 +5,11 @@
   "vitest",
   "playwright"
  ],
- "total": 85,
+ "total": 86,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 83
+  "unit": 84
  },
  "onde_ficam": [
   {
@@ -22,7 +22,7 @@
   },
   {
    "padrao": "outro",
-   "arquivos": 8
+   "arquivos": 9
   },
   {
    "padrao": "e2e/",
@@ -47,6 +47,15 @@
     "src/routes/AppRoutes.tsx"
    ],
    "casos": 18
+  },
+  {
+   "arquivo": "scripts/ci/checar-cron.unit.mjs",
+   "tipo": "unit",
+   "linhas": 63,
+   "testa": [
+    "scripts/ci/checar-cron.mjs"
+   ],
+   "casos": 6
   },
   {
    "arquivo": "scripts/ci/deno-check-ratchet.unit.mjs",
@@ -834,6 +843,7 @@
  ],
  "sql": [],
  "cobertura_por_arquivo": {
+  "scripts/ci/checar-cron.mjs": 1,
   "scripts/ci/deno-check-ratchet.mjs": 1,
   "scripts/ci/edge-gate-guard.mjs": 1,
   "scripts/ci/format-ratchet.mjs": 1,

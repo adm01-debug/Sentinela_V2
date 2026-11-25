@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "cc25e3612286dd0ccd212fffb4d70d171ad409dd",
+  "commit": "63e0317b6c0a7a17c4122b6237792d9455adf91b",
   "branch": "main",
-  "data_commit": "2026-11-25T08:06:03-03:00",
+  "data_commit": "2026-11-25T08:53:03-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "63e0317b6",
+    "data": "2026-11-25",
+    "assunto": "ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)"
+   },
+   {
+    "sha": "217616fef",
+    "data": "2026-11-25",
+    "assunto": "fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)"
+   },
+   {
+    "sha": "c23267cd8",
+    "data": "2026-11-25",
+    "assunto": "docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)"
+   },
    {
     "sha": "cc25e3612",
     "data": "2026-11-25",
@@ -116,24 +131,9 @@
     "sha": "1762098b7",
     "data": "2026-11-24",
     "assunto": "fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)"
-   },
-   {
-    "sha": "f566a4a98",
-    "data": "2026-11-24",
-    "assunto": "fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)"
-   },
-   {
-    "sha": "52be74c03",
-    "data": "2026-11-24",
-    "assunto": "fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)"
-   },
-   {
-    "sha": "17070eb55",
-    "data": "2026-11-24",
-    "assunto": "infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)"
    }
   ],
-  "arquivos_mudados_7d": 306,
+  "arquivos_mudados_7d": 312,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -145,7 +145,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 20
+    "mudancas": 21
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
@@ -188,12 +188,12 @@
     "mudancas": 8
    },
    {
-    "pasta": "src/components/ui",
+    "pasta": "docs/prod-readiness.md",
     "mudancas": 7
    },
    {
-    "pasta": "docs/prod-readiness.md",
-    "mudancas": 6
+    "pasta": "src/components/ui",
+    "mudancas": 7
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -211,7 +211,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 20
+    "mudancas": 21
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
@@ -238,12 +238,12 @@
     "mudancas": 8
    },
    {
-    "arquivo": "supabase/config.toml",
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 7
    },
    {
-    "arquivo": "docs/prod-readiness.md",
-    "mudancas": 6
+    "arquivo": "supabase/config.toml",
+    "mudancas": 7
    },
    {
     "arquivo": "src/index.css",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 203
+    "commits": 206
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1849,
-  "arquivos_codigo": 1396,
-  "linhas_codigo": 157160,
+  "arquivos_total": 1852,
+  "arquivos_codigo": 1398,
+  "linhas_codigo": 157369,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,9 +328,9 @@
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 85,
-  "workflows": 13,
-  "scripts": 34,
+  "testes": 86,
+  "workflows": 14,
+  "scripts": 35,
   "docs_md": 176
  },
  "por_pasta": {
@@ -391,8 +391,8 @@
    "linhas": 1458
   },
   "scripts/ci": {
-   "arquivos": 11,
-   "linhas": 4001
+   "arquivos": 13,
+   "linhas": 4210
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,
@@ -607,7 +607,7 @@
  ],
  "qualidade": {
   "any": 162,
-  "console_log": 57,
+  "console_log": 66,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
