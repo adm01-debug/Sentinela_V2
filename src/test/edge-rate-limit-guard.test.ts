@@ -64,9 +64,10 @@ describe("rate limit das edge functions", () => {
 
   it("encontra as edge functions que aplicam rate limit", () => {
     // Se este numero cair, o padrao de uso mudou e o guarda parou de casar.
-    // 18 = piso atual: a limpeza das 38 edges legadas sem chamador (25/11/2026)
-    // levou 5 das 23 que aplicavam rate limit.
-    expect(edgeFiles.length).toBeGreaterThanOrEqual(18);
+    // 17 = piso atual: a limpeza das 38 edges legadas sem chamador (25/11/2026)
+    // levou 5 das 23 que aplicavam rate limit, e a #312 levou outras 2
+    // (get-employee-schedule e get-employee-timeline).
+    expect(edgeFiles.length).toBeGreaterThanOrEqual(17);
     // Canario do caso que originou o guarda (bug de rate limit da #275).
     expect(edgeFiles).toContain(join(FUNCTIONS_DIR, "award-gamification-points", "index.ts"));
   });

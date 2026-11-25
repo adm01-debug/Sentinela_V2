@@ -470,10 +470,15 @@ producao.
 > entradas do `config.toml`; o prune de producao rodou pelo `prune-edge-functions.yml` (run
 > `45602437911`) e a confirmacao por HTTP foi corrigida na PR #306.
 >
-> Da lista de 38 logo abaixo, **30 saíram** e **8 continuam no repo**
-> (`dlp-incident-report`, `dlp-policy-sync`, `generate-insights`, `get-employee-schedule`,
-> `get-employee-timeline`, `mcp-query`, `natural-language-query`,
-> `pending-employee-violations`). Outras **8 funcoes removidas nao estavam nesta lista**:
+> Da lista de 38 logo abaixo, **32 saíram do repo**: `get-employee-schedule` e
+> `get-employee-timeline` foram removidas na PR #312 (26/11/2026) por redundância com a tela
+> (aba Atribuições lê `employee_schedules`; `useActivities`/`useDailyJourney`/`useMonitoringPage`
+> já cobrem keystrokes, violações, capturas e cliques). **6 continuam no repo**
+> (`dlp-incident-report`, `dlp-policy-sync`, `generate-insights`, `mcp-query`,
+> `natural-language-query`, `pending-employee-violations`): as três de DLP/violação são chamadas
+> pelo `desktop-agent`, `generate-insights` por `useAIInsights.ts:47`, `natural-language-query` pela
+> paleta (#310) e `mcp-query` tem gate próprio (`x-mcp-secret`) para cliente MCP externo.
+> Outras **8 funcoes removidas nao estavam nesta lista**:
 > `backup-data`, `batch-notifications`, `health`, `notify-mobile-violation`, `reset-password`,
 > `send-rate-limit-alert`, `sync-employee`, `verify-email`.
 

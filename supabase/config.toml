@@ -29,10 +29,6 @@ verify_jwt = true
 verify_jwt = true
 [functions.generate-report]
 verify_jwt = false
-[functions.get-employee-schedule]
-verify_jwt = true
-[functions.get-employee-timeline]
-verify_jwt = true
 [functions.get-mapbox-token]
 verify_jwt = true
 [functions.health-check]

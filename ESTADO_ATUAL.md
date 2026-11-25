@@ -486,9 +486,13 @@ respondem `404` em `https://jgnmwvzephsozsqmcpzb.supabase.co/functions/v1/<nome>
 > chamador em `src/`, `desktop-agent/`, `scripts/`, `.github/` ou entre as próprias funções. A parte
 > "sem agendador possível" **caiu** (§5.4): o agendador existe; o que sustenta a remoção é o
 > cruzamento com `cron.job`, hoje automático em `estado-cron.yml` (PR #307) — nenhum job referencia
-> essas funções. Da lista desta tabela, **33 foram removidas** na #305 em 25/11/2026 e **5 continuam
-> no repositório** (`expire-recordings`, `generate-insights`, `get-employee-schedule`,
-> `get-employee-timeline`, `natural-language-query`), porque não estavam no lote de remoção.
+> essas funções. Da lista desta tabela, **33 foram removidas** na #305 em 25/11/2026; das **5 que
+> continuavam no repositório**, nenhuma seguiu órfã: `natural-language-query` passou a ser invocada
+> pela paleta de comandos (#310, merge `235f94b1c`), `generate-insights` já era invocada por
+> `useAIInsights.ts:47`, `expire-recordings` tem job no agendador (`expire-recordings-hourly`) e
+> `get-employee-schedule`/`get-employee-timeline` foram **removidas na #312 (26/11/2026)** — as duas
+> capacidades já existiam na tela (`employee_schedules` pela aba Atribuições; timeline por
+> `useActivities` + `useDailyJourney` + `useMonitoringPage`).
 > Boa parte delas (`daily-summary`, `weekly-report`, `create-monthly-partitions`,
 > `behavioral-baseline-builder`…) viraria 🟨 no dia em que existir agendador — mas classificar por
 > intenção presumida seria inferência, não evidência, e a regra deste documento é não subir linha sem
@@ -747,8 +751,10 @@ A falha de isolamento multi-tenant (§5.6) não é um descuido isolado — é **
 > **Correção de 25/11/2026 (tabela acima):** duas linhas mudaram de estado. "38 Edge Functions sem
 > chamador" **sobrevive como diagnóstico** — nenhuma tinha chamador no repositório — mas as funções
 > foram apagadas na PR #305 (merge `af9d004da`): das 38 desta lista, 33 saíram do repositório e de
-> produção, 5 continuam (`expire-recordings`, `generate-insights`, `get-employee-schedule`,
-> `get-employee-timeline`, `natural-language-query`). Já "`pg_cron` ausente" foi **derrubado**:
+> produção. Das 5 restantes, `get-employee-schedule` e `get-employee-timeline` saíram na #312
+> (26/11/2026, redundantes com a tela) e as outras três seguem com caminho de execução:
+> `expire-recordings` no agendador, `generate-insights` via `useAIInsights.ts:47`,
+> `natural-language-query` via paleta de comandos (#310). Já "`pg_cron` ausente" foi **derrubado**:
 > `cron.job` tem **6 jobs ativos** (§5.4, runs `45604930397`/`45605340804`) e `pg_net` também está
 > instalado.
 
