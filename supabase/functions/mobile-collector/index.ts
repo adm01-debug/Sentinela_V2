@@ -142,24 +142,32 @@ serve(async (req) => {
     const device_id = authenticatedAgent.device_name || authenticatedAgent.key_name;
     const employee_name = authenticatedAgent.employee_name || 'Unknown';
     
-    // Get employee_id from employees table
-    let employee_id: string | null = null;
-    if (authenticatedAgent.employee_name) {
-      const { data: employee } = await supabase
-        .from('employees')
-        .select('id')
-        .eq('name', authenticatedAgent.employee_name)
-        .single();
-      
-      if (employee) {
-        employee_id = employee.id;
-      }
-    }
-
     const now = timestamp || new Date().toISOString();
 
-    // Update device status in mobile_devices table
-    await supabase.from('mobile_devices').upsert({
+    // device_id e UNIQUE e vem do nome do aparelho na agent key: duas empresas
+    // com o mesmo nome de aparelho disputariam a mesma linha e a localizacao de
+    // uma sobrescreveria a da outra. Registro existente so e atualizado quando
+    // pertence ao mesmo funcionario; conflito vira 409 em vez de misturar tenants.
+    const { data: existingDevice } = await supabase
+      .from('mobile_devices')
+      .select('id, employee_name')
+      .eq('device_id', device_id)
+      .maybeSingle();
+
+    if (existingDevice && existingDevice.employee_name !== employee_name) {
+      console.error(
+        `mobile-collector: device_id "${device_id}" ja registrado para outro funcionario`
+      );
+      return new Response(
+        JSON.stringify({
+          error: 'device_id already registered to another employee',
+          device_id,
+        }),
+        { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const devicePayload = {
       device_id,
       employee_name,
       last_seen_at: now,
@@ -167,7 +175,13 @@ serve(async (req) => {
       is_active: true,
       last_location_lat: location?.latitude,
       last_location_lng: location?.longitude,
-    }, { onConflict: 'device_id' });
+    };
+
+    if (existingDevice) {
+      await supabase.from('mobile_devices').update(devicePayload).eq('id', existingDevice.id);
+    } else {
+      await supabase.from('mobile_devices').insert(devicePayload);
+    }
 
     // Store location if provided
     if (location) {
