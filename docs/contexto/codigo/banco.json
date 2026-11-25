@@ -16417,7 +16417,8 @@
    "usada_no_front": 7,
    "usada_em_edges": [
     "award-gamification-points",
-    "rate-limit-logs"
+    "rate-limit-logs",
+    "send-scheduled-report"
    ],
    "triggers": [],
    "sem_rls": false,

@@ -1141,7 +1141,7 @@
    "nome": "send-scheduled-report",
    "entrada": "supabase/functions/send-scheduled-report/index.ts",
    "arquivos": 1,
-   "linhas": 143,
+   "linhas": 191,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1150,7 +1150,8 @@
     "productivity_metrics",
     "report_logs",
     "scheduled_reports",
-    "security_violations"
+    "security_violations",
+    "user_roles"
    ],
    "rpcs": [],
    "env": [
@@ -1162,6 +1163,7 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [

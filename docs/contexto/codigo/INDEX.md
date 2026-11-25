@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `27c44f6f5825453c383bf48807500f8691ef3cf6` (2026-11-25T17:43:33-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ef7078fc387cdefd12c9ad8244dc0b02148a8ef7` (2026-11-25T17:53:57-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1408 |
-| linhas_codigo | 160157 |
+| linhas_codigo | 160205 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -206,7 +206,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `send-email-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-password-reset` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-push-notification` — tabelas: -; chamada por 2 arquivo(s) do front
-- `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations; chamada por 2 arquivo(s) do front
+- `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations, user_roles; chamada por 2 arquivo(s) do front
 - `send-slack-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-webhook` — tabelas: webhook_logs, webhooks; chamada por 2 arquivo(s) do front
 - `send-whatsapp` (verify_jwt=false) — tabelas: whatsapp_config; chamada por 2 arquivo(s) do front
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `ef7078fc3` fix: exige admin e escopo de empresa no send-scheduled-report (#327)
 - 2026-11-25 `27c44f6f5` fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)
 - 2026-11-25 `976dba3a1` fix: exige dono do relatorio e escopo de empresa na generate-report (#325)
 - 2026-11-25 `31353a3c7` fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `a8fb66069` fix: liga as operacoes reais da tela de escalas de trabalho (#311)
 - 2026-11-25 `235f94b1c` feat: liga busca em dados reais na paleta de comandos (#310)
 - 2026-11-25 `63e0317b6` ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)
-- 2026-11-25 `217616fef` fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
