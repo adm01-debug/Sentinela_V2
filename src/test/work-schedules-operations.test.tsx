@@ -11,6 +11,7 @@ import {
   useRemoveEmployeeSchedule,
   type EmployeeScheduleRow,
 } from "@/hooks/useEmployeeSchedules";
+import { useEmployeeSchedule } from "@/hooks/useWorkSchedules";
 
 const from = vi.fn();
 
@@ -248,5 +249,96 @@ describe("Escala vigente na data escolhida", () => {
     expect(situacaoDaAtribuicao(substituida, [substituida, nova], "2026-11-25")).toBe(
       "substituida"
     );
+  });
+});
+
+describe("Escala vigente do funcionario (useEmployeeSchedule)", () => {
+  const atribuicoes = [
+    {
+      id: "a-antiga",
+      employee_id: "e1",
+      schedule_id: "s1",
+      effective_from: "2026-01-01",
+      effective_until: "2026-11-10",
+      employees: { name: "Joao Silva" },
+      work_schedules: { name: "Noturno" },
+    },
+    {
+      id: "a-nova",
+      employee_id: "e1",
+      schedule_id: "s2",
+      effective_from: "2026-11-20",
+      effective_until: null,
+      employees: { name: "Joao Silva" },
+      work_schedules: { name: "Comercial" },
+    },
+    {
+      id: "a-outro",
+      employee_id: "e2",
+      schedule_id: "s2",
+      effective_from: "2026-11-21",
+      effective_until: null,
+      employees: { name: "Maria Souza" },
+      work_schedules: { name: "Comercial" },
+    },
+  ];
+
+  const escalas = [
+    {
+      id: "s1",
+      name: "Noturno",
+      work_days: [1, 2, 3, 4, 5],
+      start_time: "22:00",
+      end_time: "06:00",
+    },
+    {
+      id: "s2",
+      name: "Comercial",
+      work_days: [1, 2, 3, 4, 5, 6],
+      start_time: "08:00",
+      end_time: "17:00",
+      lunch_start: "12:00",
+      lunch_end: "13:00",
+    },
+  ];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    from.mockImplementation((tabela: string) =>
+      tabela === "employee_schedules"
+        ? chain({ data: atribuicoes, error: null })
+        : chain({ data: escalas, error: null })
+    );
+  });
+
+  it("devolve a escala que vale na data para o funcionario pedido", async () => {
+    const { result } = renderHook(() => useEmployeeSchedule("e1", "2026-11-25"), { wrapper });
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.date).toBe("2026-11-25");
+    expect(result.current.assignment?.id).toBe("a-nova");
+    expect(result.current.schedule?.name).toBe("Comercial");
+    expect(result.current.schedule?.lunch_start).toBe("12:00");
+  });
+
+  it("nao devolve a escala de outro funcionario nem a vigencia vencida", async () => {
+    const { result } = renderHook(() => useEmployeeSchedule("e2", "2026-11-25"), { wrapper });
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.assignment?.id).toBe("a-outro");
+    expect(result.current.schedule?.id).toBe("s2");
+
+    const antesDaTroca = renderHook(() => useEmployeeSchedule("e1", "2026-11-15"), { wrapper });
+    await waitFor(() => expect(antesDaTroca.result.current.isLoading).toBe(false));
+    expect(antesDaTroca.result.current.assignment).toBeNull();
+    expect(antesDaTroca.result.current.schedule).toBeNull();
+  });
+
+  it("nao consulta escala quando o funcionario nao veio", async () => {
+    const { result } = renderHook(() => useEmployeeSchedule(undefined, "2026-11-25"), { wrapper });
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.assignment).toBeNull();
+    expect(result.current.schedule).toBeNull();
   });
 });
