@@ -28,11 +28,8 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
 
-  try {
-    await requireUserOrServiceRole(req);
-  } catch {
-    return json({ error: 'unauthorized' }, 401);
-  }
+  const auth = await requireUserOrServiceRole(req).catch(() => null);
+  if (!auth) return json({ error: 'unauthorized' }, 401);
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
   const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -47,6 +44,19 @@ Deno.serve(async (req) => {
   if (!body?.dispute_id) return json({ error: 'dispute_id_required' }, 400);
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+
+  // Somente admin resolve contestacao (policy RLS "Admins can update disputes"
+  // em violation_disputes); o push carrega essa decisao, entao exige o mesmo
+  // papel. service_role (automacao interna) segue liberado.
+  if (!auth.isServiceRole) {
+    const callerId = auth.user?.id;
+    if (!callerId) return json({ error: 'unauthorized' }, 401);
+    const { data: isAdmin } = await supabase.rpc('has_role', {
+      _user_id: callerId,
+      _role: 'admin',
+    });
+    if (!isAdmin) return json({ error: 'forbidden' }, 403);
+  }
 
   const { data: dispute, error: dErr } = await supabase
     .from('violation_disputes')
