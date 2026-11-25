@@ -7,9 +7,11 @@ name: Estado do agendador
 # API, cruza com `supabase/functions/` e falha quando um job aponta para funcao
 # inexistente em producao (404).
 on:
-  push:
-    branches: [claude/infra-estado-cron-261125-0826]
   workflow_dispatch:
+  schedule:
+    # Segunda, depois do inventario semanal (10:31 UTC), para o ciclo pegar o
+    # estado da semana anterior.
+    - cron: "17 11 * * 1"
 
 permissions:
   contents: read
