@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 125,
+ "migrations": 126,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -91,6 +91,8 @@
   "is_ip_whitelisted",
   "log_activity",
   "my_policy_acknowledgment_status",
+  "preenche_company_id_do_criador",
+  "preenche_company_id_do_funcionario",
   "record_violation_action",
   "set_sensitive_keywords_updated_at",
   "sync_violation_dispute_status",
@@ -214,6 +216,13 @@
    "funcao": "update_updated_at_column"
   },
   {
+   "nome": "preenche_company_id",
+   "quando": "before",
+   "evento": "insert",
+   "tabela": "geofence_violations",
+   "funcao": "preenche_company_id_do_funcionario"
+  },
+  {
    "nome": "audit_geofences",
    "quando": "after",
    "evento": "insert or update or delete",
@@ -247,6 +256,13 @@
    "evento": "update",
    "tabela": "message_templates",
    "funcao": "update_updated_at_column"
+  },
+  {
+   "nome": "preenche_company_id",
+   "quando": "before",
+   "evento": "insert",
+   "tabela": "mobile_devices",
+   "funcao": "preenche_company_id_do_funcionario"
   },
   {
    "nome": "update_mobile_devices_updated_at",
@@ -331,6 +347,13 @@
    "evento": "update",
    "tabela": "security_policies",
    "funcao": "update_updated_at_column"
+  },
+  {
+   "nome": "preenche_company_id",
+   "quando": "before",
+   "evento": "insert",
+   "tabela": "security_violations",
+   "funcao": "preenche_company_id_do_funcionario"
   },
   {
    "nome": "trg_siem_dispatch_security_violation",
@@ -422,6 +445,13 @@
    "evento": "insert or update or delete",
    "tabela": "webhooks",
    "funcao": "audit_trigger_func"
+  },
+  {
+   "nome": "preenche_company_id",
+   "quando": "before",
+   "evento": "insert",
+   "tabela": "webhooks",
+   "funcao": "preenche_company_id_do_criador"
   },
   {
    "nome": "update_webhooks_updated_at",
@@ -6401,7 +6431,9 @@
    "usada_em_edges": [
     "check-geofence"
    ],
-   "triggers": [],
+   "triggers": [
+    "preenche_company_id"
+   ],
    "sem_rls": false,
    "nao_usada": false
   },
@@ -9074,6 +9106,7 @@
     "send-push-notification"
    ],
    "triggers": [
+    "preenche_company_id",
     "update_mobile_devices_updated_at"
    ],
    "sem_rls": false,
@@ -13471,6 +13504,7 @@
     "trend-forecasting"
    ],
    "triggers": [
+    "preenche_company_id",
     "trg_siem_dispatch_security_violation"
    ],
    "sem_rls": false,
@@ -17841,6 +17875,7 @@
    ],
    "triggers": [
     "audit_webhooks",
+    "preenche_company_id",
     "update_webhooks_updated_at"
    ],
    "sem_rls": false,

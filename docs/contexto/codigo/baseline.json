@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c3d33e9cc235ce9d50261a609ebb2623130ba8da",
+  "commit": "5a2118ffaad9928a97a885d2b5b76667226987a9",
   "branch": "main",
-  "data_commit": "2026-11-25T20:17:33-03:00",
+  "data_commit": "2026-11-25T20:17:38-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "5a2118ffa",
+    "data": "2026-11-25",
+    "assunto": "feat: preenche company_id automatico nas escritas de tenant (#339)"
+   },
    {
     "sha": "c3d33e9cc",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "2982afb3f",
     "data": "2026-11-25",
     "assunto": "chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)"
-   },
-   {
-    "sha": "75c587118",
-    "data": "2026-11-25",
-    "assunto": "feat: mapa real dos aparelhos no monitoramento mobile (#320)"
    }
   ],
-  "arquivos_mudados_7d": 355,
+  "arquivos_mudados_7d": 356,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 238
+    "commits": 239
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1867,
+  "arquivos_total": 1868,
   "arquivos_codigo": 1412,
-  "linhas_codigo": 161441,
+  "linhas_codigo": 161444,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -326,7 +326,7 @@
   "hooks": 527,
   "edge_functions": 48,
   "tabelas": 180,
-  "migrations": 125,
+  "migrations": 126,
   "cron_jobs": 5,
   "testes": 91,
   "workflows": 14,
@@ -504,7 +504,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 11963
+   "linhas": 11966
   },
   "vite.config.ts": {
    "arquivos": 1,

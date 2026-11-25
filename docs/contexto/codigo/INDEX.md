@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c3d33e9cc235ce9d50261a609ebb2623130ba8da` (2026-11-25T20:17:33-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5a2118ffaad9928a97a885d2b5b76667226987a9` (2026-11-25T20:17:38-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1385), Markdown (176), SQL (129), JSON (45), YAML (37), JavaScript (29), Shell (22), HTML (4)
+- linguagens: TypeScript (1385), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (29), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1867 |
+| arquivos_total | 1868 |
 | arquivos_codigo | 1412 |
-| linhas_codigo | 161441 |
+| linhas_codigo | 161444 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 527 |
 | edge_functions | 48 |
 | tabelas | 180 |
-| migrations | 125 |
+| migrations | 126 |
 | cron_jobs | 5 |
 | testes | 91 |
 | workflows | 14 |
@@ -425,6 +425,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `5a2118ffa` feat: preenche company_id automatico nas escritas de tenant (#339)
 - 2026-11-25 `c3d33e9cc` fix: tira super_admin inexistente dos gates de admin (#341)
 - 2026-11-25 `d7001a7a6` fix: usa admin do app_role na policy de tenant (#340)
 - 2026-11-25 `2f67831c5` ci: trava consulta sem escopo de empresa nas edges de analise (#324)
@@ -439,7 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `4fdfa8fd4` fix: escopo de empresa e trava de URL no ocr-screenshot (#334)
 - 2026-11-25 `a90ee69b7` fix: escopo de empresa no notify-dispute-decision (#333)
 - 2026-11-25 `48ac518be` fix: exige admin no send-whatsapp (#332)
-- 2026-11-25 `58db51440` fix: exige service_role no process-violation-alert (#331)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
