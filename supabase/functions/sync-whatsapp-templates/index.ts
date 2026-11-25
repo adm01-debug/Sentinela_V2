@@ -26,8 +26,9 @@ serve(async (req) => {
       });
     }
 
+    let user;
     try {
-      await verifyAuth(req);
+      user = await verifyAuth(req);
     } catch {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -39,6 +40,21 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
+
+    // whatsapp_config e whatsapp_templates sao admin-only na RLS e a pagina so
+    // mostra dados para admin; sem este gate qualquer usuario logado reescrevia
+    // os templates globais da conta Meta da empresa.
+    const { data: roles, error: rolesError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .in("role", ["admin", "super_admin"]);
+    if (rolesError || !roles || roles.length === 0) {
+      return new Response(JSON.stringify({ error: "Forbidden: admin role required" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // Credenciais da integração lidas da tabela whatsapp_config (se acess_token
     // não estiver em env), ou das env vars padrão das demais functions.
