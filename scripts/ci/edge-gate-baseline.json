@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-25",
+  "exceptions": [
+    {
+      "function": "health-check",
+      "reason": "publico por desenho: health probe de uptime, responde apenas status/versao/uptime, sem acesso a dado"
+    },
+    {
+      "function": "mcp-query",
+      "reason": "gate proprio comparado com env: exige header x-mcp-secret igual a MCP_SECRET antes de qualquer consulta"
+    }
+  ]
+}

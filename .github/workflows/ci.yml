@@ -129,3 +129,19 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin main
           CLAUDE_MD_BASE=FETCH_HEAD node scripts/ci/check-claude-md-integrity.mjs
+
+  # Guard das edge functions: toda pasta em supabase/functions precisa ter entrada
+  # explícita em supabase/config.toml (e vice-versa) e gate de credencial no código.
+  # O buraco voltou em três ondas seguidas (#300, #301, #302) e a chave publicável do
+  # front é aceita pelo gateway como JWT: sem gate, a função responde a qualquer
+  # visitante do site. Exceções legitimas ficam em scripts/ci/edge-gate-baseline.json
+  # com motivo obrigatorio; exceção nova entra como PENDENTE e quebra o job até ser
+  # justificada. Sem `npm ci`: node puro, sem dependências do projeto.
+  edge-gate-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gate de credencial nas edge functions
+        run: node scripts/ci/edge-gate-guard.mjs
+      - name: Edge gate guard (testes do analisador)
+        run: node --test scripts/ci/edge-gate-guard.unit.mjs

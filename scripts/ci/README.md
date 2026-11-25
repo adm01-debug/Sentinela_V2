@@ -9,6 +9,7 @@ se surgir ocorrência **nova** — permite destravar CI sem corrigir tudo de uma
 | `typecheck-ratchet.mjs`         | `tsc -b --force` (`tsc --noEmit` sozinho é no-op nesta config de `references`) | `typecheck-baseline.json` (307 ocorrências, 08/11/2026) |
 | `format-ratchet.mjs`            | Prettier (`--list-different --ignore-unknown`)                                 | `prettier-baseline.json` (1555 arquivos, 13/11/2026)    |
 | `deno-check-ratchet.mjs`        | `deno check` nas edge functions (`deno test` nao checa tipo)                   | `deno-check-baseline.json` (49 erros, 24/11/2026)       |
+| `edge-gate-guard.mjs`           | gate de credencial + cobertura do `config.toml` nas edge functions             | `edge-gate-baseline.json` (2 exceções, 25/11/2026)      |
 | `check-claude-md-integrity.mjs` | integridade do AGENTS.md/CLAUDE.md/docs/agentes                                | — (git, sem baseline)                                   |
 
 Uso:
@@ -20,12 +21,15 @@ node scripts/ci/typecheck-ratchet.mjs
 node scripts/ci/format-ratchet.mjs          # falha só com arquivo novo fora do padrão
 node scripts/ci/deno-check-ratchet.mjs      # precisa do deno no PATH (CI fixa v2.9.8)
 node --test scripts/ci/deno-check-ratchet.unit.mjs   # testes do parser
+node scripts/ci/edge-gate-guard.mjs         # gate de credencial nas edge functions
+node --test scripts/ci/edge-gate-guard.unit.mjs      # testes do analisador
 
 # atualizar baseline só com aprovação explícita, depois de revisar toda a diferença:
 node scripts/ci/lint-ratchet.mjs --update-baseline
 node scripts/ci/typecheck-ratchet.mjs --update-baseline
 node scripts/ci/format-ratchet.mjs --update-baseline
 node scripts/ci/deno-check-ratchet.mjs --update-baseline
+node scripts/ci/edge-gate-guard.mjs --update-baseline
 git diff -- scripts/ci/eslint-baseline.json scripts/ci/typecheck-baseline.json
 ```
 
