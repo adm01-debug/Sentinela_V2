@@ -6,11 +6,11 @@ Resumo das regras no `AGENTS.md`; aqui está o detalhe. Neste repo errar o banco
 
 ## Os três refs — qual é qual
 
-| Ref | Onde está | O que é |
-|---|---|---|
-| **`jgnmwvzephsozsqmcpzb`** | `supabase/.temp/linked-project.json:1` (`"name":"Sentinela - V2"`); 29 ocorrências em `seed/*.cjs`, `smoke_*.cjs`, `test_*.cjs`, `schema2.cjs`, `temp_schema.ps1`, `MIGRATION_PLAN_FOR_CLAUDE_WEB.md:6` | **Produção. É este o banco do projeto.** É o projeto linkado pelo CLI e o alvo de todo script de seed/smoke do repo. |
-| `ybvdtjpyolbnjirjrthe` | `supabase/config.toml:1` (`project_id`) | **NÃO é produção.** Ref legado da era Lovable. É o default do Supabase CLI: `supabase db push` / `supabase functions deploy` **sem `--project-ref` explícito aponta para cá**. Nunca escrever. |
-| `rmiznlzpbwqpbzaiyydw` | `desktop-agent/src/config.ts:3` (`API_URL`, literal, sem fallback de env) | **NÃO é produção.** O agente desktop chama edge functions de um terceiro projeto. Nunca escrever. |
+| Ref                        | Onde está                                                                                                                                                                                               | O que é                                                                                                                                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`jgnmwvzephsozsqmcpzb`** | `supabase/.temp/linked-project.json:1` (`"name":"Sentinela - V2"`); 29 ocorrências em `seed/*.cjs`, `smoke_*.cjs`, `test_*.cjs`, `schema2.cjs`, `temp_schema.ps1`, `MIGRATION_PLAN_FOR_CLAUDE_WEB.md:6` | **Produção. É este o banco do projeto.** É o projeto linkado pelo CLI e o alvo de todo script de seed/smoke do repo.                                                                           |
+| `ybvdtjpyolbnjirjrthe`     | `supabase/config.toml:1` (`project_id`)                                                                                                                                                                 | **NÃO é produção.** Ref legado da era Lovable. É o default do Supabase CLI: `supabase db push` / `supabase functions deploy` **sem `--project-ref` explícito aponta para cá**. Nunca escrever. |
+| `rmiznlzpbwqpbzaiyydw`     | `desktop-agent/src/config.ts:3` (`API_URL`, literal, sem fallback de env)                                                                                                                               | **NÃO é produção.** O agente desktop chama edge functions de um terceiro projeto. Nunca escrever.                                                                                              |
 
 Nenhum dos três está em `.env.example`, `.env.local.example` ou `.env.production.example` — esses
 arquivos não trazem URL real. Consequência prática: **sempre passe `--project-ref jgnmwvzephsozsqmcpzb`**
@@ -18,12 +18,12 @@ em qualquer comando do CLI, ou corrija o `config.toml` antes (mudança de perím
 
 ## Onde se trabalha
 
-| Situação | Banco | Como |
-|---|---|---|
-| Diagnóstico | **produção, só leitura** | `SELECT` por MCP/Management API; nunca escrita para "testar" |
-| Migration nova | arquivo em `supabase/migrations/` | PR → merge → apply (abaixo). Hoje **nenhum workflow aplica DDL** |
-| Teste de comportamento de banco | **Postgres descartável** | nunca no banco de produção |
-| DDL destrutivo, segredos, rotação de chaves | **só com o dono** | — |
+| Situação                                    | Banco                             | Como                                                             |
+| ------------------------------------------- | --------------------------------- | ---------------------------------------------------------------- |
+| Diagnóstico                                 | **produção, só leitura**          | `SELECT` por MCP/Management API; nunca escrita para "testar"     |
+| Migration nova                              | arquivo em `supabase/migrations/` | PR → merge → apply (abaixo). Hoje **nenhum workflow aplica DDL** |
+| Teste de comportamento de banco             | **Postgres descartável**          | nunca no banco de produção                                       |
+| DDL destrutivo, segredos, rotação de chaves | **só com o dono**                 | —                                                                |
 
 O front não tem desvio para banco local: `src/integrations/supabase/client.ts:5-6` lê
 `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` e, se faltarem, **não quebra** — só
@@ -58,8 +58,11 @@ supabase/
 
 ## Como o DDL entra em produção
 
-**Não há caminho automatizado nem aprovação humana.** Nenhum dos 12 workflows em
-`.github/workflows/` toca no banco. O que existe:
+**Não há aprovação humana — e, desde o deploy automático, também não há passo manual.**
+(Corrigido em 25/11/2026: este trecho afirmava que nenhum workflow tocava o banco. Hoje o job
+`migrate` do `deploy.yml:36-65` roda `supabase db push --remote --include-all --yes` a cada push na
+`main`, com retry em `scripts/lib/supabase-retry.sh` — **migration mergeada vai para produção sem
+ninguém rodar SQL**. São 13 workflows, não 12.) Caminhos existentes:
 
 - `scripts/migrate.sh:4` → `npx supabase migration up`
 - `scripts/seed.sh:4` → `npx supabase db push` (**o script chamado "seed" é o que aplica DDL**)
@@ -126,7 +129,7 @@ Duas funções exigem atenção antes de qualquer deploy:
   publicada, qualquer um com o repo exfiltra a service role e a string de conexão.
   Se está publicada em `jgnmwvzephsozsqmcpzb`: **NÃO VERIFICADO** (não há MCP deste projeto na sessão).
 - **`external-db-bridge`** (`index.ts:1-4,14-25`): proxy genérico com `action` `query|insert|update|delete|rpc`
-  e `table`/`rpc_name` arbitrários.
+  e `table`/`rpc_name` arbitrários. **Removida na #305 (25/11/2026)** e apagada de produção (404).
 
 Funções invocadas pelo front que **não existem** em `supabase/functions/`:
 `sync-whatsapp-templates` e `award-gamification-points` (`ESTADO_ATUAL.md:285-291`, §5.5).
@@ -152,12 +155,12 @@ Funções invocadas pelo front que **não existem** em `supabase/functions/`:
 
 Rastreados pelo git hoje (valores não reproduzidos aqui):
 
-| Tipo | Onde |
-|---|---|
-| PAT de Management API (`sbp_…`) | `schema2.cjs:2`, `seed/probe_emp_status.cjs:3` |
+| Tipo                                 | Onde                                                                                                                                           |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| PAT de Management API (`sbp_…`)      | `schema2.cjs:2`, `seed/probe_emp_status.cjs:3`                                                                                                 |
 | JWT do projeto (anon e service_role) | 22 arquivos: `smoke-test.cjs`, `smoke_*.cjs` (6), `test_auth.cjs`, `test_severity.cjs`, `debug_fail.cjs`, `temp_schema.ps1`, `seed/*.cjs` (9+) |
-| Chave estática de acesso | `supabase/functions/migrate-helper/index.ts:5` |
-| Ref + `organization_id` do projeto | `supabase/.temp/linked-project.json:1` |
+| Chave estática de acesso             | `supabase/functions/migrate-helper/index.ts:5`                                                                                                 |
+| Ref + `organization_id` do projeto   | `supabase/.temp/linked-project.json:1`                                                                                                         |
 
 Regra: segredo novo **nunca** em código, commit ou resposta — só em env/secret do serviço
 (`supabase secrets set` ou painel). Achou segredo em commit → reporte `arquivo:linha` + tipo, nunca o
