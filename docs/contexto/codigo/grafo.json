@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1316,
- "arestas": 2890,
+ "nos": 1321,
+ "arestas": 2900,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 209
+   "importado_por": 210
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 192
+   "importado_por": 193
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 189
+   "importado_por": 190
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -30,7 +30,7 @@
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 76
+   "importado_por": 77
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
@@ -38,7 +38,7 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 63
+   "importado_por": 64
   },
   {
    "arquivo": "src/components/ui/select.tsx",
@@ -69,15 +69,15 @@
    "importado_por": 30
   },
   {
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 28
+  },
+  {
    "arquivo": "src/hooks/useAuth.ts",
    "importado_por": 28
   },
   {
    "arquivo": "src/components/ui/alert-dialog.tsx",
-   "importado_por": 27
-  },
-  {
-   "arquivo": "src/components/ui/switch.tsx",
    "importado_por": 27
   },
   {
@@ -207,6 +207,7 @@
   "desktop-agent/src/services/fileTransferWatcher.ts",
   "desktop-agent/src/services/screenRecorder.ts",
   "docs/source/conf.py",
+  "public/push-sw.js",
   "public/sw-enhanced.js",
   "public/sw.js",
   "seed/generate_time_entries.cjs",
@@ -497,24 +498,23 @@
   "src/hooks/useMemoizedCallback.ts",
   "src/hooks/useMerge.ts",
   "src/hooks/useMessageTemplatesPage.ts",
-  "src/hooks/useMetrics.ts",
-  "src/hooks/useMicrophone.ts"
+  "src/hooks/useMetrics.ts"
  ],
  "modulos_mais_acoplados": [
   {
    "modulo": "hooks",
    "depende_de": 10,
-   "importado_por": 27
+   "importado_por": 28
+  },
+  {
+   "modulo": "components/ui",
+   "depende_de": 3,
+   "importado_por": 34
   },
   {
    "modulo": "components",
    "depende_de": 18,
    "importado_por": 18
-  },
-  {
-   "modulo": "components/ui",
-   "depende_de": 3,
-   "importado_por": 33
   },
   {
    "modulo": "lib",
@@ -523,7 +523,7 @@
   },
   {
    "modulo": "pages",
-   "depende_de": 25,
+   "depende_de": 26,
    "importado_por": 1
   },
   {

@@ -3,12 +3,12 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1380)",
+   "TypeScript (1385)",
    "Markdown (176)",
    "SQL (128)",
    "JSON (45)",
    "YAML (37)",
-   "JavaScript (28)",
+   "JavaScript (29)",
    "Shell (22)",
    "HTML (4)"
   ],
@@ -1179,6 +1179,9 @@
    "SUPABASE_SERVICE_ROLE_KEY",
    "SUPABASE_URL",
    "TURN_CREDENTIALS",
+   "VAPID_PRIVATE_KEY",
+   "VAPID_PUBLIC_KEY",
+   "VAPID_SUBJECT",
    "WHATSAPP_ACCESS_TOKEN",
    "WHATSAPP_PHONE_NUMBER_ID",
    "WHATSAPP_PROVIDER"
@@ -1312,6 +1315,10 @@
    },
    {
     "host": "jgnmwvzephsozsqmcpzb.supabase.co",
+    "arquivos": 2
+   },
+   {
+    "host": "push.test",
     "arquivos": 2
    },
    {

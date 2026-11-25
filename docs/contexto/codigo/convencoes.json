@@ -6,7 +6,7 @@
    "src/pages (59)"
   ],
   "componentes": [
-   "src/components (360)",
+   "src/components (361)",
    "src/pages (93)",
    "src/providers (8)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (58)",
+   "co-localizado (*.test) (59)",
    "co-localizado (__tests__) (22)",
    "outro (9)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (471)"
+  ".tsx (472)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: liga push no navegador com Web Push/VAPID (#319)",
    "chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)",
    "ci: detecta chave embutida no comando dos jobs do agendador (#309)",
    "ci: nao persiste credencial do checkout nos jobs que nao dao push (#317)",
-   "fix: gate de admin no send-webhook (#337)",
-   "fix: identidade do JWT no notify-new-device (#336)"
+   "fix: gate de admin no send-webhook (#337)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

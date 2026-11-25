@@ -30,6 +30,8 @@
   "supabase/functions/_shared/reportAccess_test.ts",
   "supabase/functions/_shared/schemas.ts",
   "supabase/functions/_shared/validation.ts",
+  "supabase/functions/_shared/webPush.ts",
+  "supabase/functions/_shared/webPush_test.ts",
   "supabase/functions/_shared/whatsapp-evolution.ts"
  ],
  "edges": [
@@ -1048,15 +1050,22 @@
    "nome": "send-push-notification",
    "entrada": "supabase/functions/send-push-notification/index.ts",
    "arquivos": 1,
-   "linhas": 100,
+   "linhas": 362,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
-   "tabelas": [],
+   "tabelas": [
+    "employees",
+    "mobile_devices",
+    "push_subscriptions",
+    "user_roles"
+   ],
    "rpcs": [],
    "env": [
-    "FCM_SERVER_KEY"
+    "FCM_SERVER_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
    ],
    "buckets": [],
    "chama_edges": [],
@@ -1065,7 +1074,8 @@
    ],
    "usa_shared": [
     "auth.ts",
-    "rateLimiting.ts"
+    "rateLimiting.ts",
+    "webPush.ts"
    ],
    "chamada_pelo_front": [
     "src/hooks/useMobileDevices.ts",

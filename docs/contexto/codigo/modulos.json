@@ -1255,6 +1255,50 @@
    ]
   },
   {
+   "modulo": "components/settings",
+   "arquivos": 1,
+   "testes": 0,
+   "linhas": 143,
+   "itens_menu": [],
+   "telas": [],
+   "rotas_http": [],
+   "componentes": 1,
+   "hooks_locais": [
+    "usePWAPushNotifications",
+    "useToast"
+   ],
+   "hooks_definidos": [],
+   "edges": [],
+   "tabelas": [
+    "push_subscriptions"
+   ],
+   "rpcs": [],
+   "buckets": [],
+   "canais_realtime": [],
+   "env": [
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL",
+    "VITE_VAPID_PUBLIC_KEY"
+   ],
+   "flags": [],
+   "papeis": [],
+   "diretos": {
+    "edges": [],
+    "tabelas": [],
+    "rpcs": []
+   },
+   "importado_por_outros_modulos": [
+    "pages"
+   ],
+   "depende_de_modulos": [
+    "components/ui",
+    "hooks"
+   ],
+   "pacotes_externos": [
+    "lucide-react"
+   ]
+  },
+  {
    "modulo": "components/skeletons",
    "arquivos": 11,
    "testes": 0,
@@ -1477,6 +1521,7 @@
     "components/productivity",
     "components/recordings",
     "components/security",
+    "components/settings",
     "components/skeletons",
     "components/timeline",
     "components/user",
@@ -1848,7 +1893,7 @@
    "modulo": "hooks",
    "arquivos": 482,
    "testes": 0,
-   "linhas": 32924,
+   "linhas": 33080,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -3310,6 +3355,7 @@
     "components/productivity",
     "components/recordings",
     "components/security",
+    "components/settings",
     "components/ui",
     "components/user",
     "components/versions",
@@ -3875,7 +3921,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 14114,
+   "linhas": 14189,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4021,6 +4067,7 @@
     "useNotifications",
     "useOvertimeNotifications",
     "useOvertimeRequests",
+    "usePWAPushNotifications",
     "usePasswordResetRequests",
     "usePermissionsByModule",
     "usePermissionsList",
@@ -4151,6 +4198,7 @@
     "productivity_logs",
     "profiles",
     "projects",
+    "push_subscriptions",
     "query_telemetry",
     "report_signatures",
     "role_permissions",
@@ -4203,7 +4251,8 @@
     "DEV",
     "VITE_API_URL",
     "VITE_SUPABASE_PUBLISHABLE_KEY",
-    "VITE_SUPABASE_URL"
+    "VITE_SUPABASE_URL",
+    "VITE_VAPID_PUBLIC_KEY"
    ],
    "flags": [
     "FEATURE_KEYS"
@@ -4271,6 +4320,7 @@
     "components/onboarding",
     "components/productivity",
     "components/security",
+    "components/settings",
     "components/timeline",
     "components/ui",
     "components/versions",
@@ -4814,6 +4864,7 @@
     "useNotifications",
     "useOvertimeNotifications",
     "useOvertimeRequests",
+    "usePWAPushNotifications",
     "usePasswordResetRequests",
     "usePermissionsByModule",
     "usePermissionsList",
@@ -4975,6 +5026,7 @@
     "productivity_logs",
     "profiles",
     "projects",
+    "push_subscriptions",
     "query_telemetry",
     "rate_limit_settings",
     "recording_chunks",
@@ -5044,7 +5096,8 @@
     "VITE_API_URL",
     "VITE_SENTRY_DSN",
     "VITE_SUPABASE_PUBLISHABLE_KEY",
-    "VITE_SUPABASE_URL"
+    "VITE_SUPABASE_URL",
+    "VITE_VAPID_PUBLIC_KEY"
    ],
    "flags": [
     "FEATURE_KEYS"
@@ -5277,7 +5330,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 59,
+   "testes": 60,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

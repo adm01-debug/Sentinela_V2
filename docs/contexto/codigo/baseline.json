@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "0e3b73ab6a8d4d16af9d106b1a0acf0766de6208",
+  "commit": "de3fb1a1e42da25daa9b5af882e36431d7007cee",
   "branch": "main",
-  "data_commit": "2026-11-25T19:25:14-03:00",
+  "data_commit": "2026-11-25T19:28:24-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "de3fb1a1e",
+    "data": "2026-11-25",
+    "assunto": "feat: liga push no navegador com Web Push/VAPID (#319)"
+   },
    {
     "sha": "0e3b73ab6",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "19a780dec",
     "data": "2026-11-25",
     "assunto": "feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)"
-   },
-   {
-    "sha": "3ef51c691",
-    "data": "2026-11-25",
-    "assunto": "feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)"
    }
   ],
-  "arquivos_mudados_7d": 344,
+  "arquivos_mudados_7d": 354,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -148,11 +148,11 @@
     "mudancas": 22
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 20
+    "pasta": "supabase/functions/_shared",
+    "mudancas": 22
    },
    {
-    "pasta": "supabase/functions/_shared",
+    "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 20
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 233
+    "commits": 234
    },
    {
     "autor": "dependabot[bot]",
@@ -314,23 +314,23 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1860,
-  "arquivos_codigo": 1406,
-  "linhas_codigo": 160287,
+  "arquivos_total": 1866,
+  "arquivos_codigo": 1412,
+  "linhas_codigo": 161418,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "modulos": 59,
-  "componentes": 471,
+  "modulos": 60,
+  "componentes": 472,
   "hooks": 527,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 90,
+  "testes": 91,
   "workflows": 14,
-  "scripts": 35,
+  "scripts": 36,
   "docs_md": 176
  },
  "por_pasta": {
@@ -374,6 +374,10 @@
    "arquivos": 1,
    "linhas": 35
   },
+  "public/push-sw.js": {
+   "arquivos": 1,
+   "linhas": 49
+  },
   "public/sw-enhanced.js": {
    "arquivos": 1,
    "linhas": 128
@@ -398,6 +402,10 @@
    "arquivos": 1,
    "linhas": 21
   },
+  "scripts/generate-vapid-keys.ts": {
+   "arquivos": 1,
+   "linhas": 37
+  },
   "scripts/inventario": {
    "arquivos": 2,
    "linhas": 165
@@ -415,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 395,
-   "linhas": 46084
+   "arquivos": 396,
+   "linhas": 46227
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +444,7 @@
   },
   "src/hooks": {
    "arquivos": 482,
-   "linhas": 32924
+   "linhas": 33080
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 22220
+   "linhas": 22295
   },
   "src/providers": {
    "arquivos": 9,
@@ -479,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 59,
-   "linhas": 10768
+   "arquivos": 60,
+   "linhas": 10911
   },
   "src/types": {
    "arquivos": 57,
@@ -495,8 +503,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 67,
-   "linhas": 11412
+   "arquivos": 69,
+   "linhas": 11940
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -607,7 +615,7 @@
  ],
  "qualidade": {
   "any": 159,
-  "console_log": 67,
+  "console_log": 70,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
@@ -831,6 +839,7 @@
    "VirtualList"
   ],
   "scripts_orfaos": [
+   "scripts/generate-vapid-keys.ts",
    "scripts/release.sh"
   ],
   "env_usadas_nao_declaradas": [

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 35,
+ "total": 36,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -220,6 +220,15 @@
     "release.yml"
    ],
    "orfao": false
+  },
+  {
+   "arquivo": "scripts/generate-vapid-keys.ts",
+   "descricao": "Gera o par VAPID (Web Push) usado pelo push no navegador. Uso: deno run scripts/generate-vapid-keys.ts",
+   "linhas": 37,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": true
   },
   {
    "arquivo": "scripts/health-check.sh",

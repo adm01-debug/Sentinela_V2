@@ -5463,6 +5463,7 @@
     "ingest-file-transfer",
     "natural-language-query",
     "risk-score-calculator",
+    "send-push-notification",
     "smart-recommendations",
     "upload-recording-chunk"
    ],
@@ -9025,7 +9026,8 @@
    "usada_em_edges": [
     "escalate-dispute-sla",
     "mobile-collector",
-    "notify-dispute-decision"
+    "notify-dispute-decision",
+    "send-push-notification"
    ],
    "triggers": [
     "update_mobile_devices_updated_at"
@@ -10807,7 +10809,9 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [],
+   "usada_em_edges": [
+    "send-push-notification"
+   ],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -16411,6 +16415,7 @@
    "usada_em_edges": [
     "award-gamification-points",
     "rate-limit-logs",
+    "send-push-notification",
     "send-scheduled-report",
     "send-webhook",
     "send-whatsapp",

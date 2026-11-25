@@ -273,7 +273,7 @@
     "stores",
     "utils"
    ],
-   "coberto_por_testes": 10,
+   "coberto_por_testes": 11,
    "orfao": false
   },
   {
@@ -299,7 +299,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 5,
+   "usado_por": 6,
    "usado_por_modulos": [
     "hooks",
     "integrations/supabase",

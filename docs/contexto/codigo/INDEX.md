@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `0e3b73ab6a8d4d16af9d106b1a0acf0766de6208` (2026-11-25T19:25:14-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `de3fb1a1e42da25daa9b5af882e36431d7007cee` (2026-11-25T19:28:24-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1380), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
+- linguagens: TypeScript (1385), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (29), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1860 |
-| arquivos_codigo | 1406 |
-| linhas_codigo | 160287 |
+| arquivos_total | 1866 |
+| arquivos_codigo | 1412 |
+| linhas_codigo | 161418 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
-| modulos | 59 |
-| componentes | 471 |
+| modulos | 60 |
+| componentes | 472 |
 | hooks | 527 |
 | edge_functions | 48 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 90 |
+| testes | 91 |
 | workflows | 14 |
-| scripts | 35 |
+| scripts | 36 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (59)
-- componentes: src/components (360), src/pages (93), src/providers (8)
+- componentes: src/components (361), src/pages (93), src/providers (8)
 - hooks: src/hooks (480), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (58), co-localizado (__tests__) (22), outro (9)
+- testes: co-localizado (*.test) (59), co-localizado (__tests__) (22), outro (9)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (7), scripts/ai-context (2), scripts/inventario (2)
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 482 | 502 | 21 | 88 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 168 | 15 | 71 |
+| pages | 4 | 38 | 68 | 169 | 15 | 72 |
 | pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -203,7 +203,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `risk-score-calculator` — tabelas: behavioral_baselines, click_logs, dlp_incidents, employees, keystroke_logs, risk_score_factors, user_risk_scores; chamada por 1 arquivo(s) do front
 - `send-email-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-password-reset` — tabelas: -; chamada por 1 arquivo(s) do front
-- `send-push-notification` — tabelas: -; chamada por 2 arquivo(s) do front
+- `send-push-notification` — tabelas: employees, mobile_devices, push_subscriptions, user_roles; chamada por 2 arquivo(s) do front
 - `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations, user_roles; chamada por 2 arquivo(s) do front
 - `send-slack-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-webhook` — tabelas: user_roles, webhook_logs, webhooks; chamada por 2 arquivo(s) do front
@@ -231,7 +231,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
-- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, releases.sentinela.app, www.openstreetmap.org, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, app.local, attack.mitre.org
+- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, push.test, releases.sentinela.app, www.openstreetmap.org, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, app.local
 - webhooks recebidos: acknowledge-violation, dlp-incident-report, dlp-policy-sync, generate-report, health-check, ingest-file-transfer, live-view-authorize, pending-employee-violations, process-violation-alert, send-whatsapp, upload-recording-chunk, webrtc-ice-config
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
@@ -253,7 +253,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 93 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
 - componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
-- scripts_orfaos: 1 — ex.: scripts/release.sh
+- scripts_orfaos: 2 — ex.: scripts/generate-vapid-keys.ts, scripts/release.sh
 - env_usadas_nao_declaradas: 8 — ex.: DEV, MODE, PROD
 - ciclos_de_import: 4
 - possiveis_segredos_no_codigo: 1 — ex.: scripts/ai-context/cenarios.mjs:102
@@ -425,6 +425,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `de3fb1a1e` feat: liga push no navegador com Web Push/VAPID (#319)
 - 2026-11-25 `0e3b73ab6` chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)
 - 2026-11-25 `fb72235cf` ci: detecta chave embutida no comando dos jobs do agendador (#309)
 - 2026-11-25 `d8d0f15c8` ci: nao persiste credencial do checkout nos jobs que nao dao push (#317)
@@ -439,7 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `6d7b24408` fix: sincronizacao de templates do WhatsApp exige admin (#329)
 - 2026-11-25 `8b6e821af` fix: admin so pontua funcionario da propria empresa (#328)
 - 2026-11-25 `ef7078fc3` fix: exige admin e escopo de empresa no send-scheduled-report (#327)
-- 2026-11-25 `27c44f6f5` fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

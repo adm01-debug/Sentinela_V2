@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 471,
+ "total": 472,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -3375,6 +3375,23 @@
    "orfao": true
   },
   {
+   "arquivo": "src/components/settings/BrowserPushCard.tsx",
+   "exports": [
+    "BrowserPushCard"
+   ],
+   "export_default": "BrowserPushCard",
+   "linhas": 143,
+   "dominio": "components/settings",
+   "hooks_locais": [
+    "usePWAPushNotifications",
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/SettingsAuditLog.tsx",
    "exports": [
     "SettingsAuditLog"
@@ -3892,7 +3909,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 189,
+   "usado_por": 190,
    "orfao": false
   },
   {
@@ -3927,7 +3944,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 192,
+   "usado_por": 193,
    "orfao": false
   },
   {
@@ -4623,7 +4640,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 63,
+   "usado_por": 64,
    "orfao": false
   },
   {
@@ -5436,7 +5453,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 27,
+   "usado_por": 28,
    "orfao": false
   },
   {
@@ -7305,7 +7322,7 @@
     "NotificationSettingsPage"
    ],
    "export_default": "NotificationSettingsPage",
-   "linhas": 59,
+   "linhas": 134,
    "dominio": "pages",
    "hooks_locais": [
     "useMutation",
