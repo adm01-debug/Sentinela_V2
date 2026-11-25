@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { classificar, extrairJson, funcoesNoRepo, referencias } from "./checar-cron.mjs";
+import { classificar, extrairJson, funcoesNoRepo, referencias, rotular } from "./checar-cron.mjs";
 
 const URL_BASE = "https://jgnmwvzephsozsqmcpzb.supabase.co/functions/v1";
 
@@ -47,5 +47,16 @@ test("classificar separa o que saiu do repositorio", () => {
   assert.deepEqual(
     foraDoRepo.map((ref) => ref.funcao),
     ["daily-summary"]
+  );
+});
+
+test("rotular compara por nome, nao por identidade", () => {
+  const refs = [
+    { funcao: "expire-recordings", jobs: ["a"] },
+    { funcao: "daily-summary", jobs: ["b"] },
+  ];
+  assert.deepEqual(
+    rotular(refs, new Set(["expire-recordings"])).map((ref) => ref.onde),
+    ["no repo", "fora do repo"]
   );
 });

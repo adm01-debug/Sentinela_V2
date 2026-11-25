@@ -62,6 +62,15 @@ export function classificar(jobs, noRepo) {
   };
 }
 
+// Comparar por nome, nunca por identidade: `referencias` cria objetos novos a
+// cada chamada (foi assim que a rotulagem saiu errada na primeira rodada).
+export function rotular(referenciadas, noRepo) {
+  return referenciadas.map((ref) => ({
+    ...ref,
+    onde: noRepo.has(ref.funcao) ? "no repo" : "fora do repo",
+  }));
+}
+
 export async function statusEmProducao(nome, projeto = PROJETO) {
   try {
     const resposta = await fetch(`https://${projeto}.supabase.co/functions/v1/${nome}`, {
@@ -100,11 +109,11 @@ async function principal(argv) {
     console.log(`- ${job?.jobname} [${job?.schedule}] ativo=${job?.active} jobid=${job?.jobid}`);
   }
 
-  const { referenciadas, foraDoRepo } = classificar(dados, funcoesNoRepo());
+  const noRepo = funcoesNoRepo();
+  const { referenciadas, foraDoRepo } = classificar(dados, noRepo);
   console.log(`funcoes referenciadas por jobs: ${referenciadas.length}`);
-  for (const ref of referenciadas) {
-    const onde = foraDoRepo.includes(ref) ? "fora do repo" : "no repo";
-    console.log(`- ${ref.funcao} (${onde}) <- ${ref.jobs.join(", ")}`);
+  for (const ref of rotular(referenciadas, noRepo)) {
+    console.log(`- ${ref.funcao} (${ref.onde}) <- ${ref.jobs.join(", ")}`);
   }
 
   if (!opcoes.includes("--probe")) return 0;
