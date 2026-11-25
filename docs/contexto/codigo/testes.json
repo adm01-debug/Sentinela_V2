@@ -861,12 +861,13 @@
   {
    "arquivo": "src/test/work-schedules-operations.test.tsx",
    "tipo": "unit",
-   "linhas": 253,
+   "linhas": 345,
    "testa": [
     "src/hooks/useEmployeeSchedules.ts",
+    "src/hooks/useWorkSchedules.ts",
     "src/hooks/useWorkSchedulesPage.ts"
    ],
-   "casos": 11
+   "casos": 14
   }
  ],
  "sql": [],
@@ -936,6 +937,7 @@
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
+  "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
   "src/integrations/supabase/client.ts": 10,
@@ -1493,7 +1495,6 @@
    "src/hooks/useWorker.ts",
    "src/hooks/useWorkerFn.ts",
    "src/hooks/useWorkHours.ts",
-   "src/hooks/useWorkSchedules.ts",
    "src/hooks/useZoom.ts",
    "src/lib/feature-flags/exports.ts",
    "src/lib/permissions/exports.ts",

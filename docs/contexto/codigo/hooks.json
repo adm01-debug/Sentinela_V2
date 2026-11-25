@@ -2989,8 +2989,9 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "usado_por_arquivos": [
+    "src/hooks/useWorkSchedules.ts",
     "src/hooks/useWorkSchedulesPage.ts"
    ],
    "coberto_por_testes": 1
@@ -10229,7 +10230,7 @@
     "useUpdateWorkSchedule",
     "useWorkSchedules"
    ],
-   "linhas": 154,
+   "linhas": 181,
    "dominio": "hooks",
    "tabelas": [
     "work_schedules"
@@ -10237,17 +10238,20 @@
    "rpcs": [],
    "edges": [],
    "hooks_internos": [
+    "useEmployeeSchedules",
+    "useMemo",
     "useMutation",
     "useQuery",
     "useQueryClient",
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "usado_por_arquivos": [
-    "src/hooks/useWorkSchedulesPage.ts"
+    "src/hooks/useWorkSchedulesPage.ts",
+    "src/pages/EmployeeDetailPage.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useWorkSchedulesPage.ts",
@@ -10277,8 +10281,9 @@
     "useWorkSchedules"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "usado_por_arquivos": [
+    "src/pages/EmployeeDetailPage.tsx",
     "src/pages/WorkSchedulesPage.tsx"
    ],
    "coberto_por_testes": 1

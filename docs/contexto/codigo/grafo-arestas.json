@@ -2717,6 +2717,7 @@
   ],
   "src/hooks/useWorkSchedules.ts": [
    "src/hooks/use-toast.ts",
+   "src/hooks/useEmployeeSchedules.ts",
    "src/integrations/supabase/client.ts",
    "src/lib/queryClient.ts"
   ],
@@ -3170,6 +3171,8 @@
    "src/hooks/useDailyJourney.ts",
    "src/hooks/useEmployees.ts",
    "src/hooks/useTeamProductivityAverage.ts",
+   "src/hooks/useWorkSchedules.ts",
+   "src/hooks/useWorkSchedulesPage.ts",
    "src/utils/journeyPdf.ts"
   ],
   "src/pages/EmployeesPage.tsx": [

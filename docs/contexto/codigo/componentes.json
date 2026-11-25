@@ -7069,11 +7069,12 @@
     "EmployeeDetailPage"
    ],
    "export_default": "EmployeeDetailPage",
-   "linhas": 253,
+   "linhas": 294,
    "dominio": "pages",
    "hooks_locais": [
     "useDailyJourney",
     "useEmployee",
+    "useEmployeeSchedule",
     "useEmployeeStats",
     "useTeamProductivityAverage"
    ],
