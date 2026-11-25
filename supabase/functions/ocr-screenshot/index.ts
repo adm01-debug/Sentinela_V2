@@ -3,7 +3,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
-import { requireUserOrServiceRole } from '../_shared/auth.ts';
+import { callerCompanyScope, requireUserOrServiceRole, withCompanyScope } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -35,8 +35,9 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
@@ -82,23 +83,33 @@ serve(async (req) => {
     let imageData: string | null = null;
     let imageMimeType = 'image/png';
 
+    // screen_captures tem company_id e a leitura acontece com service_role (que
+    // ignora RLS): sem o escopo qualquer usuario autenticado passa o id de uma
+    // captura de outra empresa e recebe o texto extraido dela.
+    const scope = await callerCompanyScope(supabase, auth);
+
     // Get image data
     if (image_base64) {
       imageData = image_base64;
     } else if (image_url) {
-      console.log('[OCR] Fetching image from URL:', image_url);
+      // Sem esta trava a edge vira proxy: qualquer usuario autenticado faz o
+      // runtime buscar um host arbitrario (metadata do container, rede interna).
+      if (!image_url.startsWith(`${supabaseUrl}/`)) {
+        return new Response(
+          JSON.stringify({ error: 'image_url deve apontar para o storage do projeto' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
       const response = await fetch(image_url);
       const contentType = response.headers.get('content-type') || 'image/png';
       imageMimeType = contentType;
       const arrayBuffer = await response.arrayBuffer();
       imageData = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     } else if (screenshot_id) {
-      console.log('[OCR] Loading screenshot from storage:', screenshot_id);
-      const { data: screenshot } = await supabase
-        .from('screen_captures')
-        .select('capture_url')
-        .eq('id', screenshot_id)
-        .single();
+      const { data: screenshot } = await withCompanyScope(
+        supabase.from('screen_captures').select('capture_url').eq('id', screenshot_id),
+        scope
+      ).single();
 
       if (screenshot?.capture_url) {
         // Download from storage
