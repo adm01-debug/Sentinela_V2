@@ -9,6 +9,8 @@ import {
   Smartphone,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { MobileDevicesMap } from "@/components/MobileDevicesMap";
+import { OsmMap } from "@/components/map/OsmMap";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -142,6 +144,32 @@ export default function MobileMonitoringPage() {
           </CardHeader>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MapPin className="h-5 w-5" />
+            Mapa dos aparelhos
+          </CardTitle>
+          <CardDescription>
+            Última localização conhecida de cada aparelho. Clique em um ponto para abrir as
+            atividades registradas por ele.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoadingDevices ? (
+            <div className="flex justify-center py-10">
+              <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            <MobileDevicesMap
+              devices={devices}
+              selectedDeviceId={selectedDevice?.id ?? null}
+              onDeviceClick={(device) => handleSelectDevice(device)}
+            />
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -312,6 +340,20 @@ export default function MobileMonitoringPage() {
                 )}
               </div>
             </div>
+
+            {locationPoints.length > 0 && (
+              <OsmMap
+                markers={locationPoints.map((point) => ({
+                  id: point.id,
+                  latitude: point.latitude ?? 0,
+                  longitude: point.longitude ?? 0,
+                  label: point.activity_type,
+                  description: formatDateTime(point.recorded_at),
+                  tone: "activity" as const,
+                }))}
+                ariaLabel="Pontos de localização registrados pelo aparelho"
+              />
+            )}
 
             {isLoadingActivities ? (
               <div className="flex justify-center py-8">

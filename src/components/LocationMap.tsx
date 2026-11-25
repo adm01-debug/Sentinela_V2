@@ -1,16 +1,19 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPin } from 'lucide-react';
+import { useMemo } from "react";
+import { MapPin } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { OsmMap, type OsmMapMarker } from "@/components/map/OsmMap";
+
+interface LocationMapLocation {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
 
 interface LocationMapProps {
   latitude?: number;
   longitude?: number;
-  locations?: Array<{
-    id: string;
-    name: string;
-    latitude: number;
-    longitude: number;
-  }>;
+  locations?: LocationMapLocation[];
   onLocationSelect?: (locationId: string) => void;
   className?: string;
 }
@@ -22,29 +25,46 @@ export function LocationMap({
   onLocationSelect,
   className,
 }: LocationMapProps) {
+  const markers = useMemo<OsmMapMarker[]>(() => {
+    const fromLocations = locations.map((location) => ({
+      id: location.id,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      label: location.name,
+    }));
+
+    const hasPoint =
+      typeof latitude === "number" &&
+      typeof longitude === "number" &&
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude);
+
+    return hasPoint
+      ? [...fromLocations, { id: "current", latitude, longitude, label: "Ponto selecionado" }]
+      : fromLocations;
+  }, [locations, latitude, longitude]);
+
   return (
     <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MapPin className="h-5 w-5" />
-          Location Map
+          Mapa
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-          <div className="text-center text-muted-foreground">
-            <MapPin className="h-12 w-12 mx-auto mb-2" />
-            <p>Map integration placeholder</p>
-            {latitude && longitude && (
-              <p className="text-sm mt-2">
-                Lat: {latitude.toFixed(4)}, Lng: {longitude.toFixed(4)}
-              </p>
-            )}
-            {locations.length > 0 && (
-              <p className="text-sm mt-2">{locations.length} locations</p>
-            )}
-          </div>
-        </div>
+        <OsmMap
+          markers={markers}
+          ariaLabel="Mapa de localizacoes"
+          onMarkerClick={(markerId) => {
+            if (markerId !== "current") onLocationSelect?.(markerId);
+          }}
+        />
+        {markers.length > 0 && (
+          <p className="text-muted-foreground mt-2 text-xs">
+            {markers.length} ponto(s) no mapa. Clique em um ponto para selecionar.
+          </p>
+        )}
       </CardContent>
     </Card>
   );
