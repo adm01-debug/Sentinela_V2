@@ -25,13 +25,37 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: { user: { id: string } | null; isServiceRole: boolean };
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
+    }
+
+    // `webhooks` e admin-only na RLS (20251219145831_...:40-58) e a edge le a
+    // configuracao com service_role. Sem este gate qualquer funcionario logado
+    // dispara o webhook configurado pela empresa com event_type/payload
+    // arbitrarios, forjando eventos nas integracoes (Slack/ERP/proprio sistema).
+    if (!auth.isServiceRole && auth.user) {
+      const adminClient = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+      );
+      const { data: roles, error: rolesError } = await adminClient
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', auth.user.id)
+        .in('role', ['admin', 'super_admin']);
+
+      if (rolesError || !roles || roles.length === 0) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
