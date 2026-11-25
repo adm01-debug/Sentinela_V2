@@ -101,7 +101,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .from('user_roles')
         .select('role')
         .eq('user_id', mapped.id)
-        .in('role', ['admin', 'supervisor'])
+        // `public.app_role` (produção) = admin | user | Admin | Analyst | Manager
+        // | User. Nao existe 'supervisor': o filtro inteiro abortava com 22P02
+        // ("invalid input value for enum app_role"), o catch deixava isAdmin=false
+        // e TODO admin era rebaixado para 'user' na UI (AdminGuard -> /dashboard).
+        .in('role', ['admin'])
         .maybeSingle()
         .then((res) => {
           if (res.error && res.error.code !== 'PGRST116') {
