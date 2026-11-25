@@ -48,7 +48,7 @@ serve(async (req) => {
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
-      .in("role", ["admin", "super_admin"]);
+      .in("role", ["admin"]);
     if (rolesError || !roles || roles.length === 0) {
       return new Response(JSON.stringify({ error: "Forbidden: admin role required" }), {
         status: 403,
