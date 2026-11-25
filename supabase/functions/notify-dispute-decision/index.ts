@@ -60,12 +60,31 @@ Deno.serve(async (req) => {
 
   const { data: dispute, error: dErr } = await supabase
     .from('violation_disputes')
-    .select('id, violation_id, employee_name, status, category, resolution_notes, resolved_at')
+    .select(
+      'id, violation_id, company_id, employee_name, status, category, resolution_notes, resolved_at'
+    )
     .eq('id', body.dispute_id)
     .maybeSingle();
 
   if (dErr) return json({ error: dErr.message }, 500);
   if (!dispute) return json({ error: 'dispute_not_found' }, 404);
+
+  // A contestacao e de uma empresa: a policy de UPDATE
+  // (20260723152502_...:41-43) exige user_in_company(uid, company_id) e role
+  // admin, mas aqui a leitura roda com service_role, que ignora RLS. Sem esta
+  // checagem o admin da empresa A dispara o push da disputa da empresa B (e o
+  // payload leva as notas da decisao dela).
+  if (!auth.isServiceRole) {
+    const callerId = auth.user?.id;
+    if (!callerId) return json({ error: 'unauthorized' }, 401);
+    const { data: sameCompany, error: companyErr } = await supabase.rpc('user_in_company', {
+      _user_id: callerId,
+      _company_id: dispute.company_id,
+    });
+    if (companyErr) return json({ error: companyErr.message }, 500);
+    if (!sameCompany) return json({ error: 'forbidden' }, 403);
+  }
+
   if (!dispute.status || dispute.status === 'pending') {
     return json({ error: 'not_decided_yet' }, 400);
   }
