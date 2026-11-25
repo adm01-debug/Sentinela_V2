@@ -4,9 +4,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
 import { toWorkSchedulePayload, type ScheduleFormData } from "@/hooks/useWorkSchedulesPage";
 import {
+  escalaVigenteEm,
+  situacaoDaAtribuicao,
   useAssignEmployeeSchedule,
   useEmployeeSchedules,
   useRemoveEmployeeSchedule,
+  type EmployeeScheduleRow,
 } from "@/hooks/useEmployeeSchedules";
 
 const from = vi.fn();
@@ -163,5 +166,87 @@ describe("Escalas de trabalho - camada de operacoes", () => {
 
     expect(tabela.delete).toHaveBeenCalled();
     expect(tabela.eq).toHaveBeenCalledWith("id", "a1");
+  });
+});
+
+// ============================================================
+// ESCALA VIGENTE NA DATA
+// ============================================================
+
+function atribuicao(campos: Partial<EmployeeScheduleRow> & { id: string }): EmployeeScheduleRow {
+  return {
+    employee_id: "e1",
+    schedule_id: "s1",
+    effective_from: "2026-01-01",
+    effective_until: null,
+    employee_name: "Joao Silva",
+    schedule_name: "Comercial",
+    ...campos,
+  };
+}
+
+describe("Escala vigente na data escolhida", () => {
+  const nova = atribuicao({ id: "a-nova", schedule_id: "s-nova", effective_from: "2026-11-20" });
+  const antiga = atribuicao({
+    id: "a-antiga",
+    schedule_id: "s-antiga",
+    effective_from: "2026-01-01",
+    effective_until: "2026-11-19",
+  });
+  const futura = atribuicao({
+    id: "a-futura",
+    schedule_id: "s-futura",
+    effective_from: "2026-12-01",
+  });
+
+  it("escolhe a atribuicao mais recente que ja comecou", () => {
+    expect(escalaVigenteEm([antiga, nova], "e1", "2026-11-25")?.id).toBe("a-nova");
+  });
+
+  it("ignora a atribuicao que ainda nao comecou", () => {
+    expect(escalaVigenteEm([antiga, nova, futura], "e1", "2026-11-25")?.id).toBe("a-nova");
+  });
+
+  it("respeita o fim da vigencia e devolve a anterior quando ela encerrou", () => {
+    const novaEncerrada = atribuicao({
+      id: "a-encerrada",
+      effective_from: "2026-10-01",
+      effective_until: "2026-11-10",
+    });
+    const antes = atribuicao({ id: "a-antes", effective_from: "2026-01-01" });
+
+    expect(escalaVigenteEm([antes, novaEncerrada], "e1", "2026-11-25")?.id).toBe("a-antes");
+    expect(escalaVigenteEm([antes, novaEncerrada], "e1", "2026-11-30")).toBe(antes);
+  });
+
+  it("nao mistura funcionarios", () => {
+    const doOutro = atribuicao({ id: "a-e2", employee_id: "e2", effective_from: "2026-11-24" });
+    const minha = atribuicao({ id: "a-minha", effective_from: "2026-11-10" });
+
+    expect(escalaVigenteEm([minha, doOutro], "e1", "2026-11-25")?.id).toBe("a-minha");
+    expect(escalaVigenteEm([minha, doOutro], "e2", "2026-11-25")?.id).toBe("a-e2");
+  });
+
+  it("devolve null quando o funcionario nao tem escala em vigor", () => {
+    expect(escalaVigenteEm([antiga, futura], "e1", "2026-11-25")).toBeNull();
+    expect(escalaVigenteEm([], "e1", "2026-11-25")).toBeNull();
+  });
+
+  it("aceita data com horario no effective_from", () => {
+    const comHora = atribuicao({ id: "a-hora", effective_from: "2026-11-20T09:30:00Z" });
+    expect(escalaVigenteEm([comHora], "e1", "2026-11-25")?.id).toBe("a-hora");
+  });
+
+  it("classifica cada atribuicao em relacao a data", () => {
+    const todas = [antiga, nova, futura];
+
+    expect(situacaoDaAtribuicao(nova, todas, "2026-11-25")).toBe("vigente");
+    expect(situacaoDaAtribuicao(antiga, todas, "2026-11-25")).toBe("encerrada");
+    expect(situacaoDaAtribuicao(futura, todas, "2026-11-25")).toBe("futura");
+
+    const substituida = atribuicao({ id: "a-substituida", effective_from: "2026-05-01" });
+    expect(situacaoDaAtribuicao(substituida, [substituida, nova], "2026-11-25")).toBe(
+      "substituida"
+    );
   });
 });

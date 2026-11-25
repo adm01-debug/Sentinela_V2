@@ -44,6 +44,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useWorkSchedulesPage, formatWorkDays, WEEKDAYS } from "@/hooks/useWorkSchedulesPage";
 
+const rotuloSituacao: Record<string, string> = {
+  vigente: "Vigente nesta data",
+  substituida: "Fora de vigência",
+  encerrada: "Encerrada",
+  futura: "Ainda não vale",
+};
+
 export default function WorkSchedulesPage() {
   const {
     filteredSchedules,
@@ -56,6 +63,11 @@ export default function WorkSchedulesPage() {
     setSearchTerm,
     activeTab,
     setActiveTab,
+    dataVigente,
+    setDataVigente,
+    vigentesPorFuncionario,
+    situacoesPorAtribuicao,
+    funcionariosComVigente,
     scheduleForm,
     setScheduleForm,
     assignForm,
@@ -237,6 +249,24 @@ export default function WorkSchedulesPage() {
         </TabsContent>
 
         <TabsContent value="assignments" className="mt-4 space-y-3">
+          <Card>
+            <CardContent className="flex flex-wrap items-end gap-4 p-4">
+              <div className="space-y-1">
+                <Label htmlFor="data-vigente">Escala vigente na data</Label>
+                <Input
+                  id="data-vigente"
+                  type="date"
+                  className="w-44"
+                  value={dataVigente}
+                  onChange={(e) => setDataVigente(e.target.value)}
+                />
+              </div>
+              <p className="text-muted-foreground pb-2 text-sm">
+                {funcionariosComVigente} de {Object.keys(vigentesPorFuncionario).length}{" "}
+                funcionário(s) com escala vigente em {dataVigente}.
+              </p>
+            </CardContent>
+          </Card>
           {filteredEmployeeSchedules.length === 0 ? (
             <Card>
               <CardContent className="text-muted-foreground py-12 text-center">
@@ -252,7 +282,16 @@ export default function WorkSchedulesPage() {
               <Card key={es.id}>
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
-                    <p className="font-medium">{es.employee_name || "Funcionário"}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{es.employee_name || "Funcionário"}</p>
+                      <Badge
+                        variant={
+                          situacoesPorAtribuicao[es.id] === "vigente" ? "default" : "secondary"
+                        }
+                      >
+                        {rotuloSituacao[situacoesPorAtribuicao[es.id]]}
+                      </Badge>
+                    </div>
                     <p className="text-muted-foreground text-sm">
                       {es.schedule_name || "Escala removida"}
                     </p>
@@ -261,10 +300,19 @@ export default function WorkSchedulesPage() {
                       {es.effective_until ? ` até ${es.effective_until}` : ""}
                     </p>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => handleRemoveAssignment(es.id)}>
-                    <Trash2 className="mr-1 h-3 w-3" />
-                    Remover
-                  </Button>
+                  <div className="flex items-center gap-3">
+                    {vigentesPorFuncionario[es.employee_id]?.id === es.id && (
+                      <span className="text-xs text-green-600">Vale em {dataVigente}</span>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRemoveAssignment(es.id)}
+                    >
+                      <Trash2 className="mr-1 h-3 w-3" />
+                      Remover
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))

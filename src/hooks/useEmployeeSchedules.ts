@@ -20,6 +20,48 @@ export interface AssignEmployeeScheduleInput {
 
 const QUERY_KEY = ["employee-schedules"] as const;
 
+const dia = (valor: string) => valor.slice(0, 10);
+
+/**
+ * Atribuicao vigente de um funcionario na data (`YYYY-MM-DD`): a mais recente cujo
+ * `effective_from` ja passou e cujo `effective_until` (quando existe) ainda nao venceu.
+ */
+export function escalaVigenteEm(
+  linhas: EmployeeScheduleRow[],
+  employeeId: string,
+  dataISO: string
+): EmployeeScheduleRow | null {
+  const alvo = dia(dataISO);
+
+  return linhas
+    .filter((linha) => linha.employee_id === employeeId)
+    .filter((linha) => dia(linha.effective_from) <= alvo)
+    .filter((linha) => !linha.effective_until || dia(linha.effective_until) >= alvo)
+    .reduce<EmployeeScheduleRow | null>(
+      (vigente, linha) =>
+        !vigente || dia(linha.effective_from) > dia(vigente.effective_from) ? linha : vigente,
+      null
+    );
+}
+
+export type SituacaoAtribuicao = "vigente" | "futura" | "encerrada" | "substituida";
+
+/** Por que uma atribuicao aparece (ou nao) como a escala em vigor naquela data. */
+export function situacaoDaAtribuicao(
+  linha: EmployeeScheduleRow,
+  todas: EmployeeScheduleRow[],
+  dataISO: string
+): SituacaoAtribuicao {
+  const alvo = dia(dataISO);
+
+  if (dia(linha.effective_from) > alvo) return "futura";
+  if (linha.effective_until && dia(linha.effective_until) < alvo) return "encerrada";
+
+  return escalaVigenteEm(todas, linha.employee_id, alvo)?.id === linha.id
+    ? "vigente"
+    : "substituida";
+}
+
 export function useEmployeeSchedules() {
   return useQuery({
     queryKey: QUERY_KEY,
