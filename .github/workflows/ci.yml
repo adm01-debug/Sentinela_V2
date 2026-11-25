@@ -101,7 +101,10 @@ jobs:
           # --node-modules-dir=none: o runner nao tem node_modules e o repositorio
           # tem package.json (Deno entraria em modo node_modules automatico);
           # resolver pelo cache global deixa o resultado igual ao local.
-          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net --node-modules-dir=none {}
+          # --allow-read=supabase/functions: os contratos estaticos leem o fonte
+          # das edges para provar o que o codigo faz (ex.: escopo de empresa em
+          # toda consulta feita com service_role).
+          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net --allow-read=supabase/functions --node-modules-dir=none {}
 
   # `deno test` passa com dezenas de erros de tipo no codigo das edges — foi por
   # esse buraco que dois bugs reais chegaram na main (rate limit lendo campo

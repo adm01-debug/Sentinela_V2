@@ -161,3 +161,26 @@ Deno.test("callerCompanyId - resposta vazia vira null (usuario sem empresa)", as
     null
   );
 });
+// Contrato: toda consulta feita com service_role nas edges de analise precisa
+// aplicar o escopo de empresa (o service_role ignora RLS). Exige --allow-read
+// (ver job deno-contract-tests em .github/workflows/ci.yml).
+const EDGES_DE_ANALISE = [
+  "analyze-activity",
+  "behavior-pattern",
+  "summarize-activity",
+  "smart-recommendations",
+  "predict-anomaly",
+  "trend-forecasting",
+  "natural-language-query",
+];
+
+for (const edge of EDGES_DE_ANALISE) {
+  Deno.test(`${edge} - toda consulta usa escopo de empresa`, async () => {
+    const fonte = await Deno.readTextFile(new URL(`../${edge}/index.ts`, import.meta.url));
+    const consultas = fonte.match(/(?<!Array)\.from\(/g)?.length ?? 0;
+    const escopos = fonte.match(/withCompanyScope\(/g)?.length ?? 0;
+
+    assertEquals(consultas > 0, true, "edge sem consulta de tabela");
+    assertEquals(escopos, consultas, "consulta com service_role sem escopo de empresa");
+  });
+}
