@@ -2974,7 +2974,7 @@
     "useEmployeeSchedules",
     "useRemoveEmployeeSchedule"
    ],
-   "linhas": 100,
+   "linhas": 142,
    "dominio": "hooks",
    "tabelas": [
     "employee_schedules"
@@ -10253,7 +10253,7 @@
    "hooks_exportados": [
     "useWorkSchedulesPage"
    ],
-   "linhas": 412,
+   "linhas": 448,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],

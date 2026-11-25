@@ -852,12 +852,12 @@
   {
    "arquivo": "src/test/work-schedules-operations.test.tsx",
    "tipo": "unit",
-   "linhas": 168,
+   "linhas": 253,
    "testa": [
     "src/hooks/useEmployeeSchedules.ts",
     "src/hooks/useWorkSchedulesPage.ts"
    ],
-   "casos": 4
+   "casos": 11
   }
  ],
  "sql": [],

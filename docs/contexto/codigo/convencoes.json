@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)",
    "fix: liga as operacoes reais da tela de escalas de trabalho (#311)",
    "feat: liga busca em dados reais na paleta de comandos (#310)",
    "ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)",
-   "fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)",
-   "docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)"
+   "fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
