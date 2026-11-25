@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "e8007929e2753a5f858a36f037fdbdf507e71876",
+  "commit": "1c198e947b7fd2490718bde72ff705f1e28a3b84",
   "branch": "main",
-  "data_commit": "2026-11-25T12:36:58-03:00",
+  "data_commit": "2026-11-25T13:26:23-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1c198e947",
+    "data": "2026-11-25",
+    "assunto": "fix(desktop-agent): tira os requires inline e o import morto (#316)"
+   },
    {
     "sha": "e8007929e",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "b1e44b30a",
     "data": "2026-11-24",
     "assunto": "feat: detector de anomalias passa a aparecer na tela de atividades (#290)"
-   },
-   {
-    "sha": "eabdad381",
-    "data": "2026-11-24",
-    "assunto": "fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)"
    }
   ],
-  "arquivos_mudados_7d": 324,
+  "arquivos_mudados_7d": 328,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -172,6 +172,10 @@
     "mudancas": 13
    },
    {
+    "pasta": "desktop-agent/src/services",
+    "mudancas": 9
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 8
    },
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "docs/prod-readiness.md",
-    "mudancas": 7
-   },
-   {
-    "pasta": "src/components/ui",
     "mudancas": 7
    }
   ],
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 211
+    "commits": 212
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1858,
   "arquivos_codigo": 1404,
-  "linhas_codigo": 158983,
+  "linhas_codigo": 158986,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -352,7 +352,7 @@
   },
   "desktop-agent/src": {
    "arquivos": 18,
-   "linhas": 2422
+   "linhas": 2425
   },
   "docs/source": {
    "arquivos": 1,
