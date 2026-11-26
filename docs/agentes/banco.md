@@ -105,7 +105,14 @@ Lacunas já medidas — não são hipótese:
 
 - `ESTADO_ATUAL.md:296-299` (§5.6): `achievements`, `departments`, `gamification_leaderboard` com
   `relrowsecurity = false`, contra 151 tabelas com RLS ativo. As três estão entre as 9 criadas fora
-  de migration.
+  de migration. `departments` foi corrigido em `20261122021000:14`; as outras oito estão na migration
+  `20261126120000_habilitar_rls_policies_inertes.sql` (PR aberta, regra 8 — aguarda o dono): habilita
+  RLS, dá SELECT a `authenticated` onde há consumidor vivo (`policy_acknowledgments`, `geo_blocks`,
+  `geo_blocking_settings`) e escrita a admin, e fecha as sem consumidor (`achievements`,
+  `gamification_leaderboard`, `geofence_events`, `geofence_states`, `employee_locations`). Antes disso,
+  as policies dessas tabelas eram decorativas: `gamification_leaderboard` (3 policies),
+  `policy_acknowledgments` (7), `geofence_events` (3) e `geo_blocks` (2) têm policy em migration e
+  nenhum `ENABLE ROW LEVEL SECURITY`, então qualquer chave com GRANT — inclusive anon — lia e gravava.
 - `MIGRATION_PLAN_FOR_CLAUDE_WEB.md:30-32`: `audit_logs` com RLS habilitado e **zero policies** →
   acesso totalmente bloqueado. `:35-37`: partição `click_logs_partitioned_2026_12` sem policy.
   `:43-56`: INSERT policy faltando em `file_transfers`, `dlp_redaction_log`, `siem_delivery_log`,
