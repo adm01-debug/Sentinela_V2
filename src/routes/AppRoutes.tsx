@@ -77,6 +77,7 @@ const DLPRedactionLogPage = lazy(() => import("@/pages/admin/DLPRedactionLogPage
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
 const RetentionPoliciesPage = lazy(() => import("@/pages/admin/RetentionPoliciesPage"));
 const PolicyExemptionsPage = lazy(() => import("@/pages/admin/PolicyExemptionsPage"));
+const KeystrokeDetailsPage = lazy(() => import("@/pages/admin/KeystrokeDetailsPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -323,6 +324,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <PolicyExemptionsPage />
+              </AdminGuard>
+            }
+          />
+          {/* keystroke_details tem RLS admin-only (SELECT/INSERT) e guarda uma
+              linha por tecla; o detalhe nao existia em nenhuma tela. */}
+          <Route
+            path="/admin/keystrokes"
+            element={
+              <AdminGuard>
+                <KeystrokeDetailsPage />
               </AdminGuard>
             }
           />

@@ -43,6 +43,7 @@ import {
   FileSymlink,
   Lock,
   Gauge,
+  Keyboard,
   ShieldAlert,
   AlertOctagon,
   Fingerprint,
@@ -173,6 +174,7 @@ const navSections: NavSection[] = [
       { icon: ShieldAlert, labelKey: "Palavras Sensiveis", path: "/admin/dlp/keywords" },
       { icon: CalendarClock, labelKey: "Retencao de Dados", path: "/admin/retention" },
       { icon: UserCheck, labelKey: "Isenções de Aceite", path: "/admin/policy-exemptions" },
+      { icon: Keyboard, labelKey: "Detalhe de Digitação", path: "/admin/keystrokes" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       {
