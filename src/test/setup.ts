@@ -37,6 +37,7 @@ vi.mock("@/integrations/supabase/client", () => ({
     })),
     removeChannel: vi.fn().mockResolvedValue({ data: null, error: null }),
     removeAllChannels: vi.fn(),
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
     functions: {
       invoke: vi.fn().mockResolvedValue({ data: null, error: null }),
     },

@@ -81,6 +81,7 @@ const KeystrokeDetailsPage = lazy(() => import("@/pages/admin/KeystrokeDetailsPa
 const SIEMPage = lazy(() => import("@/pages/admin/SIEMPage"));
 const MitreMappingPage = lazy(() => import("@/pages/admin/MitreMappingPage"));
 const DlpFingerprintsPage = lazy(() => import("@/pages/admin/DlpFingerprintsPage"));
+const FeatureFlagsPage = lazy(() => import("@/pages/admin/FeatureFlagsPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -368,6 +369,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <DlpFingerprintsPage />
+              </AdminGuard>
+            }
+          />
+          {/* feature_flags tem RLS admin para escrita e leitura por empresa;
+              nenhuma tela lia a tabela antes. */}
+          <Route
+            path="/admin/feature-flags"
+            element={
+              <AdminGuard>
+                <FeatureFlagsPage />
               </AdminGuard>
             }
           />
