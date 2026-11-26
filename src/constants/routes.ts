@@ -35,7 +35,11 @@ export const ROUTES = {
   ANALYTICS_PRODUCTIVITY: '/analytics/productivity',
   ANALYTICS_APPLICATIONS: '/analytics/applications',
   ANALYTICS_TRENDS: '/analytics/trends',
-  
+
+  // AI insights routes
+  AI_RECOMMENDATIONS: '/ai/recommendations',
+  AI_TRENDS: '/ai/trends',
+
   // Reports routes
   REPORTS: '/reports',
   REPORT_DETAIL: '/reports/:id',

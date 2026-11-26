@@ -80,6 +80,8 @@ const commandGroups = [
       { icon: BarChart3, label: "Analytics", path: "/analytics" },
       { icon: FileText, label: "Relatórios", path: "/reports" },
       { icon: Brain, label: "Análise IA", path: "/ai-analysis" },
+      { icon: Brain, label: "Recomendações IA", path: "/ai/recommendations" },
+      { icon: BarChart3, label: "Previsão de Tendências", path: "/ai/trends" },
     ],
   },
   {

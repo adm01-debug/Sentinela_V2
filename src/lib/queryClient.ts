@@ -168,6 +168,12 @@ export const queryKeys = {
     detail: (id: string) => [...queryKeys.reports.details(), id] as const,
     scheduled: () => [...queryKeys.reports.all, "scheduled"] as const,
   },
+  aiInsights: {
+    all: ["ai-insights"] as const,
+    recommendations: (limit: number) =>
+      [...queryKeys.aiInsights.all, "recommendations", limit] as const,
+    forecasts: (days: number) => [...queryKeys.aiInsights.all, "forecasts", days] as const,
+  },
   securityMetrics: {
     all: ["security-metrics"] as const,
     overview: () => [...queryKeys.securityMetrics.all, "overview"] as const,
