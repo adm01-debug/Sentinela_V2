@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "7190c899856fa4b69aea725cfa56d9eee8e13898",
+  "commit": "eb313b63c594b622162cdb46a0a4af7510c7eb6f",
   "branch": "main",
-  "data_commit": "2026-11-26T10:57:45-03:00",
+  "data_commit": "2026-11-26T11:51:16-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "eb313b63c",
+    "data": "2026-11-26",
+    "assunto": "feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)"
+   },
    {
     "sha": "7190c8998",
     "data": "2026-11-26",
@@ -126,18 +131,13 @@
     "sha": "fb72235cf",
     "data": "2026-11-25",
     "assunto": "ci: detecta chave embutida no comando dos jobs do agendador (#309)"
-   },
-   {
-    "sha": "d8d0f15c8",
-    "data": "2026-11-25",
-    "assunto": "ci: nao persiste credencial do checkout nos jobs que nao dao push (#317)"
    }
   ],
-  "arquivos_mudados_7d": 399,
+  "arquivos_mudados_7d": 403,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
-    "mudancas": 27
+    "mudancas": 28
    },
    {
     "pasta": "supabase/functions/_shared",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 255
+    "commits": 256
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1906,
-  "arquivos_codigo": 1450,
-  "linhas_codigo": 175125,
+  "arquivos_total": 1908,
+  "arquivos_codigo": 1452,
+  "linhas_codigo": 175553,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "modulos": 61,
-  "componentes": 484,
+  "modulos": 62,
+  "componentes": 485,
   "hooks": 538,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 105,
+  "testes": 106,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -423,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 399,
-   "linhas": 46869
+   "arquivos": 400,
+   "linhas": 47142
   },
   "src/constants": {
    "arquivos": 7,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 118,
-   "linhas": 26306
+   "linhas": 26336
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 73,
-   "linhas": 15476
+   "arquivos": 74,
+   "linhas": 15601
   },
   "src/types": {
    "arquivos": 57,

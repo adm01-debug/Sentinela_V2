@@ -6,7 +6,7 @@
    "src/pages (68)"
   ],
   "componentes": [
-   "src/components (364)",
+   "src/components (365)",
    "src/pages (102)",
    "src/providers (8)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (72)",
+   "co-localizado (*.test) (73)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (484)"
+  ".tsx (485)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)",
    "feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)",
    "feat: historico de execucoes dos relatorios agendados (#357)",
    "feat: tela de configuracoes globais em /admin/app-config (#355)",
-   "feat: tela de dispositivos e sessoes ativas (#356)",
-   "feat: tela de feature flags em /admin/feature-flags (#354)"
+   "feat: tela de dispositivos e sessoes ativas (#356)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

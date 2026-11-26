@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7190c899856fa4b69aea725cfa56d9eee8e13898` (2026-11-26T10:57:45-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `eb313b63c594b622162cdb46a0a4af7510c7eb6f` (2026-11-26T11:51:16-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1421), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1423), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1906 |
-| arquivos_codigo | 1450 |
-| linhas_codigo | 175125 |
+| arquivos_total | 1908 |
+| arquivos_codigo | 1452 |
+| linhas_codigo | 175553 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
-| modulos | 61 |
-| componentes | 484 |
+| modulos | 62 |
+| componentes | 485 |
 | hooks | 538 |
 | edge_functions | 48 |
 | tabelas | 180 |
 | migrations | 126 |
 | cron_jobs | 5 |
-| testes | 105 |
+| testes | 106 |
 | workflows | 14 |
 | scripts | 37 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (68)
-- componentes: src/components (364), src/pages (102), src/providers (8)
+- componentes: src/components (365), src/pages (102), src/providers (8)
 - hooks: src/hooks (491), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (72), co-localizado (__tests__) (22), outro (10)
+- testes: co-localizado (*.test) (73), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 493 | 514 | 21 | 101 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 173 | 15 | 76 |
+| pages | 4 | 38 | 68 | 174 | 15 | 77 |
 | pages/admin | 0 | 27 | 29 | 45 | 8 | 44 |
 | pages/dev | 0 | 3 | 3 | 16 | 0 | 3 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -245,7 +245,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), Admin (2), dialog (2), group (2), list (2), region (2), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (21), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), Admin (2), dialog (2), group (2), list (2), region (2), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 34 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -434,6 +434,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `eb313b63c` feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)
 - 2026-11-26 `7190c8998` feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)
 - 2026-11-26 `16d3063cd` feat: historico de execucoes dos relatorios agendados (#357)
 - 2026-11-26 `3cc0fa4f6` feat: tela de configuracoes globais em /admin/app-config (#355)
@@ -448,7 +449,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `715b6b837` feat: historico de acoes da violacao em violation_actions (#347)
 - 2026-11-26 `5755cf976` feat: tela de retencao de dados em /admin/retention (#346)
 - 2026-11-25 `437a51b0b` chore: guard de CI contra valor inexistente no enum app_role (#343)
-- 2026-11-25 `433042689` fix: area de gestor abria para qualquer usuario logado (#344)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

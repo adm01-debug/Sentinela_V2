@@ -1245,6 +1245,16 @@
    "src/hooks/useRecordingStorageCost.ts",
    "src/lib/utils.ts"
   ],
+  "src/components/reports/ReportRunsPanel.tsx": [
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/select.tsx",
+   "src/hooks/useReportsPage.ts",
+   "src/providers/AuthProvider.tsx"
+  ],
   "src/components/security/ChangePasswordForm.tsx": [
    "src/components/ui/button.tsx",
    "src/components/ui/input.tsx",
@@ -3464,6 +3474,7 @@
   "src/pages/ReportsPage.tsx": [
    "src/components/exports/XlsxExportButton.tsx",
    "src/components/layout/PageHeader.tsx",
+   "src/components/reports/ReportRunsPanel.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",

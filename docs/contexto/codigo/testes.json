@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 105,
+ "total": 106,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 103
+  "unit": 104
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 72
+   "arquivos": 73
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -297,7 +297,7 @@
   {
    "arquivo": "src/pages/__tests__/Reports.test.tsx",
    "tipo": "unit",
-   "linhas": 70,
+   "linhas": 93,
    "testa": [
     "src/hooks/useReports.ts",
     "src/pages/ReportsPage.tsx"
@@ -803,6 +803,15 @@
    "casos": 6
   },
   {
+   "arquivo": "src/test/report-runs-panel.test.tsx",
+   "tipo": "unit",
+   "linhas": 125,
+   "testa": [
+    "src/components/reports/ReportRunsPanel.tsx"
+   ],
+   "casos": 2
+  },
+  {
    "arquivo": "src/test/request-dedup.test.ts",
    "tipo": "unit",
    "linhas": 83,
@@ -1069,6 +1078,7 @@
   "src/components/forms/index.tsx": 2,
   "src/components/layout/Breadcrumbs.tsx": 1,
   "src/components/map/OsmMap.tsx": 1,
+  "src/components/reports/ReportRunsPanel.tsx": 1,
   "src/components/security/SecurityScoreCard.tsx": 1,
   "src/components/settings/BrowserPushCard.tsx": 1,
   "src/components/ui/index.ts": 1,

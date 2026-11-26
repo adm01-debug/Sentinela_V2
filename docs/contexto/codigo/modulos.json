@@ -1202,6 +1202,61 @@
    ]
   },
   {
+   "modulo": "components/reports",
+   "arquivos": 1,
+   "testes": 0,
+   "linhas": 273,
+   "itens_menu": [],
+   "telas": [],
+   "rotas_http": [],
+   "componentes": 1,
+   "hooks_locais": [
+    "useAuth",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useReportsPage",
+    "useToast"
+   ],
+   "hooks_definidos": [],
+   "edges": [
+    "generate-report"
+   ],
+   "tabelas": [
+    "reports",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "buckets": [],
+   "canais_realtime": [],
+   "env": [
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL"
+   ],
+   "flags": [],
+   "papeis": [
+    "Admin",
+    "admin",
+    "status"
+   ],
+   "diretos": {
+    "edges": [],
+    "tabelas": [],
+    "rpcs": []
+   },
+   "importado_por_outros_modulos": [
+    "pages"
+   ],
+   "depende_de_modulos": [
+    "components/ui",
+    "hooks",
+    "providers"
+   ],
+   "pacotes_externos": [
+    "lucide-react"
+   ]
+  },
+  {
    "modulo": "components/security",
    "arquivos": 32,
    "testes": 0,
@@ -1576,6 +1631,7 @@
     "components/onboarding",
     "components/productivity",
     "components/recordings",
+    "components/reports",
     "components/security",
     "components/settings",
     "components/skeletons",
@@ -3467,6 +3523,7 @@
     "components/onboarding",
     "components/productivity",
     "components/recordings",
+    "components/reports",
     "components/security",
     "components/settings",
     "components/ui",
@@ -4035,7 +4092,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 14277,
+   "linhas": 14284,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4200,6 +4257,7 @@
     "useRemoveTeamMember",
     "useReport",
     "useReports",
+    "useReportsPage",
     "useResolveDispute",
     "useReviewOvertimeRequest",
     "useRolePermissions",
@@ -4321,6 +4379,7 @@
     "query_telemetry",
     "report_logs",
     "report_signatures",
+    "reports",
     "role_permissions",
     "roles",
     "saved_filters",
@@ -4443,6 +4502,7 @@
     "components/layout",
     "components/onboarding",
     "components/productivity",
+    "components/reports",
     "components/security",
     "components/settings",
     "components/timeline",
@@ -4883,6 +4943,7 @@
    },
    "importado_por_outros_modulos": [
     "components",
+    "components/reports",
     "hooks",
     "pages/dev",
     "services"
@@ -5059,6 +5120,7 @@
     "useRemoveTeamMember",
     "useReport",
     "useReports",
+    "useReportsPage",
     "useResolveDispute",
     "useRetentionPoliciesPage",
     "useReviewOvertimeRequest",
@@ -5218,6 +5280,7 @@
     "recording_sessions",
     "report_logs",
     "report_signatures",
+    "reports",
     "risk_score_factors",
     "role_permissions",
     "roles",
@@ -5524,7 +5587,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 73,
+   "testes": 74,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

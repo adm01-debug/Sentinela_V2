@@ -7427,8 +7427,10 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/reports/ReportRunsPanel.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {
@@ -10766,8 +10768,9 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 3,
+   "usado_por": 4,
    "usado_por_arquivos": [
+    "src/components/reports/ReportRunsPanel.tsx",
     "src/hooks/useAuth.ts",
     "src/providers/AppProviders.tsx",
     "src/services/authService.ts"
