@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8613230d0af678d7dec340d31d060abe51b12da2` (2026-11-26T12:32:19-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5ef95d95fcb0249895af49a790ced2ad4c231d64` (2026-11-26T14:27:33-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1428), Markdown (176), SQL (132), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1433), Markdown (176), SQL (132), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,36 +34,36 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1915 |
-| arquivos_codigo | 1457 |
-| linhas_codigo | 176430 |
+| arquivos_total | 1920 |
+| arquivos_codigo | 1462 |
+| linhas_codigo | 177301 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 63 |
-| componentes | 487 |
-| hooks | 539 |
+| componentes | 489 |
+| hooks | 541 |
 | edge_functions | 48 |
 | tabelas | 180 |
 | migrations | 128 |
 | cron_jobs | 5 |
-| testes | 108 |
+| testes | 109 |
 | workflows | 14 |
 | scripts | 37 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (68)
-- componentes: src/components (367), src/pages (102), src/providers (8)
-- hooks: src/hooks (492), src/stores (33), src/lib (5)
+- componentes: src/components (367), src/pages (104), src/providers (8)
+- hooks: src/hooks (494), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (75), co-localizado (__tests__) (22), outro (10)
+- testes: co-localizado (*.test) (76), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
-- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (100%)","tabelas":"snake_case (89%)"}
+- nomenclatura: {"componentes":"PascalCase (88%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (100%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
 
 ## Módulos (menu → domínio)
@@ -82,10 +82,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 494 | 515 | 21 | 101 |
+| hooks | 0 | 0 | 496 | 517 | 21 | 101 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 175 | 16 | 79 |
+| pages | 4 | 38 | 70 | 177 | 16 | 79 |
 | pages/admin | 0 | 27 | 29 | 45 | 8 | 44 |
 | pages/dev | 0 | 3 | 3 | 16 | 0 | 3 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -273,12 +273,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
+- src/routes/AppRoutes.tsx (23)
 - docs/pendencias/_linha-de-base.md (22)
 - scripts/ci/eslint-baseline.json (22)
-- src/routes/AppRoutes.tsx (22)
 - scripts/ci/prettier-baseline.json (20)
 - .github/workflows/deploy.yml (19)
-- src/components/AppSidebar.tsx (17)
+- src/components/AppSidebar.tsx (18)
 - .github/workflows/ci.yml (11)
 - scripts/ci/deno-check-baseline.json (8)
 - docs/prod-readiness.md (7)
@@ -434,6 +434,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `5ef95d95f` feat: telas de recomendacoes e previsao de tendencias de IA (#369)
 - 2026-11-26 `8613230d0` infra: habilita RLS nas tabelas com policy inerte (#360)
 - 2026-11-26 `8d79d8e84` fix: escopo de empresa na policy de slack_integrations (#345)
 - 2026-11-26 `eb69d53fa` feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)
@@ -448,7 +449,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `e6344bb69` ﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)
 - 2026-11-26 `7bdeb5579` ﻿feat: tela de conectores SIEM em /admin/siem (#351)
 - 2026-11-26 `824cca877` feat: tela de detalhe de digitacao em /admin/keystrokes (#350)
-- 2026-11-26 `1b3c384f6` feat: tela de isencoes do aceite de politicas em /admin/policy-exemptions (#349)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

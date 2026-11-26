@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 539,
+ "total": 541,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -1481,7 +1481,7 @@
     "useTheme"
    ],
    "canais_realtime": [],
-   "usado_por": 35,
+   "usado_por": 36,
    "usado_por_arquivos": [
     "src/components/ActivityChart.tsx",
     "src/components/AlertsChart.tsx",
@@ -8637,6 +8637,29 @@
    "coberto_por_testes": 0
   },
   {
+   "arquivo": "src/hooks/useSmartRecommendationsPage.ts",
+   "hooks_exportados": [
+    "useSmartRecommendationsPage"
+   ],
+   "linhas": 148,
+   "dominio": "hooks",
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMemo",
+    "useQuery",
+    "useState"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/SmartRecommendationsPage.tsx"
+   ],
+   "coberto_por_testes": 0
+  },
+  {
    "arquivo": "src/hooks/useSmartSuggestions.ts",
    "hooks_exportados": [
     "useSmartSuggestions"
@@ -9661,6 +9684,29 @@
    "canais_realtime": [],
    "usado_por": 0,
    "usado_por_arquivos": [],
+   "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useTrendForecastPage.ts",
+   "hooks_exportados": [
+    "useTrendForecastPage"
+   ],
+   "linhas": 126,
+   "dominio": "hooks",
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMemo",
+    "useQuery",
+    "useState"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/TrendForecastPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

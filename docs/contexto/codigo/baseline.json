@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8613230d0af678d7dec340d31d060abe51b12da2",
+  "commit": "5ef95d95fcb0249895af49a790ced2ad4c231d64",
   "branch": "main",
-  "data_commit": "2026-11-26T12:32:19-03:00",
+  "data_commit": "2026-11-26T14:27:33-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "5ef95d95f",
+    "data": "2026-11-26",
+    "assunto": "feat: telas de recomendacoes e previsao de tendencias de IA (#369)"
+   },
    {
     "sha": "8613230d0",
     "data": "2026-11-26",
@@ -126,18 +131,17 @@
     "sha": "d7001a7a6",
     "data": "2026-11-25",
     "assunto": "fix: usa admin do app_role na policy de tenant (#340)"
-   },
-   {
-    "sha": "2f67831c5",
-    "data": "2026-11-25",
-    "assunto": "ci: trava consulta sem escopo de empresa nas edges de analise (#324)"
    }
   ],
-  "arquivos_mudados_7d": 411,
+  "arquivos_mudados_7d": 416,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
     "mudancas": 28
+   },
+   {
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 23
    },
    {
     "pasta": "supabase/functions/_shared",
@@ -152,10 +156,6 @@
     "mudancas": 22
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 22
-   },
-   {
     "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 20
    },
@@ -164,12 +164,12 @@
     "mudancas": 19
    },
    {
-    "pasta": "src/pages/admin",
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 18
    },
    {
-    "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 17
+    "pasta": "src/pages/admin",
+    "mudancas": 18
    },
    {
     "pasta": "package-lock.json",
@@ -206,15 +206,15 @@
     "mudancas": 25
    },
    {
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 23
+   },
+   {
     "arquivo": "docs/pendencias/_linha-de-base.md",
     "mudancas": 22
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 22
-   },
-   {
-    "arquivo": "src/routes/AppRoutes.tsx",
     "mudancas": 22
    },
    {
@@ -227,7 +227,7 @@
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 260
+    "commits": 261
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1915,
-  "arquivos_codigo": 1457,
-  "linhas_codigo": 176430,
+  "arquivos_total": 1920,
+  "arquivos_codigo": 1462,
+  "linhas_codigo": 177301,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 63,
-  "componentes": 487,
-  "hooks": 539,
+  "componentes": 489,
+  "hooks": 541,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 128,
   "cron_jobs": 5,
-  "testes": 108,
+  "testes": 109,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,11 +424,11 @@
   },
   "src/components": {
    "arquivos": 402,
-   "linhas": 47545
+   "linhas": 47549
   },
   "src/constants": {
    "arquivos": 7,
-   "linhas": 259
+   "linhas": 263
   },
   "src/data": {
    "arquivos": 4,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 494,
-   "linhas": 37223
+   "arquivos": 496,
+   "linhas": 37497
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,15 +460,15 @@
   },
   "src/lib": {
    "arquivos": 42,
-   "linhas": 3043
+   "linhas": 3049
   },
   "src/main.tsx": {
    "arquivos": 1,
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 118,
-   "linhas": 26354
+   "arquivos": 120,
+   "linhas": 26768
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 545
+   "linhas": 549
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 76,
-   "linhas": 15843
+   "arquivos": 77,
+   "linhas": 16008
   },
   "src/types": {
    "arquivos": 57,
@@ -562,7 +562,7 @@
   },
   {
    "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 545
+   "linhas": 549
   },
   {
    "arquivo": "src/pages/WorkSchedulesPage.tsx",

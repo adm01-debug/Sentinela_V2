@@ -7,11 +7,11 @@
   ],
   "componentes": [
    "src/components (367)",
-   "src/pages (102)",
+   "src/pages (104)",
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (492)",
+   "src/hooks (494)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (75)",
+   "co-localizado (*.test) (76)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -39,7 +39,7 @@
   ]
  },
  "nomenclatura": {
-  "componentes": "PascalCase (87%)",
+  "componentes": "PascalCase (88%)",
   "hooks": "use + PascalCase",
   "servicos": "camelCase (99%)",
   "edge_functions": "kebab-case (100%)",
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (487)"
+  ".tsx (489)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: telas de recomendacoes e previsao de tendencias de IA (#369)",
    "infra: habilita RLS nas tabelas com policy inerte (#360)",
    "fix: escopo de empresa na policy de slack_integrations (#345)",
    "feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)",
-   "feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)",
-   "feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)"
+   "feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

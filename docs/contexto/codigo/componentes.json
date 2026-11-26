@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 487,
+ "total": 489,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -674,7 +674,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 447,
+   "linhas": 449,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1013,7 +1013,7 @@
     "CommandPalette"
    ],
    "export_default": null,
-   "linhas": 195,
+   "linhas": 197,
    "dominio": "components",
    "hooks_locais": [
     "useCommandSearch"
@@ -3879,7 +3879,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 19,
+   "usado_por": 21,
    "orfao": false
   },
   {
@@ -3912,7 +3912,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 164,
+   "usado_por": 166,
    "orfao": false
   },
   {
@@ -3975,7 +3975,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 204,
+   "usado_por": 206,
    "orfao": false
   },
   {
@@ -4010,7 +4010,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 206,
+   "usado_por": 208,
    "orfao": false
   },
   {
@@ -5280,7 +5280,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 71,
+   "usado_por": 73,
    "orfao": false
   },
   {
@@ -5387,7 +5387,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 78,
+   "usado_por": 80,
    "orfao": false
   },
   {
@@ -7793,6 +7793,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/pages/SmartRecommendationsPage.tsx",
+   "exports": [
+    "SmartRecommendationsPage"
+   ],
+   "export_default": "SmartRecommendationsPage",
+   "linhas": 217,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useSmartRecommendationsPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/pages/TeamDetailPage.tsx",
    "exports": [
     "TeamDetailPage"
@@ -7873,6 +7889,23 @@
     "time_entries",
     "timesheets"
    ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/TrendForecastPage.tsx",
+   "exports": [
+    "TrendForecastPage"
+   ],
+   "export_default": "TrendForecastPage",
+   "linhas": 197,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useTrendForecastPage"
+   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false
@@ -8132,7 +8165,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 545,
+   "linhas": 549,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

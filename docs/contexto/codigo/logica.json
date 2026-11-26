@@ -252,7 +252,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 212,
+   "usado_por": 214,
    "usado_por_modulos": [
     "components",
     "components/admin",
@@ -273,7 +273,7 @@
     "stores",
     "utils"
    ],
-   "coberto_por_testes": 24,
+   "coberto_por_testes": 25,
    "orfao": false
   },
   {
@@ -726,7 +726,7 @@
     "queryPresets"
    ],
    "export_default": null,
-   "linhas": 322,
+   "linhas": 328,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -738,7 +738,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 54,
+   "usado_por": 56,
    "usado_por_modulos": [
     "components/layout",
     "components/security",

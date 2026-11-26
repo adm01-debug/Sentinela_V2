@@ -2743,6 +2743,10 @@
   "src/hooks/useSlackNotification.ts": [
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useSmartRecommendationsPage.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useSmartSuggestions.ts": [
    "src/integrations/supabase/client.ts",
    "src/lib/logger.ts"
@@ -2769,6 +2773,10 @@
   ],
   "src/hooks/useTrendAnalysis.ts": [
    "src/integrations/supabase/client.ts"
+  ],
+  "src/hooks/useTrendForecastPage.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
   ],
   "src/hooks/useUserManagementPage.ts": [
    "src/hooks/use-toast.ts",
@@ -3585,6 +3593,15 @@
   "src/pages/SettingsPage.tsx": [
    "src/pages/Settings.tsx"
   ],
+  "src/pages/SmartRecommendationsPage.tsx": [
+   "src/components/ui/alert.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useSmartRecommendationsPage.ts"
+  ],
   "src/pages/TeamDetailPage.tsx": [
    "src/components/EmptyStates.tsx",
    "src/components/PageTransition.tsx",
@@ -3632,6 +3649,16 @@
    "src/components/ui/table.tsx",
    "src/hooks/use-toast.ts",
    "src/integrations/supabase/client.ts"
+  ],
+  "src/pages/TrendForecastPage.tsx": [
+   "src/components/ui/alert.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useChartColors.ts",
+   "src/hooks/useTrendForecastPage.ts"
   ],
   "src/pages/UsersPage.tsx": [
    "src/components/layout/PageHeader.tsx",
@@ -4240,10 +4267,12 @@
    "src/pages/ScreenshotsPage.tsx",
    "src/pages/SecuritySettingsPage.tsx",
    "src/pages/SettingsPage.tsx",
+   "src/pages/SmartRecommendationsPage.tsx",
    "src/pages/TeamDetailPage.tsx",
    "src/pages/TeamsPage.tsx",
    "src/pages/TimeClockPage.tsx",
    "src/pages/TimesheetsPage.tsx",
+   "src/pages/TrendForecastPage.tsx",
    "src/pages/UsersPage.tsx",
    "src/pages/VerifyReportPage.tsx",
    "src/pages/ViolationDetailPage.tsx",

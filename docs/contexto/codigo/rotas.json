@@ -6,7 +6,7 @@
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 97
+  "lazy": 99
  },
  "urls": [
   {
@@ -3420,10 +3420,12 @@
   "SensitiveKeywordsPage": "src/pages/admin/SensitiveKeywordsPage.tsx",
   "SessionRecordingsPage": "src/pages/admin/SessionRecordingsPage.tsx",
   "SettingsPage": "src/pages/SettingsPage.tsx",
+  "SmartRecommendationsPage": "src/pages/SmartRecommendationsPage.tsx",
   "TeamDetailPage": "src/pages/TeamDetailPage.tsx",
   "TeamsPage": "src/pages/TeamsPage.tsx",
   "TimeClockPage": "src/pages/TimeClockPage.tsx",
   "TimesheetsPage": "src/pages/TimesheetsPage.tsx",
+  "TrendForecastPage": "src/pages/TrendForecastPage.tsx",
   "UEBADashboardPage": "src/pages/admin/ueba/UEBADashboardPage.tsx",
   "UEBASettingsPage": "src/pages/admin/ueba/UEBASettingsPage.tsx",
   "UsersPage": "src/pages/UsersPage.tsx",
