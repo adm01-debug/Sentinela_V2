@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "437a51b0bc28596f5dc31a5dd8bd4fe85debe738",
+  "commit": "5755cf9768b047f7930d950328ffea48804f4c07",
   "branch": "main",
-  "data_commit": "2026-11-25T21:09:27-03:00",
+  "data_commit": "2026-11-26T07:25:25-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "5755cf976",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de retencao de dados em /admin/retention (#346)"
+   },
    {
     "sha": "437a51b0b",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "27c44f6f5",
     "data": "2026-11-25",
     "assunto": "fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)"
-   },
-   {
-    "sha": "976dba3a1",
-    "data": "2026-11-25",
-    "assunto": "fix: exige dono do relatorio e escopo de empresa na generate-report (#325)"
    }
   ],
-  "arquivos_mudados_7d": 358,
+  "arquivos_mudados_7d": 361,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -164,11 +164,11 @@
     "mudancas": 15
    },
    {
-    "pasta": "package.json",
-    "mudancas": 13
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 14
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
+    "pasta": "package.json",
     "mudancas": 13
    },
    {
@@ -176,19 +176,19 @@
     "mudancas": 11
    },
    {
+    "pasta": "src/pages/admin",
+    "mudancas": 10
+   },
+   {
     "pasta": "desktop-agent/src/services",
     "mudancas": 9
    },
    {
-    "pasta": "src/pages/admin",
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 9
    },
    {
     "pasta": "scripts/ci/deno-check-baseline.json",
-    "mudancas": 8
-   },
-   {
-    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 8
    },
    {
@@ -223,18 +223,18 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": ".github/workflows/ci.yml",
     "mudancas": 11
    },
    {
-    "arquivo": "scripts/ci/deno-check-baseline.json",
-    "mudancas": 8
+    "arquivo": "src/components/AppSidebar.tsx",
+    "mudancas": 9
    },
    {
-    "arquivo": "src/components/AppSidebar.tsx",
+    "arquivo": "scripts/ci/deno-check-baseline.json",
     "mudancas": 8
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 242
+    "commits": 243
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1870,
-  "arquivos_codigo": 1414,
-  "linhas_codigo": 161839,
-  "rotas": 59,
+  "arquivos_total": 1873,
+  "arquivos_codigo": 1417,
+  "linhas_codigo": 162729,
+  "rotas": 60,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 472,
-  "hooks": 527,
+  "componentes": 473,
+  "hooks": 528,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 92,
+  "testes": 93,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 396,
-   "linhas": 46227
+   "linhas": 46229
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 482,
-   "linhas": 33080
+   "arquivos": 483,
+   "linhas": 33359
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 109,
-   "linhas": 22295
+   "arquivos": 110,
+   "linhas": 22673
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 444
+   "linhas": 456
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 60,
-   "linhas": 10911
+   "arquivos": 61,
+   "linhas": 11130
   },
   "src/types": {
    "arquivos": 57,
@@ -609,8 +609,8 @@
    "linhas": 456
   },
   {
-   "arquivo": "src/components/SessionPlayback.tsx",
-   "linhas": 454
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 456
   }
  ],
  "qualidade": {

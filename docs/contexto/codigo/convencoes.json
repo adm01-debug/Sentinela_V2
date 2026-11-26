@@ -3,15 +3,15 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (59)"
+   "src/pages (60)"
   ],
   "componentes": [
    "src/components (361)",
-   "src/pages (93)",
+   "src/pages (94)",
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (480)",
+   "src/hooks (481)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (59)",
+   "co-localizado (*.test) (60)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (472)"
+  ".tsx (473)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de retencao de dados em /admin/retention (#346)",
    "chore: guard de CI contra valor inexistente no enum app_role (#343)",
    "fix: area de gestor abria para qualquer usuario logado (#344)",
    "fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)",
-   "feat: preenche company_id automatico nas escritas de tenant (#339)",
-   "fix: tira super_admin inexistente dos gates de admin (#341)"
+   "feat: preenche company_id automatico nas escritas de tenant (#339)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

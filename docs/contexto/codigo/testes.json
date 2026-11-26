@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 92,
+ "total": 93,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 90
+  "unit": 91
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 59
+   "arquivos": 60
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -739,6 +739,16 @@
    "casos": 4
   },
   {
+   "arquivo": "src/test/retention-policies.test.tsx",
+   "tipo": "unit",
+   "linhas": 219,
+   "testa": [
+    "src/hooks/useRetentionPoliciesPage.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 9
+  },
+  {
    "arquivo": "src/test/roles.test.ts",
    "tipo": "unit",
    "linhas": 67,
@@ -966,6 +976,7 @@
   "src/hooks/usePagination.ts": 1,
   "src/hooks/usePolicies.ts": 1,
   "src/hooks/useReports.ts": 1,
+  "src/hooks/useRetentionPoliciesPage.ts": 1,
   "src/hooks/useSchema.ts": 1,
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
@@ -973,7 +984,7 @@
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 11,
+  "src/integrations/supabase/client.ts": 12,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1066,6 +1077,7 @@
    "src/pages/admin/MessageTemplatesPage.tsx",
    "src/pages/admin/MobileMonitoringPage.tsx",
    "src/pages/admin/RateLimitDashboardPage.tsx",
+   "src/pages/admin/RetentionPoliciesPage.tsx",
    "src/pages/admin/SensitiveKeywordsPage.tsx",
    "src/pages/admin/SessionRecordingsPage.tsx",
    "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",

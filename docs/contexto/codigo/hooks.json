@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 527,
+ "total": 528,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 77,
+   "usado_por": 78,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -7263,6 +7263,33 @@
    "usado_por": 0,
    "usado_por_arquivos": [],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useRetentionPoliciesPage.ts",
+   "hooks_exportados": [
+    "useRetentionPoliciesPage"
+   ],
+   "linhas": 279,
+   "dominio": "hooks",
+   "tabelas": [
+    "companies",
+    "data_retention_policies"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/RetentionPoliciesPage.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useRetry.ts",

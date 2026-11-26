@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 59,
+  "urls": 60,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 88
+  "lazy": 89
  },
  "urls": [
   {
@@ -700,6 +700,50 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 30
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/retention",
+   "componente": "RetentionPoliciesPage",
+   "arquivo": "src/pages/admin/RetentionPoliciesPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useRetentionPoliciesPage",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useRetentionPoliciesPage",
+    "useToast"
+   ],
+   "tabelas": [
+    "companies",
+    "data_retention_policies"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 28
   },
   {
    "protegida": true,
@@ -2976,6 +3020,7 @@
   "ReportDetailPage": "src/pages/ReportDetailPage.tsx",
   "ReportsPage": "src/pages/ReportsPage.tsx",
   "ResetPasswordPage": "src/pages/ResetPasswordPage.tsx",
+  "RetentionPoliciesPage": "src/pages/admin/RetentionPoliciesPage.tsx",
   "RolesPage": "src/pages/RolesPage.tsx",
   "ScheduledReportsPage": "src/pages/ScheduledReportsPage.tsx",
   "ScreenshotDetailPage": "src/pages/ScreenshotDetailPage.tsx",
