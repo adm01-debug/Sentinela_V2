@@ -5,11 +5,11 @@
   "vitest",
   "playwright"
  ],
- "total": 91,
+ "total": 92,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 89
+  "unit": 90
  },
  "onde_ficam": [
   {
@@ -22,7 +22,7 @@
   },
   {
    "padrao": "outro",
-   "arquivos": 9
+   "arquivos": 10
   },
   {
    "padrao": "e2e/",
@@ -93,6 +93,15 @@
     "scripts/lib/seguranca-processo.mjs"
    ],
    "casos": 37
+  },
+  {
+   "arquivo": "scripts/ci/role-enum-guard.unit.mjs",
+   "tipo": "unit",
+   "linhas": 127,
+   "testa": [
+    "scripts/ci/role-enum-guard.mjs"
+   ],
+   "casos": 13
   },
   {
    "arquivo": "scripts/ci/typecheck-ratchet.unit.mjs",
@@ -897,6 +906,7 @@
   "scripts/ci/edge-gate-guard.mjs": 1,
   "scripts/ci/format-ratchet.mjs": 1,
   "scripts/ci/lint-ratchet.mjs": 1,
+  "scripts/ci/role-enum-guard.mjs": 1,
   "scripts/ci/typecheck-ratchet.mjs": 1,
   "scripts/lib/seguranca-processo.mjs": 2,
   "src/components/AIInsightsPanel.tsx": 1,

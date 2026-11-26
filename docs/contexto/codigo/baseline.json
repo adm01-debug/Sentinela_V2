@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "43304268975f086703f346d4db4004bbb321ffaf",
+  "commit": "437a51b0bc28596f5dc31a5dd8bd4fe85debe738",
   "branch": "main",
-  "data_commit": "2026-11-25T20:51:07-03:00",
+  "data_commit": "2026-11-25T21:09:27-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "437a51b0b",
+    "data": "2026-11-25",
+    "assunto": "chore: guard de CI contra valor inexistente no enum app_role (#343)"
+   },
    {
     "sha": "433042689",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "976dba3a1",
     "data": "2026-11-25",
     "assunto": "fix: exige dono do relatorio e escopo de empresa na generate-report (#325)"
-   },
-   {
-    "sha": "31353a3c7",
-    "data": "2026-11-25",
-    "assunto": "fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)"
    }
   ],
-  "arquivos_mudados_7d": 356,
+  "arquivos_mudados_7d": 358,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -173,7 +173,7 @@
    },
    {
     "pasta": ".github/workflows/ci.yml",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "pasta": "desktop-agent/src/services",
@@ -227,7 +227,7 @@
    },
    {
     "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "scripts/ci/deno-check-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 241
+    "commits": 242
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1868,
-  "arquivos_codigo": 1412,
-  "linhas_codigo": 161465,
+  "arquivos_total": 1870,
+  "arquivos_codigo": 1414,
+  "linhas_codigo": 161839,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,9 +328,9 @@
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 91,
+  "testes": 92,
   "workflows": 14,
-  "scripts": 36,
+  "scripts": 37,
   "docs_md": 176
  },
  "por_pasta": {
@@ -395,8 +395,8 @@
    "linhas": 1458
   },
   "scripts/ci": {
-   "arquivos": 13,
-   "linhas": 4320
+   "arquivos": 15,
+   "linhas": 4694
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,
@@ -615,7 +615,7 @@
  ],
  "qualidade": {
   "any": 159,
-  "console_log": 70,
+  "console_log": 74,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 6,

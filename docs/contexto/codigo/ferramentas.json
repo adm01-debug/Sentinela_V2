@@ -8,7 +8,7 @@
    "SQL (130)",
    "JSON (45)",
    "YAML (37)",
-   "JavaScript (29)",
+   "JavaScript (31)",
    "Shell (22)",
    "HTML (4)"
   ],
@@ -136,7 +136,8 @@
     "deno-contract-tests",
     "deno-typecheck-ratchet",
     "agent-instructions-guard",
-    "edge-gate-guard"
+    "edge-gate-guard",
+    "role-enum-guard"
    ],
    "permissoes": [
     "contents: read"
@@ -146,6 +147,7 @@
     "scripts/ci/deno-check-ratchet.mjs",
     "scripts/ci/edge-gate-guard.mjs",
     "scripts/ci/lint-ratchet.mjs",
+    "scripts/ci/role-enum-guard.mjs",
     "scripts/ci/typecheck-ratchet.mjs",
     "scripts/generate-audit-pdf.js"
    ],

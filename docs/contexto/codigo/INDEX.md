@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `43304268975f086703f346d4db4004bbb321ffaf` (2026-11-25T20:51:07-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `437a51b0bc28596f5dc31a5dd8bd4fe85debe738` (2026-11-25T21:09:27-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1385), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (29), Shell (22), HTML (4)
+- linguagens: TypeScript (1385), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1868 |
-| arquivos_codigo | 1412 |
-| linhas_codigo | 161465 |
+| arquivos_total | 1870 |
+| arquivos_codigo | 1414 |
+| linhas_codigo | 161839 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,9 +48,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 126 |
 | cron_jobs | 5 |
-| testes | 91 |
+| testes | 92 |
 | workflows | 14 |
-| scripts | 36 |
+| scripts | 37 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
@@ -58,10 +58,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (361), src/pages (93), src/providers (8)
 - hooks: src/hooks (480), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (59), co-localizado (__tests__) (22), outro (9)
+- testes: co-localizado (*.test) (59), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
-- scripts: scripts/ci (7), scripts/ai-context (2), scripts/inventario (2)
+- scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
 - nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (100%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
@@ -269,7 +269,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/prettier-baseline.json (20)
 - .github/workflows/deploy.yml (19)
 - src/routes/AppRoutes.tsx (13)
-- .github/workflows/ci.yml (10)
+- .github/workflows/ci.yml (11)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
 - supabase/config.toml (8)
@@ -425,6 +425,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `437a51b0b` chore: guard de CI contra valor inexistente no enum app_role (#343)
 - 2026-11-25 `433042689` fix: area de gestor abria para qualquer usuario logado (#344)
 - 2026-11-25 `701a41206` fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)
 - 2026-11-25 `5a2118ffa` feat: preenche company_id automatico nas escritas de tenant (#339)
@@ -439,7 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `fffff3c15` fix: gate de admin no send-webhook (#337)
 - 2026-11-25 `183a97593` fix: identidade do JWT no notify-new-device (#336)
 - 2026-11-25 `5af2975df` fix: escopo de empresa no check-geofence (#335)
-- 2026-11-25 `4fdfa8fd4` fix: escopo de empresa e trava de URL no ocr-screenshot (#334)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
