@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "00693ffd4d0e45d2cad39ac4a7d42a5eb602e3d9",
+  "commit": "bca911c307b44cacda5e1a2c291ae45279ebe7a1",
   "branch": "main",
-  "data_commit": "2026-11-26T10:06:59-03:00",
+  "data_commit": "2026-11-26T10:30:59-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "bca911c30",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de dispositivos e sessoes ativas (#356)"
+   },
    {
     "sha": "00693ffd4",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "5af2975df",
     "data": "2026-11-25",
     "assunto": "fix: escopo de empresa no check-geofence (#335)"
-   },
-   {
-    "sha": "4fdfa8fd4",
-    "data": "2026-11-25",
-    "assunto": "fix: escopo de empresa e trava de URL no ocr-screenshot (#334)"
    }
   ],
-  "arquivos_mudados_7d": 386,
+  "arquivos_mudados_7d": 391,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 251
+    "commits": 252
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1897,
-  "arquivos_codigo": 1441,
-  "linhas_codigo": 172472,
+  "arquivos_total": 1899,
+  "arquivos_codigo": 1443,
+  "linhas_codigo": 173089,
   "rotas": 67,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 481,
+  "componentes": 482,
   "hooks": 536,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 101,
+  "testes": 102,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -423,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 397,
-   "linhas": 46456
+   "arquivos": 398,
+   "linhas": 46641
   },
   "src/constants": {
    "arquivos": 7,
@@ -444,7 +444,7 @@
   },
   "src/hooks": {
    "arquivos": 491,
-   "linhas": 36334
+   "linhas": 36467
   },
   "src/i18n": {
    "arquivos": 1,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 117,
-   "linhas": 25845
+   "linhas": 25861
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 69,
-   "linhas": 14419
+   "arquivos": 70,
+   "linhas": 14702
   },
   "src/types": {
    "arquivos": 57,

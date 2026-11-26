@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 101,
+ "total": 102,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 99
+  "unit": 100
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 68
+   "arquivos": 69
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -849,6 +849,16 @@
    "casos": 12
   },
   {
+   "arquivo": "src/test/session-devices.test.tsx",
+   "tipo": "unit",
+   "linhas": 283,
+   "testa": [
+    "src/hooks/useSessionManager.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 14
+  },
+  {
    "arquivo": "src/test/setup.ts",
    "tipo": "unit",
    "linhas": 101,
@@ -1067,6 +1077,7 @@
   "src/hooks/useRetentionPoliciesPage.ts": 1,
   "src/hooks/useSIEMPage.ts": 1,
   "src/hooks/useSchema.ts": 1,
+  "src/hooks/useSessionManager.ts": 1,
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
@@ -1074,7 +1085,7 @@
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 20,
+  "src/integrations/supabase/client.ts": 21,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1537,7 +1548,6 @@
    "src/hooks/useServiceWorker.ts",
    "src/hooks/useSession.ts",
    "src/hooks/useSessionActivity.ts",
-   "src/hooks/useSessionManager.ts",
    "src/hooks/useSessionStorage.ts",
    "src/hooks/useSet.ts",
    "src/hooks/useSettings.ts",

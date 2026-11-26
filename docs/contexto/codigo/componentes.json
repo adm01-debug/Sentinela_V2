@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 481,
+ "total": 482,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -3242,6 +3242,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/security/SessionDevicesPanel.tsx",
+   "exports": [
+    "SessionDevicesPanel"
+   ],
+   "export_default": "SessionDevicesPanel",
+   "linhas": 184,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useSessionManager"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/security/SessionHistoryTab.tsx",
    "exports": [
     "LoginEvent",
@@ -3796,7 +3812,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 33,
+   "usado_por": 34,
    "orfao": false
   },
   {
@@ -3813,7 +3829,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 17,
+   "usado_por": 18,
    "orfao": false
   },
   {
@@ -3846,7 +3862,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 159,
+   "usado_por": 160,
    "orfao": false
   },
   {
@@ -3909,7 +3925,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 199,
+   "usado_por": 200,
    "orfao": false
   },
   {
@@ -5321,7 +5337,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 75,
+   "usado_por": 76,
    "orfao": false
   },
   {
@@ -5474,7 +5490,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 33,
+   "usado_por": 34,
    "orfao": false
   },
   {
@@ -7667,7 +7683,7 @@
     "SecuritySettingsPage"
    ],
    "export_default": "SecuritySettingsPage",
-   "linhas": 67,
+   "linhas": 83,
    "dominio": "pages",
    "hooks_locais": [],
    "tabelas": [],

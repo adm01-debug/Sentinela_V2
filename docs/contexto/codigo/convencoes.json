@@ -6,7 +6,7 @@
    "src/pages (67)"
   ],
   "componentes": [
-   "src/components (362)",
+   "src/components (363)",
    "src/pages (101)",
    "src/providers (8)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (68)",
+   "co-localizado (*.test) (69)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (481)"
+  ".tsx (482)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de dispositivos e sessoes ativas (#356)",
    "feat: tela de feature flags em /admin/feature-flags (#354)",
    "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)",
    "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)",
-   "﻿feat: tela de conectores SIEM em /admin/siem (#351)",
-   "feat: tela de detalhe de digitacao em /admin/keystrokes (#350)"
+   "﻿feat: tela de conectores SIEM em /admin/siem (#351)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

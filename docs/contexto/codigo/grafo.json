@@ -1,12 +1,12 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1340,
- "arestas": 3055,
+ "nos": 1341,
+ "arestas": 3064,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 228
+   "importado_por": 229
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -14,7 +14,7 @@
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 199
+   "importado_por": 200
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 159
+   "importado_por": 160
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -34,7 +34,7 @@
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 75
+   "importado_por": 76
   },
   {
    "arquivo": "src/components/ui/label.tsx",
@@ -66,11 +66,11 @@
   },
   {
    "arquivo": "src/components/ui/alert-dialog.tsx",
-   "importado_por": 33
+   "importado_por": 34
   },
   {
    "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 33
+   "importado_por": 34
   },
   {
    "arquivo": "src/components/ui/switch.tsx",
@@ -105,11 +105,11 @@
    "importado_por": 20
   },
   {
-   "arquivo": "src/components/Skeleton.tsx",
-   "importado_por": 17
+   "arquivo": "src/components/ui/alert.tsx",
+   "importado_por": 18
   },
   {
-   "arquivo": "src/components/ui/alert.tsx",
+   "arquivo": "src/components/Skeleton.tsx",
    "importado_por": 17
   },
   {

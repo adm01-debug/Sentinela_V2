@@ -1358,6 +1358,15 @@
   "src/components/security/SecurityStats.tsx": [
    "src/components/ui/card.tsx"
   ],
+  "src/components/security/SessionDevicesPanel.tsx": [
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useSessionManager.ts"
+  ],
   "src/components/security/SessionHistoryTab.tsx": [
    "src/components/ui/card.tsx",
    "src/components/ui/scroll-area.tsx"
@@ -1427,6 +1436,7 @@
    "src/components/security/SecurityEventCard.tsx",
    "src/components/security/SecurityIndicators.tsx",
    "src/components/security/SecurityStats.tsx",
+   "src/components/security/SessionDevicesPanel.tsx",
    "src/components/security/SessionIndicator.tsx",
    "src/components/security/SessionTimeoutWarning.tsx",
    "src/components/security/UnifiedMFAPanel.tsx",
@@ -3497,6 +3507,7 @@
    "src/components/MFASettings.tsx",
    "src/components/layout/PageHeader.tsx",
    "src/components/security/ChangePasswordForm.tsx",
+   "src/components/security/SessionDevicesPanel.tsx",
    "src/components/ui/card.tsx"
   ],
   "src/pages/Settings.tsx": [

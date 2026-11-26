@@ -8298,7 +8298,7 @@
    "hooks_exportados": [
     "useSessionManager"
    ],
-   "linhas": 64,
+   "linhas": 197,
    "dominio": "hooks",
    "tabelas": [
     "user_sessions"
@@ -8306,14 +8306,16 @@
    "rpcs": [],
    "edges": [],
    "hooks_internos": [
-    "useCallback",
-    "useEffect",
-    "useState"
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
-   "coberto_por_testes": 0
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/security/SessionDevicesPanel.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useSessionStorage.ts",
