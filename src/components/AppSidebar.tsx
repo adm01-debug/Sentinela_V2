@@ -128,6 +128,8 @@ const navSections: NavSection[] = [
       { icon: FileText, labelKey: "nav.reports", path: ROUTES.REPORTS },
       { icon: FileText, labelKey: "Relatórios Agendados", path: "/reports/scheduled" },
       { icon: Brain, labelKey: "nav.aiAnalysis", path: "/ai-analysis" },
+      { icon: Brain, labelKey: "Recomendações IA", path: ROUTES.AI_RECOMMENDATIONS },
+      { icon: BarChart3, labelKey: "Previsão de Tendências", path: ROUTES.AI_TRENDS },
     ],
   },
   {
