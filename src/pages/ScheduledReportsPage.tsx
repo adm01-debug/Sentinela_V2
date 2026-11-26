@@ -1,4 +1,4 @@
-import { Plus, Clock, Calendar, Mail, Play, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Clock, Calendar, Mail, Play, Pencil, Trash2, Search, History } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -78,6 +78,10 @@ export default function ScheduledReportsPage() {
     handleAddRecipient,
     handleRemoveRecipient,
     handleRunNow,
+    executions,
+    executionsLoading,
+    executionsError,
+    executionLimit,
     REPORT_TYPES: reportTypes,
   } = useScheduledReportsPage();
 
@@ -245,6 +249,64 @@ export default function ScheduledReportsPage() {
           ))}
         </div>
       )}
+
+      {/* Ultimas execucoes -- report_logs gravado pela edge send-scheduled-report */}
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="flex items-center gap-2 text-sm font-medium">
+            <History className="text-muted-foreground h-4 w-4" />
+            Últimas execuções
+          </h2>
+          <span className="text-muted-foreground text-xs">
+            Até {executionLimit} registros · a edge de envio registra execuções concluídas
+          </span>
+        </div>
+        {executionsError ? (
+          <Card>
+            <CardContent className="text-destructive py-6 text-center text-sm">
+              {executionsError}
+            </CardContent>
+          </Card>
+        ) : executionsLoading ? (
+          <Skeleton className="h-24" />
+        ) : executions.length === 0 ? (
+          <Card>
+            <CardContent className="text-muted-foreground py-8 text-center text-sm">
+              Nenhuma execução registrada ainda. Use &quot;Executar&quot; em um agendamento para
+              gerar o primeiro registro.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-2">
+            {executions.map((execution) => (
+              <Card key={execution.id}>
+                <CardContent className="flex flex-wrap items-center justify-between gap-3 p-3 text-sm">
+                  <div className="min-w-0">
+                    <p className="truncate font-medium">{execution.report_name}</p>
+                    <p className="text-muted-foreground text-xs">
+                      {formatDistanceToNow(new Date(execution.executed_at), {
+                        addSuffix: true,
+                        locale: ptBR,
+                      })}
+                      {" · "}
+                      {execution.manual ? "manual" : "agendada"}
+                      {" · "}
+                      {execution.records_count}{" "}
+                      {execution.records_count === 1 ? "registro" : "registros"}
+                    </p>
+                    {execution.error_message && (
+                      <p className="text-destructive text-xs">{execution.error_message}</p>
+                    )}
+                  </div>
+                  <Badge variant={execution.status === "success" ? "secondary" : "destructive"}>
+                    {execution.status === "success" ? "Sucesso" : execution.status}
+                  </Badge>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Create/Edit Dialog */}
       <Dialog
