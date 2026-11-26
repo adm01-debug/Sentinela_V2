@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 479,
+ "total": 480,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -674,7 +674,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 441,
+   "linhas": 443,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1921,7 +1921,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 13,
+   "usado_por": 14,
    "orfao": false
   },
   {
@@ -2204,7 +2204,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 56,
+   "usado_por": 57,
    "orfao": false
   },
   {
@@ -3796,7 +3796,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 31,
+   "usado_por": 32,
    "orfao": false
   },
   {
@@ -3813,7 +3813,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 15,
+   "usado_por": 16,
    "orfao": false
   },
   {
@@ -3846,7 +3846,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 157,
+   "usado_por": 158,
    "orfao": false
   },
   {
@@ -3909,7 +3909,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 197,
+   "usado_por": 198,
    "orfao": false
   },
   {
@@ -3944,7 +3944,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 200,
+   "usado_por": 201,
    "orfao": false
   },
   {
@@ -4213,7 +4213,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 60,
+   "usado_por": 61,
    "orfao": false
   },
   {
@@ -4609,7 +4609,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 97,
+   "usado_por": 98,
    "orfao": false
   },
   {
@@ -4640,7 +4640,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 71,
+   "usado_por": 72,
    "orfao": false
   },
   {
@@ -5214,7 +5214,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 67,
+   "usado_por": 68,
    "orfao": false
   },
   {
@@ -5321,7 +5321,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 73,
+   "usado_por": 74,
    "orfao": false
   },
   {
@@ -5474,7 +5474,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 31,
+   "usado_por": 32,
    "orfao": false
   },
   {
@@ -5534,7 +5534,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 20,
+   "usado_por": 21,
    "orfao": false
   },
   {
@@ -6240,6 +6240,22 @@
    "hooks_locais": [
     "useChartColors",
     "useDisputeMetrics"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/DlpFingerprintsPage.tsx",
+   "exports": [
+    "DlpFingerprintsPage"
+   ],
+   "export_default": "DlpFingerprintsPage",
+   "linhas": 530,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useDlpFingerprintsPage"
    ],
    "tabelas": [],
    "edges": [],
@@ -8001,7 +8017,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 512,
+   "linhas": 523,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

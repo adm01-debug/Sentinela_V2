@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 534,
+ "total": 535,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 82,
+   "usado_por": 83,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -178,6 +178,7 @@
     "src/hooks/useBlockedIPs.ts",
     "src/hooks/useDataExportPage.ts",
     "src/hooks/useDevicesPage.ts",
+    "src/hooks/useDlpFingerprintsPage.ts",
     "src/hooks/useEmployeeDetailPage.ts",
     "src/hooks/useEmployeeSchedules.ts",
     "src/hooks/useEmployees.ts",
@@ -190,8 +191,7 @@
     "src/hooks/useInternetAccessPage.ts",
     "src/hooks/useMFA.ts",
     "src/hooks/useMFAPhone.ts",
-    "src/hooks/useMessageTemplates.ts",
-    "src/hooks/useMessageTemplatesPage.ts"
+    "src/hooks/useMessageTemplates.ts"
    ],
    "coberto_por_testes": 0
   },
@@ -2649,6 +2649,34 @@
     "src/components/disputes/SlaAlertsBadge.tsx"
    ],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useDlpFingerprintsPage.ts",
+   "hooks_exportados": [
+    "useDlpFingerprintsPage"
+   ],
+   "linhas": 491,
+   "dominio": "hooks",
+   "tabelas": [
+    "dlp_fingerprints"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/DlpFingerprintsPage.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useDLPRedactionLogPage.ts",

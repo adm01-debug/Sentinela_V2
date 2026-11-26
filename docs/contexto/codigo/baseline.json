@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "e6344bb69fec865fba79b69946afac23c681a596",
+  "commit": "2c86ad5c981e0304ee09e3758c72052de21cf178",
   "branch": "main",
-  "data_commit": "2026-11-26T09:29:33-03:00",
+  "data_commit": "2026-11-26T09:40:10-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2c86ad5c9",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)"
+   },
    {
     "sha": "e6344bb69",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "a90ee69b7",
     "data": "2026-11-25",
     "assunto": "fix: escopo de empresa no notify-dispute-decision (#333)"
-   },
-   {
-    "sha": "48ac518be",
-    "data": "2026-11-25",
-    "assunto": "fix: exige admin no send-whatsapp (#332)"
    }
   ],
-  "arquivos_mudados_7d": 380,
+  "arquivos_mudados_7d": 383,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -156,24 +156,24 @@
     "mudancas": 20
    },
    {
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 20
+   },
+   {
     "pasta": ".github/workflows/deploy.yml",
     "mudancas": 19
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 19
+    "pasta": "src/pages/admin",
+    "mudancas": 16
    },
    {
     "pasta": "package-lock.json",
     "mudancas": 15
    },
    {
-    "pasta": "src/pages/admin",
-    "mudancas": 15
-   },
-   {
     "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "pasta": "package.json",
@@ -218,16 +218,16 @@
     "mudancas": 20
    },
    {
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 20
+   },
+   {
     "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 19
    },
    {
-    "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 19
-   },
-   {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 249
+    "commits": 250
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1891,
-  "arquivos_codigo": 1435,
-  "linhas_codigo": 169909,
-  "rotas": 65,
+  "arquivos_total": 1894,
+  "arquivos_codigo": 1438,
+  "linhas_codigo": 171475,
+  "rotas": 66,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 479,
-  "hooks": 534,
+  "componentes": 480,
+  "hooks": 535,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 99,
+  "testes": 100,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46452
+   "linhas": 46454
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 489,
-   "linhas": 35552
+   "arquivos": 490,
+   "linhas": 36043
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 115,
-   "linhas": 24957
+   "arquivos": 116,
+   "linhas": 25487
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 512
+   "linhas": 523
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 67,
-   "linhas": 13552
+   "arquivos": 68,
+   "linhas": 14084
   },
   "src/types": {
    "arquivos": 57,
@@ -565,6 +565,10 @@
    "linhas": 541
   },
   {
+   "arquivo": "src/pages/admin/DlpFingerprintsPage.tsx",
+   "linhas": 530
+  },
+  {
    "arquivo": "src/pages/admin/RateLimitDashboardPage.tsx",
    "linhas": 528
   },
@@ -578,7 +582,7 @@
   },
   {
    "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 512
+   "linhas": 523
   },
   {
    "arquivo": "src/pages/WebhooksPage.tsx",
@@ -587,6 +591,10 @@
   {
    "arquivo": "supabase/functions/slack-notify/index.ts",
    "linhas": 501
+  },
+  {
+   "arquivo": "src/hooks/useDlpFingerprintsPage.ts",
+   "linhas": 491
   },
   {
    "arquivo": "src/pages/Auth.tsx",
@@ -603,14 +611,6 @@
   {
    "arquivo": "src/components/ScreenCapturesCard.tsx",
    "linhas": 474
-  },
-  {
-   "arquivo": "src/pages/admin/MessageTemplatesPage.tsx",
-   "linhas": 470
-  },
-  {
-   "arquivo": "desktop-agent/src/main.ts",
-   "linhas": 468
   }
  ],
  "qualidade": {
@@ -619,7 +619,7 @@
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 6,
-  "arquivos_acima_500_linhas": 19
+  "arquivos_acima_500_linhas": 20
  },
  "todos": [
   {

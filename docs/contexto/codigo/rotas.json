@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 65,
+  "urls": 66,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 94
+  "lazy": 95
  },
  "urls": [
   {
@@ -260,6 +260,52 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 29
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dlp/fingerprints",
+   "componente": "DlpFingerprintsPage",
+   "arquivo": "src/pages/admin/DlpFingerprintsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useDlpFingerprintsPage",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useDlpFingerprintsPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "dlp_fingerprints"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 32
   },
   {
    "protegida": true,
@@ -3222,6 +3268,7 @@
   "DevicesPage": "src/pages/DevicesPage.tsx",
   "DisputeEscalationAuditPage": "src/pages/admin/DisputeEscalationAuditPage.tsx",
   "DisputeMetricsPage": "src/pages/admin/DisputeMetricsPage.tsx",
+  "DlpFingerprintsPage": "src/pages/admin/DlpFingerprintsPage.tsx",
   "EdgeFunctionDashboard": "src/pages/admin/EdgeFunctionDashboard.tsx",
   "EmployeeCreatePage": "src/pages/EmployeeCreatePage.tsx",
   "EmployeeDetailPage": "src/pages/EmployeeDetailPage.tsx",
