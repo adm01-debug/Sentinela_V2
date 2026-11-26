@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 529,
+ "total": 530,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -2649,6 +2649,31 @@
     "src/components/disputes/SlaAlertsBadge.tsx"
    ],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useDLPRedactionLogPage.ts",
+   "hooks_exportados": [
+    "useDLPRedactionLogPage"
+   ],
+   "linhas": 170,
+   "dominio": "hooks",
+   "tabelas": [
+    "companies",
+    "dlp_redaction_log"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useMemo",
+    "useQuery",
+    "useState"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/DLPRedactionLogPage.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useDocumentTitle.ts",

@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1326,
- "arestas": 2931,
+ "nos": 1328,
+ "arestas": 2943,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 214
+   "importado_por": 216
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 195
+   "importado_por": 196
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 192
+   "importado_por": 193
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 152
+   "importado_por": 153
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -38,11 +38,11 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 66
+   "importado_por": 67
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 62
+   "importado_por": 63
   },
   {
    "arquivo": "src/lib/logger.ts",
@@ -54,11 +54,11 @@
   },
   {
    "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 51
+   "importado_por": 52
   },
   {
    "arquivo": "src/lib/queryClient.ts",
-   "importado_por": 46
+   "importado_por": 47
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
@@ -82,7 +82,7 @@
   },
   {
    "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 26
+   "importado_por": 27
   },
   {
    "arquivo": "src/utils/cn.ts",

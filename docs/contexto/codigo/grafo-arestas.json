@@ -2284,6 +2284,10 @@
   "src/hooks/useCompliance.ts": [
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useDLPRedactionLogPage.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useDailyJourney.ts": [
    "src/components/timeline/DailyJourneyTimeline.tsx",
    "src/integrations/supabase/client.ts"
@@ -3664,6 +3668,17 @@
    "src/hooks/use-toast.ts",
    "src/integrations/supabase/client.ts"
   ],
+  "src/pages/admin/DLPRedactionLogPage.tsx": [
+   "src/components/EmptyStates.tsx",
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useDLPRedactionLogPage.ts"
+  ],
   "src/pages/admin/DisputeEscalationAuditPage.tsx": [
    "src/components/admin/SlackDlqCard.tsx",
    "src/components/admin/SlackFallbackHistoryCard.tsx",
@@ -4032,6 +4047,7 @@
    "src/pages/admin/AcknowledgmentReportPage.tsx",
    "src/pages/admin/DLPIncidentsPage.tsx",
    "src/pages/admin/DLPPoliciesPage.tsx",
+   "src/pages/admin/DLPRedactionLogPage.tsx",
    "src/pages/admin/DisputeEscalationAuditPage.tsx",
    "src/pages/admin/DisputeMetricsPage.tsx",
    "src/pages/admin/EdgeFunctionDashboard.tsx",

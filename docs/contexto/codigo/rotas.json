@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 60,
+  "urls": 61,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 89
+  "lazy": 90
  },
  "urls": [
   {
@@ -369,6 +369,43 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 22
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dlp/redactions",
+   "componente": "DLPRedactionLogPage",
+   "arquivo": "src/pages/admin/DLPRedactionLogPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useDLPRedactionLogPage",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useDLPRedactionLogPage",
+    "useQuery"
+   ],
+   "tabelas": [
+    "companies",
+    "dlp_redaction_log"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 24
   },
   {
    "protegida": true,
@@ -2994,6 +3031,7 @@
   "CustomReportsPage": "src/pages/CustomReportsPage.tsx",
   "DLPIncidentsPage": "src/pages/admin/DLPIncidentsPage.tsx",
   "DLPPoliciesPage": "src/pages/admin/DLPPoliciesPage.tsx",
+  "DLPRedactionLogPage": "src/pages/admin/DLPRedactionLogPage.tsx",
   "DashboardPage": "src/pages/DashboardPage.tsx",
   "DataExportPage": "src/pages/DataExportPage.tsx",
   "DepartmentDetailPage": "src/pages/DepartmentDetailPage.tsx",

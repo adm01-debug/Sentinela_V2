@@ -3,15 +3,15 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (60)"
+   "src/pages (61)"
   ],
   "componentes": [
    "src/components (362)",
-   "src/pages (94)",
+   "src/pages (95)",
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (482)",
+   "src/hooks (483)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (61)",
+   "co-localizado (*.test) (62)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (474)"
+  ".tsx (475)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de log de redacoes DLP em /admin/dlp/redactions (#348)",
    "feat: historico de acoes da violacao em violation_actions (#347)",
    "feat: tela de retencao de dados em /admin/retention (#346)",
    "chore: guard de CI contra valor inexistente no enum app_role (#343)",
-   "fix: area de gestor abria para qualquer usuario logado (#344)",
-   "fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)"
+   "fix: area de gestor abria para qualquer usuario logado (#344)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -252,7 +252,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 201,
+   "usado_por": 202,
    "usado_por_modulos": [
     "components",
     "components/admin",
@@ -273,7 +273,7 @@
     "stores",
     "utils"
    ],
-   "coberto_por_testes": 13,
+   "coberto_por_testes": 14,
    "orfao": false
   },
   {
@@ -738,7 +738,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 46,
+   "usado_por": 47,
    "usado_por_modulos": [
     "components/layout",
     "components/security",

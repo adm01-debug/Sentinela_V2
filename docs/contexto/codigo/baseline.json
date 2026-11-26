@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "715b6b837f40cebc4bc617b2763185bc638952c2",
+  "commit": "f99bf784bb165addacd7b81b99587a682cd8b766",
   "branch": "main",
-  "data_commit": "2026-11-26T07:46:18-03:00",
+  "data_commit": "2026-11-26T08:06:43-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "f99bf784b",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de log de redacoes DLP em /admin/dlp/redactions (#348)"
+   },
    {
     "sha": "715b6b837",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "8b6e821af",
     "data": "2026-11-25",
     "assunto": "fix: admin so pontua funcionario da propria empresa (#328)"
-   },
-   {
-    "sha": "ef7078fc3",
-    "data": "2026-11-25",
-    "assunto": "fix: exige admin e escopo de empresa no send-scheduled-report (#327)"
    }
   ],
-  "arquivos_mudados_7d": 365,
+  "arquivos_mudados_7d": 368,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -165,7 +165,7 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "pasta": "package.json",
@@ -177,14 +177,14 @@
    },
    {
     "pasta": "src/pages/admin",
+    "mudancas": 11
+   },
+   {
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 10
    },
    {
     "pasta": "desktop-agent/src/services",
-    "mudancas": 9
-   },
-   {
-    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 9
    },
    {
@@ -223,7 +223,7 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -231,7 +231,7 @@
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "scripts/ci/deno-check-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 244
+    "commits": 245
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1876,
-  "arquivos_codigo": 1420,
-  "linhas_codigo": 163405,
-  "rotas": 60,
+  "arquivos_total": 1879,
+  "arquivos_codigo": 1423,
+  "linhas_codigo": 164070,
+  "rotas": 61,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 474,
-  "hooks": 529,
+  "componentes": 475,
+  "hooks": 530,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 94,
+  "testes": 95,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46443
+   "linhas": 46445
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 484,
-   "linhas": 33573
+   "arquivos": 485,
+   "linhas": 33743
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 110,
-   "linhas": 22679
+   "arquivos": 111,
+   "linhas": 22913
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 456
+   "linhas": 467
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 62,
-   "linhas": 11370
+   "arquivos": 63,
+   "linhas": 11618
   },
   "src/types": {
    "arquivos": 57,
@@ -597,6 +597,10 @@
    "linhas": 467
   },
   {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 467
+  },
+  {
    "arquivo": "src/components/ActivityFeed.tsx",
    "linhas": 461
   },
@@ -606,10 +610,6 @@
   },
   {
    "arquivo": "src/components/NotificationCenter.tsx",
-   "linhas": 456
-  },
-  {
-   "arquivo": "src/routes/AppRoutes.tsx",
    "linhas": 456
   }
  ],
