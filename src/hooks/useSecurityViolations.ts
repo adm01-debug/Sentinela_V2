@@ -2,18 +2,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { queryKeys, queryPresets, CACHE_TIMES } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { actionForStatus, recordViolationAction } from "@/hooks/useViolationActions";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 export type ViolationStatus =
-  | "open"
-  | "acknowledged"
-  | "investigating"
-  | "resolved"
-  | "dismissed"
-  | "escalated";
+  "open" | "acknowledged" | "investigating" | "resolved" | "dismissed" | "escalated";
 
 export interface SecurityViolation {
   id: string;
@@ -101,9 +97,9 @@ export function useViolation(id: string | null | undefined) {
     queryKey: queryKeys.violations.detail(id!),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('security_violations')
-        .select('*')
-        .eq('id', id)
+        .from("security_violations")
+        .select("*")
+        .eq("id", id)
         .maybeSingle();
 
       if (error) throw error;
@@ -118,7 +114,11 @@ export function useUnreadViolationsCount() {
   return useQuery({
     queryKey: queryKeys.violations.unread(),
     queryFn: fetchUnreadCount,
-    ...(queryPresets as { realtime?: { staleTime?: number; gcTime?: number; refetchInterval?: number } }).realtime,
+    ...(
+      queryPresets as {
+        realtime?: { staleTime?: number; gcTime?: number; refetchInterval?: number };
+      }
+    ).realtime,
   });
 }
 
@@ -133,16 +133,16 @@ export function useViolationStats() {
       const stats = {
         total: data?.length || 0,
         bySeverity: {
-          critical: data?.filter((v) => v.severity === 'critical').length || 0,
-          high: data?.filter((v) => v.severity === 'high').length || 0,
-          medium: data?.filter((v) => v.severity === 'medium').length || 0,
-          low: data?.filter((v) => v.severity === 'low').length || 0,
+          critical: data?.filter((v) => v.severity === "critical").length || 0,
+          high: data?.filter((v) => v.severity === "high").length || 0,
+          medium: data?.filter((v) => v.severity === "medium").length || 0,
+          low: data?.filter((v) => v.severity === "low").length || 0,
         },
         byStatus: {
-          open: data?.filter((v) => v.status === 'open').length || 0,
-          investigating: data?.filter((v) => v.status === 'investigating').length || 0,
-          resolved: data?.filter((v) => v.status === 'resolved').length || 0,
-          dismissed: data?.filter((v) => v.status === 'dismissed').length || 0,
+          open: data?.filter((v) => v.status === "open").length || 0,
+          investigating: data?.filter((v) => v.status === "investigating").length || 0,
+          resolved: data?.filter((v) => v.status === "resolved").length || 0,
+          dismissed: data?.filter((v) => v.status === "dismissed").length || 0,
         },
       };
 
@@ -164,6 +164,7 @@ export function useUpdateViolationStatus() {
     mutationFn: async ({
       id,
       status,
+      notes,
     }: {
       id: string;
       status: SecurityViolation["status"];
@@ -175,6 +176,13 @@ export function useUpdateViolationStatus() {
         updates.resolved_at = new Date().toISOString();
       }
 
+      // O historico da violacao (violation_actions) precisa do status anterior.
+      const { data: current } = await supabase
+        .from("security_violations")
+        .select("status")
+        .eq("id", id)
+        .maybeSingle();
+
       const { data, error } = await supabase
         .from("security_violations")
         .update(updates)
@@ -183,6 +191,21 @@ export function useUpdateViolationStatus() {
         .maybeSingle();
 
       if (error) throw error;
+
+      // Auditoria: toda mudança de status vira uma linha em violation_actions.
+      if (data) {
+        await recordViolationAction({
+          violationId: id,
+          actionType: actionForStatus(status) ?? status,
+          notes: notes ?? null,
+          previousStatus: (current as { status?: string } | null)?.status ?? null,
+          newStatus: status,
+        }).catch((auditError: Error) => {
+          // O status já foi gravado; falha de histórico não pode desfazer a operação.
+          console.warn("Falha ao registrar historico da violacao:", auditError.message);
+        });
+      }
+
       return data;
     },
 
@@ -201,7 +224,6 @@ export function useUpdateViolationStatus() {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
           previousViolations.map((v) =>
-
             v.id === id
               ? {
                   ...v,
@@ -242,12 +264,12 @@ export function useUpdateViolationStatus() {
 
     onSuccess: (data) => {
       const statusText: Record<ViolationStatus, string> = {
-        open: 'aberta',
-        acknowledged: 'reconhecida',
-        investigating: 'em investigação',
-        resolved: 'resolvida',
-        dismissed: 'descartada',
-        escalated: 'escalada',
+        open: "aberta",
+        acknowledged: "reconhecida",
+        investigating: "em investigação",
+        resolved: "resolvida",
+        dismissed: "descartada",
+        escalated: "escalada",
       };
       toast({
         title: "Status atualizado",
@@ -287,9 +309,7 @@ export function useBulkUpdateViolations() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v) =>
-            ids.includes(v.id) ? { ...v, status } : v
-          )
+          previousViolations.map((v) => (ids.includes(v.id) ? { ...v, status } : v))
         );
       }
 
@@ -330,10 +350,7 @@ export function useDeleteViolation() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('security_violations')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("security_violations").delete().eq("id", id);
 
       if (error) throw error;
       return id;

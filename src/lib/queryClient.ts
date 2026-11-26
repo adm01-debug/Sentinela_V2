@@ -63,6 +63,8 @@ export const queryKeys = {
     unread: () => [...queryKeys.violations.all, "unread"] as const,
     comments: (violationId: string) =>
       [...queryKeys.violations.all, "comments", violationId] as const,
+    actions: (violationId: string) =>
+      [...queryKeys.violations.all, "actions", violationId] as const,
   },
   dashboard: {
     all: ["dashboard"] as const,

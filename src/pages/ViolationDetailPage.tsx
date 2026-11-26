@@ -18,6 +18,7 @@ import { Skeleton } from "@/components/Skeleton";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useViolation, useUpdateViolationStatus } from "@/hooks/useSecurityViolations";
 import { ViolationCommentsPanel } from "@/components/ViolationCommentsPanel";
+import { ViolationActionsTimeline } from "@/components/ViolationActionsTimeline";
 import { ViolationTimelineDialog } from "@/components/violations/ViolationTimelineDialog";
 import { ViolationDisputeDialog } from "@/components/violations/ViolationDisputeDialog";
 import { DISPUTE_STATUS_LABEL, type DisputeStatus } from "@/hooks/useViolationDisputes";
@@ -253,6 +254,11 @@ export default function ViolationDetailPage() {
                 />
               </CardContent>
             </Card>
+
+            <ViolationActionsTimeline
+              violationId={violation.id}
+              currentStatus={violation.status ?? "open"}
+            />
           </div>
         </div>
       )}
