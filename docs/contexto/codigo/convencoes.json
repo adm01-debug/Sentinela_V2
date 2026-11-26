@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(deploy): destrava o db push e o config.toml que impediam migrate e deploy-functions (#374)",
    "fix: historico de entrada e saida das cercas e estado por funcionario (#371)",
    "fix: restaura RLS das telas de usuarios/departamentos e remove usuario de verdade (#367)",
    "fix: fecha escrita aberta da gamificacao e escopa RLS por empresa (#366)",
-   "chore: remove tabelas de configuracao duplicadas sem consumidor (#365)",
-   "chore: guarda de CI contra objeto no banco sem migration (#359)"
+   "chore: remove tabelas de configuracao duplicadas sem consumidor (#365)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

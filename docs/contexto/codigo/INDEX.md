@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1b3d0a4e9ee4696eec51b6ee75e9c3a08b2e4797` (2026-11-26T18:06:43-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `0dca49beb38665858326e720730dffe880749e6f` (2026-11-26T18:32:49-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -282,7 +282,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/deploy.yml (19)
 - src/components/AppSidebar.tsx (18)
 - .github/workflows/ci.yml (12)
-- supabase/config.toml (9)
+- supabase/config.toml (10)
 - scripts/ci/deno-check-baseline.json (8)
 - docs/prod-readiness.md (7)
 - supabase/functions/_shared/auth.ts (6)
@@ -436,6 +436,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `0dca49beb` fix(deploy): destrava o db push e o config.toml que impediam migrate e deploy-functions (#374)
 - 2026-11-26 `1b3d0a4e9` fix: historico de entrada e saida das cercas e estado por funcionario (#371)
 - 2026-11-26 `f640365d7` fix: restaura RLS das telas de usuarios/departamentos e remove usuario de verdade (#367)
 - 2026-11-26 `27a75bbbf` fix: fecha escrita aberta da gamificacao e escopa RLS por empresa (#366)
@@ -450,7 +451,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `8d79d8e84` fix: escopo de empresa na policy de slack_integrations (#345)
 - 2026-11-26 `eb69d53fa` feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)
 - 2026-11-26 `300eb471d` feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)
-- 2026-11-26 `eb313b63c` feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

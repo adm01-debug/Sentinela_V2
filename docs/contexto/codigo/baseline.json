@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1b3d0a4e9ee4696eec51b6ee75e9c3a08b2e4797",
+  "commit": "0dca49beb38665858326e720730dffe880749e6f",
   "branch": "main",
-  "data_commit": "2026-11-26T18:06:43-03:00",
+  "data_commit": "2026-11-26T18:32:49-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "0dca49beb",
+    "data": "2026-11-26",
+    "assunto": "fix(deploy): destrava o db push e o config.toml que impediam migrate e deploy-functions (#374)"
+   },
    {
     "sha": "1b3d0a4e9",
     "data": "2026-11-26",
@@ -126,11 +131,6 @@
     "sha": "824cca877",
     "data": "2026-11-26",
     "assunto": "feat: tela de detalhe de digitacao em /admin/keystrokes (#350)"
-   },
-   {
-    "sha": "1b3c384f6",
-    "data": "2026-11-26",
-    "assunto": "feat: tela de isencoes do aceite de politicas em /admin/policy-exemptions (#349)"
    }
   ],
   "arquivos_mudados_7d": 439,
@@ -184,11 +184,11 @@
     "mudancas": 12
    },
    {
-    "pasta": "desktop-agent/src/services",
-    "mudancas": 9
+    "pasta": "supabase/config.toml",
+    "mudancas": 10
    },
    {
-    "pasta": "supabase/config.toml",
+    "pasta": "desktop-agent/src/services",
     "mudancas": 9
    },
    {
@@ -235,7 +235,7 @@
    },
    {
     "arquivo": "supabase/config.toml",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "scripts/ci/deno-check-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 270
+    "commits": 271
    },
    {
     "autor": "dependabot[bot]",
