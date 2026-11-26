@@ -51,6 +51,7 @@ import {
   Book,
   Wifi,
   CalendarClock,
+  ShieldOff,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUIStore } from "@/stores";
@@ -168,6 +169,7 @@ const navSections: NavSection[] = [
       { icon: Gauge, labelKey: "Telemetria de Queries", path: "/admin/telemetria" },
       { icon: ShieldAlert, labelKey: "Politicas DLP", path: "/admin/dlp/policies" },
       { icon: AlertOctagon, labelKey: "Incidentes DLP", path: "/admin/dlp/incidents" },
+      { icon: ShieldOff, labelKey: "Log de Redações DLP", path: "/admin/dlp/redactions" },
       { icon: ShieldAlert, labelKey: "Palavras Sensiveis", path: "/admin/dlp/keywords" },
       { icon: CalendarClock, labelKey: "Retencao de Dados", path: "/admin/retention" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
