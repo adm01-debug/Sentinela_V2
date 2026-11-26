@@ -188,12 +188,39 @@ export const useUpdateUser = () => {
   });
 };
 
+/**
+ * Remove o usuario de verdade (login + vinculos).
+ *
+ * Antes o hook apagava a linha de `profiles` pelo PostgREST. Nao havia policy
+ * de DELETE, entao o PostgREST apagava 0 linhas sem erro e a tela anunciava
+ * "Usuario removido" - e, mesmo se apagasse, o login continuaria valido, porque
+ * o app autentica por `auth.users` + `user_roles`. A remocao agora e feita pela
+ * edge `admin-remove-user` (service_role), que valida admin da mesma empresa e
+ * chama `auth.admin.deleteUser`.
+ */
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("profiles").delete().eq("id", id);
-      if (error) throw error;
+      const { data, error: fnError } = await supabase.functions.invoke("admin-remove-user", {
+        body: { user_id: id },
+      });
+      if (fnError) {
+        // A mensagem util vem no corpo da resposta (ex.: "Apenas admin pode
+        // remover usuario"); `fnError.message` e sempre a generica do SDK.
+        const context = (fnError as { context?: Response }).context;
+        const body = context
+          ? await context
+              .clone()
+              .json()
+              .catch(() => null)
+          : null;
+        const detail = (body as { error?: string } | null)?.error;
+        throw new Error(detail || fnError.message);
+      }
+      if (data && typeof data === "object" && "error" in data && data.error) {
+        throw new Error(String(data.error));
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });

@@ -218,7 +218,14 @@ export const AppRoutes = () => (
           <Route path={ROUTES.SETTINGS_BILLING} element={<BillingSettingsPage />} />
           <Route path={ROUTES.SETTINGS_API} element={<ApiKeysPage />} />
 
-          <Route path={ROUTES.ADMIN_USERS} element={<UsersPage />} />
+          <Route
+            path={ROUTES.ADMIN_USERS}
+            element={
+              <AdminGuard>
+                <UsersPage />
+              </AdminGuard>
+            }
+          />
           <Route path={ROUTES.ADMIN_ROLES} element={<RolesPage />} />
           <Route path={ROUTES.ADMIN_TEAMS} element={<TeamsPage />} />
           <Route path={ROUTES.TEAM_DETAIL} element={<TeamDetailPage />} />
