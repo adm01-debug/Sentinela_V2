@@ -98,10 +98,30 @@ CREATE POLICY employee_badges_write_admin ON public.employee_badges
 -- 4. RPCs SECURITY DEFINER de gamificacao -- sai do alcance de anon/authenticated.
 --    A escrita continua possivel por service_role (edge) e por owner.
 -- ---------------------------------------------------------------------------
-REVOKE EXECUTE ON FUNCTION public.add_employee_points(uuid, integer, text, text, text, uuid) FROM PUBLIC, anon, authenticated;
-REVOKE EXECUTE ON FUNCTION public.award_badge(uuid, text, jsonb) FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.add_employee_points(uuid, integer, text, text, text, uuid) TO service_role;
-GRANT EXECUTE ON FUNCTION public.award_badge(uuid, text, jsonb) TO service_role;
+-- EXECUTE das RPCs de gamificacao: add_employee_points e award_badge estao na
+-- lista de "declaradas no repo, ausentes do banco" (ESTADO_ATUAL.md:245-247),
+-- e REVOKE direto em funcao ausente derruba o db push com SQLSTATE 42883.
+-- A varredura em pg_proc revoga as assinaturas que existirem (inclusive se
+-- forem criadas depois) e ignora as ausentes.
+DO $$
+DECLARE
+  r RECORD;
+BEGIN
+  FOR r IN
+    SELECT n.nspname AS sch,
+           p.proname AS fname,
+           pg_get_function_identity_arguments(p.oid) AS args
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND p.proname IN ('add_employee_points', 'award_badge')
+  LOOP
+    EXECUTE format('REVOKE EXECUTE ON FUNCTION %I.%I(%s) FROM PUBLIC, anon, authenticated',
+                   r.sch, r.fname, r.args);
+    EXECUTE format('GRANT EXECUTE ON FUNCTION %I.%I(%s) TO service_role',
+                   r.sch, r.fname, r.args);
+  END LOOP;
+END $$;
 
 -- ---------------------------------------------------------------------------
 -- 5. policy_acknowledgments -- `USING (true)` criado por

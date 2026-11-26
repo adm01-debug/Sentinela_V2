@@ -25,10 +25,14 @@
 --    mantem o comportamento atual nas 6 tabelas ja auditadas.
 --
 -- Como este arquivo evita regressao:
---   * As 6 triggers existentes (employees, teams, violation_rules,
---     work_schedules, geofences, webhooks) chamam audit_trigger_func, que e
---     SECURITY DEFINER: ela executa create_audit_log como dono, entao revogar
---     EXECUTE de authenticated nao interrompe as triggers.
+--   * As 6 triggers de 20251219190000 (employees, teams, violation_rules,
+--     work_schedules, geofences, webhooks) sao o desenho original da trilha.
+--     Elas nao existem no banco hoje (a migration que as cria nunca foi
+--     concluida) e nao sao criadas aqui: a unica trigger nova e a de
+--     user_roles.
+--   * audit_trigger_func e SECURITY DEFINER e grava a linha em audit_logs
+--     diretamente -- nao depende de public.create_audit_log, que nao existe em
+--     producao (ESTADO_ATUAL.md:245-247).
 --   * Nenhum codigo do front chama create_audit_log, log_activity nem
 --     auto_log_activity (verificado por grep em src/ e supabase/functions/).
 --   * audit_logs (a trilha oficial, com tela) nao perde nenhuma linha: so a
@@ -42,15 +46,13 @@
 -- ---------------------------------------------------------------------------
 -- 1. create_audit_log: escrita de auditoria passa a ser exclusiva de
 --    service_role e das triggers (SECURITY DEFINER).
+--
+--    O REVOKE/GRANT fica no bloco 2b (varredura em pg_proc, depois dos CREATE
+--    OR REPLACE). Motivo: a assinatura transcrita aqui derrubou o db push com
+--    SQLSTATE 42883 (funcao ausente no banco) e qualquer diferenca entre a
+--    assinatura escrita e a real produz o mesmo erro. A varredura revoga as
+--    assinaturas que existirem e ignora as que nao existem.
 -- ---------------------------------------------------------------------------
-REVOKE EXECUTE ON FUNCTION public.create_audit_log(text, text, text, text, jsonb, jsonb, text, text, text)
-  FROM anon, authenticated, PUBLIC;
-
-GRANT EXECUTE ON FUNCTION public.create_audit_log(text, text, text, text, jsonb, jsonb, text, text, text)
-  TO service_role;
-
-REVOKE EXECUTE ON FUNCTION public.audit_trigger_func() FROM anon, authenticated, PUBLIC;
-GRANT EXECUTE ON FUNCTION public.audit_trigger_func() TO service_role;
 
 -- ---------------------------------------------------------------------------
 -- 2. audit_trigger_func: nao depende mais da coluna name existir.
@@ -66,6 +68,10 @@ DECLARE
   v_new_values JSONB;
   v_row JSONB;
   v_entity_name TEXT;
+  v_user_id UUID;
+  v_user_email TEXT;
+  v_user_role TEXT;
+  v_changes JSONB;
 BEGIN
   IF TG_OP = 'INSERT' THEN
     v_action := 'create';
@@ -95,16 +101,38 @@ BEGIN
     ''
   );
 
-  PERFORM public.create_audit_log(
-    v_action,
-    TG_TABLE_NAME,
-    v_row->>'id',
-    v_entity_name,
-    v_old_values,
-    v_new_values,
-    TG_TABLE_SCHEMA,
-    TG_OP || ' on ' || TG_TABLE_NAME,
-    'info'
+  -- Escrita direta na trilha oficial (audit_logs). Nao usa
+  -- public.create_audit_log: essa RPC esta na lista de "declaradas no repo,
+  -- ausentes do banco" (ESTADO_ATUAL.md:245-247) e um PERFORM em funcao
+  -- inexistente levanta erro em tempo de execucao, abortando a DML do usuario
+  -- que dispara a trigger. A trigger e SECURITY DEFINER e grava ela mesma.
+  v_user_id := auth.uid();
+
+  SELECT u.email INTO v_user_email
+  FROM auth.users u
+  WHERE u.id = v_user_id;
+
+  SELECT r.role::TEXT INTO v_user_role
+  FROM public.user_roles r
+  WHERE r.user_id = v_user_id
+  LIMIT 1;
+
+  IF v_old_values IS NOT NULL AND v_new_values IS NOT NULL THEN
+    SELECT jsonb_object_agg(kv.key, kv.value) INTO v_changes
+    FROM jsonb_each(v_new_values) AS kv
+    WHERE v_old_values->kv.key IS DISTINCT FROM kv.value;
+  END IF;
+
+  INSERT INTO public.audit_logs (
+    user_id, user_email, user_role,
+    action, entity_type, entity_id, entity_name,
+    old_values, new_values, changes,
+    module, description, severity
+  ) VALUES (
+    v_user_id, v_user_email, v_user_role,
+    v_action, TG_TABLE_NAME, v_row->>'id', v_entity_name,
+    v_old_values, v_new_values, v_changes,
+    TG_TABLE_SCHEMA, TG_OP || ' on ' || TG_TABLE_NAME, 'info'
   );
 
   IF TG_OP = 'DELETE' THEN
@@ -113,6 +141,34 @@ BEGIN
   RETURN NEW;
 END;
 $$;
+
+-- ---------------------------------------------------------------------------
+-- 2b. EXECUTE das RPCs de escrita de auditoria: service_role e mais ninguem.
+--     Feito por varredura em pg_proc (nome, sem transcrever assinatura):
+--     revoga toda assinatura existente e ignora as ausentes, o que torna a
+--     migration aplicavel em qualquer estado do banco (SQLSTATE 42883 era o
+--     que travava o db push).
+-- ---------------------------------------------------------------------------
+DO $$
+DECLARE
+  r RECORD;
+BEGIN
+  FOR r IN
+    SELECT n.nspname AS sch,
+           p.proname AS fname,
+           pg_get_function_identity_arguments(p.oid) AS args
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND p.proname IN ('create_audit_log', 'log_activity',
+                        'auto_log_activity', 'audit_trigger_func')
+  LOOP
+    EXECUTE format('REVOKE EXECUTE ON FUNCTION %I.%I(%s) FROM PUBLIC, anon, authenticated',
+                   r.sch, r.fname, r.args);
+    EXECUTE format('GRANT EXECUTE ON FUNCTION %I.%I(%s) TO service_role',
+                   r.sch, r.fname, r.args);
+  END LOOP;
+END $$;
 
 -- ---------------------------------------------------------------------------
 -- 3. user_roles entra na trilha: quem concedeu/revogou papel e quando.
@@ -130,13 +186,8 @@ CREATE TRIGGER audit_user_roles
 DROP POLICY IF EXISTS "Authenticated users can view activity logs" ON public.activity_logs;
 DROP POLICY IF EXISTS "Users can create activity logs" ON public.activity_logs;
 
-REVOKE EXECUTE ON FUNCTION public.log_activity(text, uuid, text, text, jsonb, jsonb)
-  FROM anon, authenticated, PUBLIC;
-GRANT EXECUTE ON FUNCTION public.log_activity(text, uuid, text, text, jsonb, jsonb)
-  TO service_role;
-
-REVOKE EXECUTE ON FUNCTION public.auto_log_activity() FROM anon, authenticated, PUBLIC;
-GRANT EXECUTE ON FUNCTION public.auto_log_activity() TO service_role;
+-- EXECUTE de log_activity() e auto_log_activity(): ja tratado no bloco 2b
+-- (varredura em pg_proc, sem transcrever assinatura).
 
 COMMENT ON TABLE public.activity_logs IS
   'OBSOLETA: segunda trilha de auditoria criada em 20260102000000, nunca ligada (nenhum CREATE TRIGGER usa auto_log_activity e nenhum consumidor vivo le). A trilha oficial e audit_logs, com triggers em employees/teams/violation_rules/work_schedules/geofences/webhooks/user_roles e tela em AuditLogPage. Mantida apenas com os dados historicos; escrita restrita a service_role.';
