@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 61,
+  "urls": 62,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 90
+  "lazy": 91
  },
  "urls": [
   {
@@ -693,6 +693,51 @@
     "application"
    ],
    "arquivos_puxados": 28
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/policy-exemptions",
+   "componente": "PolicyExemptionsPage",
+   "arquivo": "src/pages/admin/PolicyExemptionsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "usePolicyExemptionsPage",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "usePolicyExemptionsPage",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employees",
+    "policy_exemptions"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 31
   },
   {
    "protegida": true,
@@ -3064,6 +3109,7 @@
   "NotFoundPage": "src/pages/NotFoundPage.tsx",
   "NotificationSettingsPage": "src/pages/NotificationSettingsPage.tsx",
   "OrgChartPage": "src/pages/OrgChartPage.tsx",
+  "PolicyExemptionsPage": "src/pages/admin/PolicyExemptionsPage.tsx",
   "ProfileSettingsPage": "src/pages/ProfileSettingsPage.tsx",
   "ProjectsPage": "src/pages/ProjectsPage.tsx",
   "RateLimitDashboardPage": "src/pages/admin/RateLimitDashboardPage.tsx",

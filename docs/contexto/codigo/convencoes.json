@@ -3,15 +3,15 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (61)"
+   "src/pages (62)"
   ],
   "componentes": [
    "src/components (362)",
-   "src/pages (95)",
+   "src/pages (96)",
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (483)",
+   "src/hooks (484)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (62)",
+   "co-localizado (*.test) (63)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (475)"
+  ".tsx (476)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de isencoes do aceite de politicas em /admin/policy-exemptions (#349)",
    "feat: tela de log de redacoes DLP em /admin/dlp/redactions (#348)",
    "feat: historico de acoes da violacao em violation_actions (#347)",
    "feat: tela de retencao de dados em /admin/retention (#346)",
-   "chore: guard de CI contra valor inexistente no enum app_role (#343)",
-   "fix: area de gestor abria para qualquer usuario logado (#344)"
+   "chore: guard de CI contra valor inexistente no enum app_role (#343)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

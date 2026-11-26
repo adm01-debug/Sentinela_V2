@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "f99bf784bb165addacd7b81b99587a682cd8b766",
+  "commit": "1b3c384f668853c9d09f53257376215171751d27",
   "branch": "main",
-  "data_commit": "2026-11-26T08:06:43-03:00",
+  "data_commit": "2026-11-26T08:25:50-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1b3c384f6",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de isencoes do aceite de politicas em /admin/policy-exemptions (#349)"
+   },
    {
     "sha": "f99bf784b",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "6d7b24408",
     "data": "2026-11-25",
     "assunto": "fix: sincronizacao de templates do WhatsApp exige admin (#329)"
-   },
-   {
-    "sha": "8b6e821af",
-    "data": "2026-11-25",
-    "assunto": "fix: admin so pontua funcionario da propria empresa (#328)"
    }
   ],
-  "arquivos_mudados_7d": 368,
+  "arquivos_mudados_7d": 371,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -160,11 +160,11 @@
     "mudancas": 19
    },
    {
-    "pasta": "package-lock.json",
-    "mudancas": 15
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 16
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
+    "pasta": "package-lock.json",
     "mudancas": 15
    },
    {
@@ -172,16 +172,16 @@
     "mudancas": 13
    },
    {
+    "pasta": "src/pages/admin",
+    "mudancas": 12
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 11
    },
    {
-    "pasta": "src/pages/admin",
-    "mudancas": 11
-   },
-   {
     "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "pasta": "desktop-agent/src/services",
@@ -223,7 +223,7 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -231,7 +231,7 @@
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "scripts/ci/deno-check-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 245
+    "commits": 246
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1879,
-  "arquivos_codigo": 1423,
-  "linhas_codigo": 164070,
-  "rotas": 61,
+  "arquivos_total": 1882,
+  "arquivos_codigo": 1426,
+  "linhas_codigo": 165213,
+  "rotas": 62,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 475,
-  "hooks": 530,
+  "componentes": 476,
+  "hooks": 531,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 95,
+  "testes": 96,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46445
+   "linhas": 46446
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 485,
-   "linhas": 33743
+   "arquivos": 486,
+   "linhas": 34111
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 111,
-   "linhas": 22913
+   "arquivos": 112,
+   "linhas": 23323
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 467
+   "linhas": 478
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 63,
-   "linhas": 11618
+   "arquivos": 64,
+   "linhas": 11971
   },
   "src/types": {
    "arquivos": 57,
@@ -577,6 +577,10 @@
    "linhas": 479
   },
   {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 478
+  },
+  {
    "arquivo": "src/components/security/GeoBlockingManager.tsx",
    "linhas": 476
   },
@@ -594,10 +598,6 @@
   },
   {
    "arquivo": "src/components/EmptyStates.tsx",
-   "linhas": 467
-  },
-  {
-   "arquivo": "src/routes/AppRoutes.tsx",
    "linhas": 467
   },
   {
