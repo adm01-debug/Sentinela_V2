@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Plus, Edit, Trash2, Users, Bell, LayoutDashboard, Upload, CheckCircle2, AlertCircle, Crosshair } from 'lucide-react';
+import { MapPin, Plus, Edit, Trash2, Users, Bell, LayoutDashboard, Upload, CheckCircle2, AlertCircle, Crosshair, History } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
 import { GeofenceDashboard } from '@/components/geofence/GeofenceDashboard';
 import { GeofencePositionCheck } from '@/components/geofence/GeofencePositionCheck';
+import { GeofenceEventsPanel } from '@/components/geofence/GeofenceEventsPanel';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { PolygonUpload } from '@/components/geofence/PolygonUpload';
@@ -79,6 +80,10 @@ export default function GeofencingPage() {
             <Crosshair className="h-4 w-4" />
             Testar posição
           </TabsTrigger>
+          <TabsTrigger value="events" className="gap-2">
+            <History className="h-4 w-4" />
+            Histórico
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="list" className="space-y-6">
@@ -137,6 +142,10 @@ export default function GeofencingPage() {
               longitude: geofence.center_lng,
             }))}
           />
+        </TabsContent>
+
+        <TabsContent value="events">
+          <GeofenceEventsPanel />
         </TabsContent>
       </Tabs>
 
