@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 49,
+ "total": 50,
  "verify_jwt_false": [
   "acknowledge-violation",
   "dlp-incident-report",
@@ -95,6 +95,39 @@
    "hosts_externos": [
     "sentinela-v2.vercel.app"
    ],
+   "usa_shared": [
+    "auth.ts",
+    "rateLimiting.ts"
+   ],
+   "chamada_pelo_front": [
+    "src/hooks/useUsers.ts"
+   ],
+   "chamada_por_edges": [],
+   "chamada_por_sql_ou_cron": false,
+   "orfa": false,
+   "testes": 0
+  },
+  {
+   "nome": "admin-remove-user",
+   "entrada": "supabase/functions/admin-remove-user/index.ts",
+   "arquivos": 1,
+   "linhas": 130,
+   "verify_jwt": true,
+   "metodos": [
+    "OPTIONS"
+   ],
+   "tabelas": [
+    "user_companies",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "env": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+   ],
+   "buckets": [],
+   "chama_edges": [],
+   "hosts_externos": [],
    "usa_shared": [
     "auth.ts",
     "rateLimiting.ts"
@@ -249,12 +282,14 @@
    "nome": "check-geofence",
    "entrada": "supabase/functions/check-geofence/index.ts",
    "arquivos": 2,
-   "linhas": 410,
+   "linhas": 453,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
+    "geofence_events",
+    "geofence_states",
     "geofence_violations",
     "geofences"
    ],
@@ -1269,8 +1304,7 @@
     "whatsapp-evolution.ts"
    ],
    "chamada_pelo_front": [
-    "src/hooks/useWhatsAppIntegrationPage.ts",
-    "src/hooks/useWhatsAppSettings.ts"
+    "src/hooks/useWhatsAppIntegrationPage.ts"
    ],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,

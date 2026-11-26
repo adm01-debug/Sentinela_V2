@@ -1102,6 +1102,14 @@
    "src/components/ui/skeleton.tsx",
    "src/hooks/useGeofenceDashboardStats.ts"
   ],
+  "src/components/geofence/GeofenceEventsPanel.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useGeofenceEvents.ts"
+  ],
   "src/components/geofence/GeofencePositionCheck.tsx": [
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
@@ -2460,6 +2468,9 @@
   "src/hooks/useGeofenceDashboardStats.ts": [
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useGeofenceEvents.ts": [
+   "src/integrations/supabase/client.ts"
+  ],
   "src/hooks/useGeofencePositionCheck.ts": [
    "src/integrations/supabase/client.ts",
    "src/services/geofenceService.ts"
@@ -2857,11 +2868,6 @@
   "src/hooks/useWhatsAppIntegrationPage.ts": [
    "src/hooks/use-toast.ts",
    "src/integrations/supabase/client.ts"
-  ],
-  "src/hooks/useWhatsAppSettings.ts": [
-   "src/hooks/use-toast.ts",
-   "src/integrations/supabase/client.ts",
-   "src/lib/queryClient.ts"
   ],
   "src/hooks/useWhyDidYouUpdate.ts": [
    "src/lib/logger.ts"
@@ -3380,6 +3386,7 @@
   ],
   "src/pages/GeofencingPage.tsx": [
    "src/components/geofence/GeofenceDashboard.tsx",
+   "src/components/geofence/GeofenceEventsPanel.tsx",
    "src/components/geofence/GeofencePositionCheck.tsx",
    "src/components/geofence/PolygonUpload.tsx",
    "src/components/layout/PageHeader.tsx",
@@ -4583,6 +4590,10 @@
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/admin-invite-user/index.ts": [
+   "supabase/functions/_shared/auth.ts",
+   "supabase/functions/_shared/rateLimiting.ts"
+  ],
+  "supabase/functions/admin-remove-user/index.ts": [
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],

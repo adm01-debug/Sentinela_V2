@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 129,
+ "migrations": 133,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -3429,6 +3429,12 @@
      "tipo": "permissive"
     },
     {
+     "nome": "departments_select_auth",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
      "nome": "departments_update_auth",
      "comando": "update",
      "para": "authenticated",
@@ -4617,8 +4623,8 @@
      "tipo": "permissive"
     },
     {
-     "nome": "System can insert employee badges",
-     "comando": "insert",
+     "nome": "employee_badges_write_admin",
+     "comando": "all",
      "para": "authenticated",
      "tipo": "permissive"
     }
@@ -4991,13 +4997,13 @@
      "tipo": "permissive"
     },
     {
-     "nome": "Anyone can view employee points",
+     "nome": "employee_points_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
     },
     {
-     "nome": "System can manage employee points",
+     "nome": "employee_points_write_admin",
      "comando": "all",
      "para": "authenticated",
      "tipo": "permissive"
@@ -5478,7 +5484,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 21,
+   "usada_no_front": 22,
    "usada_em_edges": [
     "agent-collector",
     "award-gamification-points",
@@ -6277,13 +6283,30 @@
    "rls": true,
    "policies": [
     {
+     "nome": "Escopo de empresa",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
      "nome": "Service role inserts geofence_events",
      "comando": "insert",
      "para": "service_role",
      "tipo": "permissive"
     }
    ],
-   "indices": [],
+   "indices": [
+    {
+     "nome": "idx_geofence_events_geofence_occurred",
+     "colunas": "geofence_id, occurred_at DESC",
+     "unico": false
+    },
+    {
+     "nome": "idx_geofence_events_occurred_at",
+     "colunas": "occurred_at DESC",
+     "unico": false
+    }
+   ],
    "fks": [],
    "criada_em": null,
    "colunas_types": {
@@ -6296,17 +6319,32 @@
     "location": "Json | null",
     "occurred_at": "string"
    },
-   "usada_no_front": 0,
-   "usada_em_edges": [],
+   "usada_no_front": 1,
+   "usada_em_edges": [
+    "check-geofence"
+   ],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": true
+   "nao_usada": false
   },
   "geofence_states": {
    "colunas": {},
    "rls": true,
-   "policies": [],
-   "indices": [],
+   "policies": [
+    {
+     "nome": "Escopo de empresa",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [
+    {
+     "nome": "idx_geofence_states_geofence_id",
+     "colunas": "geofence_id",
+     "unico": false
+    }
+   ],
    "fks": [],
    "criada_em": null,
    "colunas_types": {
@@ -6316,11 +6354,13 @@
     "is_inside": "boolean",
     "last_checked": "string | null"
    },
-   "usada_no_front": 0,
-   "usada_em_edges": [],
+   "usada_no_front": 1,
+   "usada_em_edges": [
+    "check-geofence"
+   ],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": true
+   "nao_usada": false
   },
   "geofence_violations": {
    "colunas": {
@@ -6648,7 +6688,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 3,
+   "usada_no_front": 4,
    "usada_em_edges": [
     "check-geofence"
    ],
@@ -9673,14 +9713,14 @@
      "tipo": "permissive"
     },
     {
-     "nome": "Anyone can view points history",
+     "nome": "points_history_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
     },
     {
-     "nome": "System can insert points history",
-     "comando": "insert",
+     "nome": "points_history_write_admin",
+     "comando": "all",
      "para": "authenticated",
      "tipo": "permissive"
     }
@@ -9772,7 +9812,7 @@
      "tipo": "permissive"
     },
     {
-     "nome": "policy_acknowledgments_select_auth",
+     "nome": "policy_acknowledgments_select_escopo",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -10606,6 +10646,12 @@
    },
    "rls": true,
    "policies": [
+    {
+     "nome": "profiles_select_escopo",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
     {
      "nome": "Users can update own profile",
      "comando": "update",
@@ -12701,119 +12747,12 @@
    "nao_usada": false
   },
   "scheduled_report_settings": {
-   "colunas": {
-    "created_at": {
-     "tipo": "timestamp with time zone",
-     "nn": true,
-     "pk": false,
-     "default": "now()",
-     "ref": null
-    },
-    "created_by": {
-     "tipo": "uuid",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": "auth"
-    },
-    "enabled": {
-     "tipo": "boolean",
-     "nn": true,
-     "pk": false,
-     "default": "false",
-     "ref": null
-    },
-    "id": {
-     "tipo": "uuid",
-     "nn": true,
-     "pk": true,
-     "default": "gen_random_uuid()",
-     "ref": null
-    },
-    "include_activity_summary": {
-     "tipo": "boolean",
-     "nn": true,
-     "pk": false,
-     "default": "true",
-     "ref": null
-    },
-    "include_productivity": {
-     "tipo": "boolean",
-     "nn": true,
-     "pk": false,
-     "default": "true",
-     "ref": null
-    },
-    "include_violations": {
-     "tipo": "boolean",
-     "nn": true,
-     "pk": false,
-     "default": "true",
-     "ref": null
-    },
-    "last_sent_at": {
-     "tipo": "timestamp with time zone",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": null
-    },
-    "recipient_emails": {
-     "tipo": "text[]",
-     "nn": true,
-     "pk": false,
-     "default": "'{}'",
-     "ref": null
-    },
-    "report_type": {
-     "tipo": "text",
-     "nn": true,
-     "pk": false,
-     "default": "'daily'",
-     "ref": null
-    },
-    "send_day_of_week": {
-     "tipo": "integer",
-     "nn": false,
-     "pk": false,
-     "default": "1",
-     "ref": null
-    },
-    "send_time": {
-     "tipo": "time",
-     "nn": true,
-     "pk": false,
-     "default": "'08:00:00'",
-     "ref": null
-    },
-    "updated_at": {
-     "tipo": "timestamp with time zone",
-     "nn": true,
-     "pk": false,
-     "default": "now()",
-     "ref": null
-    }
-   },
-   "rls": true,
-   "policies": [
-    {
-     "nome": "Admins can manage scheduled report settings",
-     "comando": "all",
-     "para": "public",
-     "tipo": "permissive"
-    },
-    {
-     "nome": "Admins can view scheduled report settings",
-     "comando": "select",
-     "para": "public",
-     "tipo": "permissive"
-    }
-   ],
+   "colunas": {},
+   "rls": false,
+   "policies": [],
    "indices": [],
-   "fks": [
-    "created_by->auth"
-   ],
-   "criada_em": "20251218164131_5f4d0d38-c69f-481c-ac9d-9ab0126ee26b.sql",
+   "fks": [],
+   "criada_em": null,
    "colunas_types": {
     "created_at": "string",
     "created_by": "string | null",
@@ -12828,10 +12767,6 @@
     "send_day_of_week": "number | null",
     "send_time": "string",
     "updated_at": "string"
-   },
-   "drift": {
-    "so_na_migration": [],
-    "so_no_types": []
    },
    "usada_no_front": 0,
    "usada_em_edges": [],
@@ -16126,7 +16061,8 @@
    },
    "usada_no_front": 4,
    "usada_em_edges": [
-    "admin-invite-user"
+    "admin-invite-user",
+    "admin-remove-user"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -16544,6 +16480,7 @@
    "usada_no_front": 8,
    "usada_em_edges": [
     "admin-invite-user",
+    "admin-remove-user",
     "award-gamification-points",
     "rate-limit-logs",
     "send-push-notification",
@@ -18315,97 +18252,12 @@
    "nao_usada": false
   },
   "whatsapp_settings": {
-   "colunas": {
-    "access_token": {
-     "tipo": "text",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": null
-    },
-    "business_account_id": {
-     "tipo": "text",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": null
-    },
-    "company_id": {
-     "tipo": "uuid",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": "companies"
-    },
-    "created_at": {
-     "tipo": "timestamptz",
-     "nn": true,
-     "pk": false,
-     "default": "now()",
-     "ref": null
-    },
-    "id": {
-     "tipo": "uuid",
-     "nn": false,
-     "pk": true,
-     "default": "gen_random_uuid()",
-     "ref": null
-    },
-    "is_active": {
-     "tipo": "boolean",
-     "nn": true,
-     "pk": false,
-     "default": "true",
-     "ref": null
-    },
-    "phone_number_id": {
-     "tipo": "text",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": null
-    },
-    "updated_at": {
-     "tipo": "timestamptz",
-     "nn": true,
-     "pk": false,
-     "default": "now()",
-     "ref": null
-    },
-    "webhook_verify_token": {
-     "tipo": "text",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": null
-    }
-   },
-   "rls": true,
-   "policies": [
-    {
-     "nome": "Admins can manage whatsapp settings",
-     "comando": "all",
-     "para": "authenticated",
-     "tipo": "permissive"
-    },
-    {
-     "nome": "Admins can view whatsapp settings",
-     "comando": "select",
-     "para": "authenticated",
-     "tipo": "permissive"
-    }
-   ],
-   "indices": [
-    {
-     "nome": "whatsapp_settings_company_uniq",
-     "colunas": "company_id",
-     "unico": true
-    }
-   ],
-   "fks": [
-    "company_id->companies"
-   ],
-   "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
    "colunas_types": {
     "access_token": "string | null",
     "business_account_id": "string | null",
@@ -18417,15 +18269,11 @@
     "updated_at": "string",
     "webhook_verify_token": "string | null"
    },
-   "drift": {
-    "so_na_migration": [],
-    "so_no_types": []
-   },
-   "usada_no_front": 1,
+   "usada_no_front": 0,
    "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": false
+   "nao_usada": true
   },
   "whatsapp_templates": {
    "colunas": {

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 37,
+ "total": 38,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -153,6 +153,17 @@
    "arquivo": "scripts/ci/role-enum-guard.mjs",
    "descricao": "* Guarda contra valor inexistente no filtro de `user_roles.role`.",
    "linhas": 247,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "ci.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/schema-drift-guard.mjs",
+   "descricao": "* Guarda de drift entre o schema vivo e as migrations.",
+   "linhas": 231,
    "env": [],
    "npm_scripts": [],
    "workflows": [

@@ -6,7 +6,7 @@
    "src/pages (68)"
   ],
   "componentes": [
-   "src/components (368)",
+   "src/components (369)",
    "src/pages (106)",
    "src/providers (8)"
   ],
@@ -21,14 +21,14 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (78)",
+   "co-localizado (*.test) (79)",
    "co-localizado (__tests__) (22)",
-   "outro (10)"
+   "outro (11)"
   ],
   "edge_functions": "supabase/functions",
   "migrations": "supabase/migrations",
   "scripts": [
-   "scripts/ci (8)",
+   "scripts/ci (9)",
    "scripts/ai-context (2)",
    "scripts/inventario (2)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (492)"
+  ".tsx (493)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
-   "fix: fecha a forja da trilha de auditoria e audita user_roles (#364)",
-   "feat: convite de usuario real e detalhe com papeis reais (#368)",
-   "fix: relatorio de produtividade agendado lia tabela sem produtor (#372)",
-   "feat: teste de posicao na tela de geofencing (edge check-geofence) (#370)",
-   "feat: telas de recomendacoes e previsao de tendencias de IA (#369)"
+   "fix: historico de entrada e saida das cercas e estado por funcionario (#371)",
+   "fix: restaura RLS das telas de usuarios/departamentos e remove usuario de verdade (#367)",
+   "fix: fecha escrita aberta da gamificacao e escopa RLS por empresa (#366)",
+   "chore: remove tabelas de configuracao duplicadas sem consumidor (#365)",
+   "chore: guarda de CI contra objeto no banco sem migration (#359)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

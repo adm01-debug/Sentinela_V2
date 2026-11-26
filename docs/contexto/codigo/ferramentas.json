@@ -3,12 +3,12 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1440)",
+   "TypeScript (1443)",
    "Markdown (176)",
-   "SQL (133)",
-   "JSON (45)",
+   "SQL (137)",
+   "JSON (46)",
    "YAML (37)",
-   "JavaScript (31)",
+   "JavaScript (33)",
    "Shell (22)",
    "HTML (4)"
   ],
@@ -137,7 +137,8 @@
     "deno-typecheck-ratchet",
     "agent-instructions-guard",
     "edge-gate-guard",
-    "role-enum-guard"
+    "role-enum-guard",
+    "schema-drift-guard"
    ],
    "permissoes": [
     "contents: read"
@@ -148,6 +149,7 @@
     "scripts/ci/edge-gate-guard.mjs",
     "scripts/ci/lint-ratchet.mjs",
     "scripts/ci/role-enum-guard.mjs",
+    "scripts/ci/schema-drift-guard.mjs",
     "scripts/ci/typecheck-ratchet.mjs",
     "scripts/generate-audit-pdf.js"
    ],
@@ -1502,11 +1504,11 @@
    },
    {
     "papel": "admin",
-    "ocorrencias": 16
+    "ocorrencias": 17
    },
    {
     "papel": "alert",
-    "ocorrencias": 14
+    "ocorrencias": 15
    },
    {
     "papel": "user",
@@ -1518,7 +1520,7 @@
    },
    {
     "papel": "Admin",
-    "ocorrencias": 4
+    "ocorrencias": 5
    },
    {
     "papel": "combobox",

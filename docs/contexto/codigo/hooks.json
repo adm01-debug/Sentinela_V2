@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 86,
+   "usado_por": 85,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -3857,6 +3857,31 @@
     "src/components/geofence/GeofenceDashboard.tsx"
    ],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useGeofenceEvents.ts",
+   "hooks_exportados": [
+    "useGeofenceEvents"
+   ],
+   "linhas": 104,
+   "dominio": "hooks",
+   "tabelas": [
+    "employees",
+    "geofence_events",
+    "geofence_states",
+    "geofences"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useQuery"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/geofence/GeofenceEventsPanel.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useGeofencePositionCheck.ts",
@@ -9865,7 +9890,7 @@
     "useUserDetail",
     "useUsers"
    ],
-   "linhas": 228,
+   "linhas": 255,
    "dominio": "hooks",
    "tabelas": [
     "profiles",
@@ -9874,7 +9899,8 @@
    ],
    "rpcs": [],
    "edges": [
-    "admin-invite-user"
+    "admin-invite-user",
+    "admin-remove-user"
    ],
    "hooks_internos": [
     "useMutation",
@@ -10502,34 +10528,6 @@
    "usado_por_arquivos": [
     "src/pages/WhatsAppIntegrationPage.tsx"
    ],
-   "coberto_por_testes": 0
-  },
-  {
-   "arquivo": "src/hooks/useWhatsAppSettings.ts",
-   "hooks_exportados": [
-    "useSendWhatsAppMessage",
-    "useTestWhatsAppConnection",
-    "useUpdateWhatsAppSettings",
-    "useWhatsAppSettings"
-   ],
-   "linhas": 164,
-   "dominio": "hooks",
-   "tabelas": [
-    "whatsapp_settings"
-   ],
-   "rpcs": [],
-   "edges": [
-    "send-whatsapp"
-   ],
-   "hooks_internos": [
-    "useMutation",
-    "useQuery",
-    "useQueryClient",
-    "useToast"
-   ],
-   "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
    "coberto_por_testes": 0
   },
   {

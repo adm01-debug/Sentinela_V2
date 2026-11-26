@@ -2042,6 +2042,7 @@
     "useContext",
     "useEffect",
     "useGeofenceDashboardStats",
+    "useGeofenceEvents",
     "useGeofencePositionCheck",
     "useGeofencingPage",
     "useLocation",
@@ -2058,6 +2059,7 @@
    "hooks_locais": [
     "useChartColors",
     "useGeofenceDashboardStats",
+    "useGeofenceEvents",
     "useGeofencePositionCheck",
     "useGeofencingPage",
     "useMutation",
@@ -2070,6 +2072,8 @@
    "tabelas": [
     "employee_geofences",
     "employees",
+    "geofence_events",
+    "geofence_states",
     "geofence_violations",
     "geofences"
    ],
@@ -2084,7 +2088,7 @@
    "papeis": [
     "alert"
    ],
-   "arquivos_puxados": 51
+   "arquivos_puxados": 54
   },
   {
    "protegida": true,

@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1358,
- "arestas": 3168,
+ "nos": 1361,
+ "arestas": 3175,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -10,11 +10,11 @@
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 211
+   "importado_por": 212
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 209
+   "importado_por": 210
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 167
+   "importado_por": 168
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -30,11 +30,11 @@
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 86
+   "importado_por": 85
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 81
+   "importado_por": 82
   },
   {
    "arquivo": "src/components/ui/label.tsx",
@@ -58,7 +58,7 @@
   },
   {
    "arquivo": "src/lib/queryClient.ts",
-   "importado_por": 56
+   "importado_por": 55
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
@@ -70,7 +70,7 @@
   },
   {
    "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 34
+   "importado_por": 35
   },
   {
    "arquivo": "src/components/ui/switch.tsx",
@@ -78,7 +78,7 @@
   },
   {
    "arquivo": "supabase/functions/_shared/auth.ts",
-   "importado_por": 32
+   "importado_por": 33
   },
   {
    "arquivo": "src/hooks/useAuth.ts",
@@ -114,7 +114,7 @@
   },
   {
    "arquivo": "supabase/functions/_shared/rateLimiting.ts",
-   "importado_por": 18
+   "importado_por": 19
   },
   {
    "arquivo": "src/components/Skeleton.tsx",
