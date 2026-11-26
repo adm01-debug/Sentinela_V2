@@ -198,7 +198,7 @@ describe("useRetentionPoliciesPage", () => {
     expect(scoped?.args).toEqual(["id", "global-rec"]);
   });
 
-  it("expÃµe a retencao vigente do escopo selecionado", async () => {
+  it("expoe a retencao vigente do escopo selecionado", async () => {
     policiesResult = {
       data: [
         policy({ id: "global-rec", company_id: null, retention_days: 30 }),
