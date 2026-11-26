@@ -160,3 +160,22 @@ jobs:
         run: node scripts/ci/edge-gate-guard.mjs
       - name: Edge gate guard (testes do analisador)
         run: node --test scripts/ci/edge-gate-guard.unit.mjs
+
+  # Guarda de valor de papel: `user_roles.role` e do enum public.app_role. Filtrar
+  # por um valor que nao existe no enum aborta a consulta inteira no Postgres
+  # (22P02), do mesmo jeito que o valor invalido sozinho: 5 edge functions
+  # respondiam 403 para todo admin por causa de `super_admin` (#341) e o
+  # AuthProvider rebaixava todo admin para 'user' na UI por causa de `supervisor`
+  # (#342). A lista de valores validos vem do tipo gerado a partir do banco
+  # (src/integrations/supabase/types.ts), sem lista paralela aqui. Sem `npm ci`:
+  # node puro, sem dependencias do projeto.
+  role-enum-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Filtro de papel em user_roles (enum app_role)
+        run: node scripts/ci/role-enum-guard.mjs
+      - name: Role enum guard (testes do analisador)
+        run: node --test scripts/ci/role-enum-guard.unit.mjs
