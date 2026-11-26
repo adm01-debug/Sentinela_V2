@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { callerCompanyId, requireUserOrServiceRole } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,12 +28,6 @@ serve(async (req) => {
 
   try {
     const agentKey = req.headers.get('x-agent-key');
-    if (!agentKey) {
-      return new Response(JSON.stringify({ error: 'Missing x-agent-key' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
 
     const body = await req.json();
     const parsed = BodySchema.safeParse(body);
@@ -49,18 +44,59 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     );
 
-    // Validate agent key
-    const { data: keyRow, error: keyErr } = await supabase
-      .from('agent_keys')
-      .select('id, company_id, employee_name, is_active')
-      .eq('agent_key', agentKey)
-      .maybeSingle();
+    // Duas credenciais aceitas:
+    // - agente desktop (x-agent-key validada em agent_keys), fluxo original;
+    // - painel web (JWT de admin), para o gestor registrar a ciencia do
+    //   funcionario presencialmente. Sem este segundo caminho o reconhecimento
+    //   so existia via agente e a tela nunca preenchia employee_acknowledged_*.
+    let keyRowId: string | null = null;
+    let callerId: string | null = null;
+    let callerEmail = 'agent:unknown';
+    let scopeCompanyId: string | null = null;
+    let scopeEmployeeName: string | null = null;
 
-    if (keyErr || !keyRow || !keyRow.is_active) {
-      return new Response(JSON.stringify({ error: 'Invalid agent key' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    if (agentKey) {
+      const { data: keyRow, error: keyErr } = await supabase
+        .from('agent_keys')
+        .select('id, company_id, employee_name, is_active')
+        .eq('agent_key', agentKey)
+        .maybeSingle();
+
+      if (keyErr || !keyRow || !keyRow.is_active) {
+        return new Response(JSON.stringify({ error: 'Invalid agent key' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      keyRowId = keyRow.id;
+      scopeCompanyId = keyRow.company_id;
+      scopeEmployeeName = keyRow.employee_name;
+      callerEmail = `agent:${keyRow.employee_name ?? 'unknown'}`;
+    } else {
+      const ctx = await requireUserOrServiceRole(req);
+      if (!ctx.user) {
+        return new Response(JSON.stringify({ error: 'Missing x-agent-key or user token' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const { data: isAdmin } = await supabase.rpc('has_role', {
+        _user_id: ctx.user.id,
+        _role: 'admin',
       });
+
+      if (!isAdmin) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      callerId = ctx.user.id;
+      callerEmail = ctx.user.email ?? 'painel';
+      scopeCompanyId = await callerCompanyId(supabase, ctx);
     }
 
     // Load violation and enforce tenant + employee ownership
@@ -78,9 +114,9 @@ serve(async (req) => {
     }
 
     if (
-      violation.company_id !== keyRow.company_id ||
-      (violation.employee_name && keyRow.employee_name &&
-        violation.employee_name !== keyRow.employee_name)
+      (scopeCompanyId && violation.company_id !== scopeCompanyId) ||
+      (violation.employee_name && scopeEmployeeName &&
+        violation.employee_name !== scopeEmployeeName)
     ) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), {
         status: 403,
@@ -108,7 +144,7 @@ serve(async (req) => {
         );
       }
       const signature = await sha256Hex(
-        `${violation_id}|${keyRow.employee_name ?? ''}|${keyRow.company_id}|${now}`,
+        `${violation_id}|${violation.employee_name ?? ''}|${violation.company_id}|${now}`,
       );
       update.employee_acknowledged_at = now;
       update.employee_ack_reason = reason ?? null;
@@ -132,9 +168,9 @@ serve(async (req) => {
       entity_type: 'security_violation',
       entity_id: violation_id,
       entity_name: violation.employee_name,
-      user_id: '00000000-0000-0000-0000-000000000000',
-      user_email: `agent:${keyRow.employee_name ?? 'unknown'}`,
-      new_value: { ...update, ip, agent_key_id: keyRow.id },
+      user_id: callerId ?? '00000000-0000-0000-0000-000000000000',
+      user_email: callerEmail,
+      new_value: { ...update, ip, agent_key_id: keyRowId },
     });
 
     return new Response(

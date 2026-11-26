@@ -21,6 +21,7 @@ import { ViolationCommentsPanel } from "@/components/ViolationCommentsPanel";
 import { ViolationActionsTimeline } from "@/components/ViolationActionsTimeline";
 import { ViolationTimelineDialog } from "@/components/violations/ViolationTimelineDialog";
 import { ViolationDisputeDialog } from "@/components/violations/ViolationDisputeDialog";
+import { ViolationAcknowledgeDialog } from "@/components/violations/ViolationAcknowledgeDialog";
 import { DISPUTE_STATUS_LABEL, type DisputeStatus } from "@/hooks/useViolationDisputes";
 
 const severityTone: Record<string, string> = {
@@ -37,6 +38,7 @@ export default function ViolationDetailPage() {
   const updateStatus = useUpdateViolationStatus();
   const [timelineOpen, setTimelineOpen] = useState(false);
   const [disputeOpen, setDisputeOpen] = useState(false);
+  const [ackOpen, setAckOpen] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [acknowledging, setAcknowledging] = useState(false);
 
@@ -219,7 +221,7 @@ export default function ViolationDetailPage() {
 
                 <div className="flex flex-wrap gap-2 pt-2">
                   {(violation.status === "open" || violation.status === "investigating") && (
-                    <Button onClick={handleAcknowledge} disabled={acknowledging}>
+                    <Button onClick={() => setAckOpen(true)} disabled={acknowledging}>
                       {acknowledging ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       Reconhecer violação
                     </Button>
@@ -267,6 +269,17 @@ export default function ViolationDetailPage() {
         violationId={id ?? null}
         open={timelineOpen}
         onOpenChange={setTimelineOpen}
+      />
+      <ViolationAcknowledgeDialog
+        open={ackOpen}
+        onOpenChange={setAckOpen}
+        violationId={violation?.id ?? ""}
+        employeeName={violation?.employee_name ?? null}
+        acknowledgedAt={
+          (violation as { employee_acknowledged_at?: string | null } | null)
+            ?.employee_acknowledged_at ?? null
+        }
+        onAcknowledged={handleAcknowledge}
       />
       <ViolationDisputeDialog
         open={disputeOpen}
