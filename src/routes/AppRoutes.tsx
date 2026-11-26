@@ -73,6 +73,7 @@ const HoursTrackingPage = lazy(() => import("@/pages/HoursTrackingPage"));
 const AdminTelemetriaPage = lazy(() => import("@/pages/AdminTelemetriaPage"));
 const DLPPoliciesPage = lazy(() => import("@/pages/admin/DLPPoliciesPage"));
 const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
+const DLPRedactionLogPage = lazy(() => import("@/pages/admin/DLPRedactionLogPage"));
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
 const RetentionPoliciesPage = lazy(() => import("@/pages/admin/RetentionPoliciesPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
@@ -280,6 +281,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <DLPIncidentsPage />
+              </AdminGuard>
+            }
+          />
+          {/* dlp_redaction_log e append-only, escrita pela edge dlp-incident-report
+              com service role; a policy de SELECT so libera admin da empresa. */}
+          <Route
+            path="/admin/dlp/redactions"
+            element={
+              <AdminGuard>
+                <DLPRedactionLogPage />
               </AdminGuard>
             }
           />
