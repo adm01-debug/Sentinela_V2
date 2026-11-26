@@ -2429,6 +2429,10 @@
    "src/hooks/use-toast.ts",
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useKeystrokeDetailsPage.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useLiveViewReport.ts": [
    "src/integrations/supabase/client.ts"
   ],
@@ -3754,6 +3758,20 @@
    "src/components/ui/skeleton.tsx",
    "src/integrations/supabase/client.ts"
   ],
+  "src/pages/admin/KeystrokeDetailsPage.tsx": [
+   "src/components/EmptyStates.tsx",
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx",
+   "src/hooks/useKeystrokeDetailsPage.ts"
+  ],
   "src/pages/admin/LiveViewReportPage.tsx": [
    "src/components/layout/PageHeader.tsx",
    "src/components/layout/PageLayout.tsx",
@@ -4075,6 +4093,7 @@
    "src/pages/admin/FileTransfersPage.tsx",
    "src/pages/admin/IceDiagnosticsPage.tsx",
    "src/pages/admin/IntegrationsHealthPage.tsx",
+   "src/pages/admin/KeystrokeDetailsPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
    "src/pages/admin/MessageTemplatesPage.tsx",
    "src/pages/admin/MobileMonitoringPage.tsx",

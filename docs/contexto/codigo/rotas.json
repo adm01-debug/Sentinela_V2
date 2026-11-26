@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 62,
+  "urls": 63,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 91
+  "lazy": 92
  },
  "urls": [
   {
@@ -549,6 +549,45 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 21
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/keystrokes",
+   "componente": "KeystrokeDetailsPage",
+   "arquivo": "src/pages/admin/KeystrokeDetailsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useKeystrokeDetailsPage",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useKeystrokeDetailsPage",
+    "useQuery"
+   ],
+   "tabelas": [
+    "employees",
+    "keystroke_details"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 27
   },
   {
    "protegida": true,
@@ -3100,6 +3139,7 @@
   "IntegrationsHealthPage": "src/pages/admin/IntegrationsHealthPage.tsx",
   "IntegrationsPage": "src/pages/IntegrationsPage.tsx",
   "InternetAccessPage": "src/pages/InternetAccessPage.tsx",
+  "KeystrokeDetailsPage": "src/pages/admin/KeystrokeDetailsPage.tsx",
   "LiveViewPage": "src/pages/LiveViewPage.tsx",
   "LiveViewReportPage": "src/pages/admin/LiveViewReportPage.tsx",
   "LiveViewSimulatorPage": "src/pages/dev/LiveViewSimulatorPage.tsx",

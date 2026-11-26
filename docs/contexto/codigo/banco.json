@@ -5484,7 +5484,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 18,
+   "usada_no_front": 19,
    "usada_em_edges": [
     "agent-collector",
     "award-gamification-points",
@@ -7143,11 +7143,11 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 0,
+   "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": true
+   "nao_usada": false
   },
   "keystroke_logs": {
    "colunas": {

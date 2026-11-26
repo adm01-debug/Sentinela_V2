@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1b3c384f668853c9d09f53257376215171751d27",
+  "commit": "824cca877f97ad6d3a92e00d6e2fa963e40c4fca",
   "branch": "main",
-  "data_commit": "2026-11-26T08:25:50-03:00",
+  "data_commit": "2026-11-26T08:38:49-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "824cca877",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de detalhe de digitacao em /admin/keystrokes (#350)"
+   },
    {
     "sha": "1b3c384f6",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "ce03e8e63",
     "data": "2026-11-25",
     "assunto": "fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)"
-   },
-   {
-    "sha": "6d7b24408",
-    "data": "2026-11-25",
-    "assunto": "fix: sincronizacao de templates do WhatsApp exige admin (#329)"
    }
   ],
-  "arquivos_mudados_7d": 371,
+  "arquivos_mudados_7d": 374,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "pasta": "package-lock.json",
@@ -173,14 +173,14 @@
    },
    {
     "pasta": "src/pages/admin",
+    "mudancas": 13
+   },
+   {
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 12
    },
    {
     "pasta": ".github/workflows/ci.yml",
-    "mudancas": 11
-   },
-   {
-    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 11
    },
    {
@@ -223,14 +223,14 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 16
-   },
-   {
-    "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 11
+    "mudancas": 17
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
+    "mudancas": 12
+   },
+   {
+    "arquivo": ".github/workflows/ci.yml",
     "mudancas": 11
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 246
+    "commits": 247
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1882,
-  "arquivos_codigo": 1426,
-  "linhas_codigo": 165213,
-  "rotas": 62,
+  "arquivos_total": 1885,
+  "arquivos_codigo": 1429,
+  "linhas_codigo": 166129,
+  "rotas": 63,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 476,
-  "hooks": 531,
+  "componentes": 477,
+  "hooks": 532,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 96,
+  "testes": 97,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46446
+   "linhas": 46448
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 486,
-   "linhas": 34111
+   "arquivos": 487,
+   "linhas": 34374
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 112,
-   "linhas": 23323
+   "arquivos": 113,
+   "linhas": 23635
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 478
+   "linhas": 489
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 64,
-   "linhas": 11971
+   "arquivos": 65,
+   "linhas": 12299
   },
   "src/types": {
    "arquivos": 57,
@@ -569,16 +569,16 @@
    "linhas": 501
   },
   {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 489
+  },
+  {
    "arquivo": "src/pages/Auth.tsx",
    "linhas": 486
   },
   {
    "arquivo": "src/components/admin/SlackIntegrationsCard.tsx",
    "linhas": 479
-  },
-  {
-   "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 478
   },
   {
    "arquivo": "src/components/security/GeoBlockingManager.tsx",

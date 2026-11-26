@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1330,
- "arestas": 2961,
+ "nos": 1332,
+ "arestas": 2976,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 218
+   "importado_por": 220
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 197
+   "importado_por": 198
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 194
+   "importado_por": 195
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,11 +22,11 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 154
+   "importado_por": 155
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 94
+   "importado_por": 95
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
@@ -34,15 +34,15 @@
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 70
+   "importado_por": 71
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 68
+   "importado_por": 69
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 64
+   "importado_por": 65
   },
   {
    "arquivo": "src/lib/logger.ts",
@@ -54,15 +54,19 @@
   },
   {
    "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 53
+   "importado_por": 54
   },
   {
    "arquivo": "src/lib/queryClient.ts",
-   "importado_por": 48
+   "importado_por": 49
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
    "importado_por": 36
+  },
+  {
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 30
   },
   {
    "arquivo": "supabase/functions/_shared/auth.ts",
@@ -73,12 +77,8 @@
    "importado_por": 29
   },
   {
-   "arquivo": "src/components/ui/switch.tsx",
-   "importado_por": 29
-  },
-  {
    "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 28
+   "importado_por": 29
   },
   {
    "arquivo": "src/hooks/useAuth.ts",
@@ -149,15 +149,15 @@
    "importado_por": 13
   },
   {
+   "arquivo": "src/components/EmptyStates.tsx",
+   "importado_por": 12
+  },
+  {
    "arquivo": "src/components/charts/ChartEmptyState.tsx",
    "importado_por": 11
   },
   {
    "arquivo": "src/components/charts/ChartTooltip.tsx",
-   "importado_por": 11
-  },
-  {
-   "arquivo": "src/components/EmptyStates.tsx",
    "importado_por": 11
   },
   {

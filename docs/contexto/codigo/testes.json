@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 96,
+ "total": 97,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 94
+  "unit": 95
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 63
+   "arquivos": 64
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -655,6 +655,16 @@
    "casos": 80
   },
   {
+   "arquivo": "src/test/keystroke-details.test.tsx",
+   "tipo": "unit",
+   "linhas": 328,
+   "testa": [
+    "src/hooks/useKeystrokeDetailsPage.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 27
+  },
+  {
    "arquivo": "src/test/lgpd-flow.test.ts",
    "tipo": "unit",
    "linhas": 123,
@@ -1002,6 +1012,7 @@
   "src/hooks/useFilter.ts": 1,
   "src/hooks/useGeofencingPage.ts": 1,
   "src/hooks/useGlobalShortcuts.ts": 1,
+  "src/hooks/useKeystrokeDetailsPage.ts": 1,
   "src/hooks/useList.ts": 1,
   "src/hooks/useLocalStorage.ts": 1,
   "src/hooks/usePagination.ts": 1,
@@ -1017,7 +1028,7 @@
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 15,
+  "src/integrations/supabase/client.ts": 16,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1107,6 +1118,7 @@
    "src/pages/admin/FileTransfersPage.tsx",
    "src/pages/admin/IceDiagnosticsPage.tsx",
    "src/pages/admin/IntegrationsHealthPage.tsx",
+   "src/pages/admin/KeystrokeDetailsPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
    "src/pages/admin/MessageTemplatesPage.tsx",
    "src/pages/admin/MobileMonitoringPage.tsx",

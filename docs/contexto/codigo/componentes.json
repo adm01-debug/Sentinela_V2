@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 476,
+ "total": 477,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -674,7 +674,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 435,
+   "linhas": 437,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1921,7 +1921,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 10,
+   "usado_por": 11,
    "orfao": false
   },
   {
@@ -2204,7 +2204,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 53,
+   "usado_por": 54,
    "orfao": false
   },
   {
@@ -3846,7 +3846,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 154,
+   "usado_por": 155,
    "orfao": false
   },
   {
@@ -3909,7 +3909,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 194,
+   "usado_por": 195,
    "orfao": false
   },
   {
@@ -3944,7 +3944,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 197,
+   "usado_por": 198,
    "orfao": false
   },
   {
@@ -4609,7 +4609,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 94,
+   "usado_por": 95,
    "orfao": false
   },
   {
@@ -4640,7 +4640,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 68,
+   "usado_por": 69,
    "orfao": false
   },
   {
@@ -5214,7 +5214,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 64,
+   "usado_por": 65,
    "orfao": false
   },
   {
@@ -5321,7 +5321,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 70,
+   "usado_por": 71,
    "orfao": false
   },
   {
@@ -5453,7 +5453,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 29,
+   "usado_por": 30,
    "orfao": false
   },
   {
@@ -5474,7 +5474,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 28,
+   "usado_por": 29,
    "orfao": false
   },
   {
@@ -6367,6 +6367,22 @@
     "whatsapp_message_logs",
     "whatsapp_notification_settings"
    ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/KeystrokeDetailsPage.tsx",
+   "exports": [
+    "KeystrokeDetailsPage"
+   ],
+   "export_default": "KeystrokeDetailsPage",
+   "linhas": 312,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useKeystrokeDetailsPage"
+   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false
@@ -7952,7 +7968,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 478,
+   "linhas": 489,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],
