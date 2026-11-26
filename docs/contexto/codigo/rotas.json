@@ -2042,6 +2042,7 @@
     "useContext",
     "useEffect",
     "useGeofenceDashboardStats",
+    "useGeofencePositionCheck",
     "useGeofencingPage",
     "useLocation",
     "useMemo",
@@ -2057,6 +2058,7 @@
    "hooks_locais": [
     "useChartColors",
     "useGeofenceDashboardStats",
+    "useGeofencePositionCheck",
     "useGeofencingPage",
     "useMutation",
     "useQuery",
@@ -2067,17 +2069,22 @@
    ],
    "tabelas": [
     "employee_geofences",
+    "employees",
     "geofence_violations",
     "geofences"
    ],
    "rpcs": [],
-   "edges": [],
+   "edges": [
+    "check-geofence"
+   ],
    "canais_realtime": [
     "public:${entity}-changes"
    ],
    "flags": [],
-   "papeis": [],
-   "arquivos_puxados": 47
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 51
   },
   {
    "protegida": true,

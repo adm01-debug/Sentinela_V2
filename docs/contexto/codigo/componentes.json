@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 489,
+ "total": 490,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -2055,6 +2055,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/geofence/GeofencePositionCheck.tsx",
+   "exports": [
+    "GeofencePositionCheck"
+   ],
+   "export_default": "GeofencePositionCheck",
+   "linhas": 177,
+   "dominio": "components/geofence",
+   "hooks_locais": [
+    "useGeofencePositionCheck"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/geofence/PolygonUpload.tsx",
    "exports": [
     "PolygonUpload"
@@ -3975,7 +3991,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 206,
+   "usado_por": 207,
    "orfao": false
   },
   {
@@ -4010,7 +4026,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 208,
+   "usado_por": 209,
    "orfao": false
   },
   {
@@ -4675,7 +4691,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 101,
+   "usado_por": 102,
    "orfao": false
   },
   {
@@ -4706,7 +4722,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 75,
+   "usado_por": 76,
    "orfao": false
   },
   {
@@ -5280,7 +5296,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 73,
+   "usado_por": 74,
    "orfao": false
   },
   {
@@ -7437,7 +7453,7 @@
     "GeofencingPage"
    ],
    "export_default": "GeofencingPage",
-   "linhas": 252,
+   "linhas": 268,
    "dominio": "pages",
    "hooks_locais": [
     "useGeofencingPage"

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 541,
+ "total": 542,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -3859,6 +3859,31 @@
    "coberto_por_testes": 0
   },
   {
+   "arquivo": "src/hooks/useGeofencePositionCheck.ts",
+   "hooks_exportados": [
+    "useGeofencePositionCheck"
+   ],
+   "linhas": 102,
+   "dominio": "hooks",
+   "tabelas": [
+    "employees"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMutation",
+    "useQuery",
+    "useState"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/geofence/GeofencePositionCheck.tsx"
+   ],
+   "coberto_por_testes": 1
+  },
+  {
    "arquivo": "src/hooks/useGeofences.ts",
    "hooks_exportados": [
     "useActiveGeofences",
@@ -3869,7 +3894,7 @@
     "useToggleGeofence",
     "useUpdateGeofence"
    ],
-   "linhas": 262,
+   "linhas": 230,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],
@@ -3881,10 +3906,8 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
-   "usado_por_arquivos": [
-    "src/services/geofenceService.ts"
-   ],
+   "usado_por": 0,
+   "usado_por_arquivos": [],
    "coberto_por_testes": 0
   },
   {

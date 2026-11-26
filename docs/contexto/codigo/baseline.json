@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "5ef95d95fcb0249895af49a790ced2ad4c231d64",
+  "commit": "8c42a4807ef3a927c10961f82ca1c575f683f622",
   "branch": "main",
-  "data_commit": "2026-11-26T14:27:33-03:00",
+  "data_commit": "2026-11-26T14:36:44-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "8c42a4807",
+    "data": "2026-11-26",
+    "assunto": "feat: teste de posicao na tela de geofencing (edge check-geofence) (#370)"
+   },
    {
     "sha": "5ef95d95f",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "c3d33e9cc",
     "data": "2026-11-25",
     "assunto": "fix: tira super_admin inexistente dos gates de admin (#341)"
-   },
-   {
-    "sha": "d7001a7a6",
-    "data": "2026-11-25",
-    "assunto": "fix: usa admin do app_role na policy de tenant (#340)"
    }
   ],
-  "arquivos_mudados_7d": 416,
+  "arquivos_mudados_7d": 422,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 261
+    "commits": 262
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1920,
-  "arquivos_codigo": 1462,
-  "linhas_codigo": 177301,
+  "arquivos_total": 1923,
+  "arquivos_codigo": 1465,
+  "linhas_codigo": 177734,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 63,
-  "componentes": 489,
-  "hooks": 541,
+  "componentes": 490,
+  "hooks": 542,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 128,
   "cron_jobs": 5,
-  "testes": 109,
+  "testes": 110,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -423,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 402,
-   "linhas": 47549
+   "arquivos": 403,
+   "linhas": 47726
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 496,
-   "linhas": 37497
+   "arquivos": 497,
+   "linhas": 37567
   },
   "src/i18n": {
    "arquivos": 1,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 120,
-   "linhas": 26768
+   "linhas": 26784
   },
   "src/providers": {
    "arquivos": 9,
@@ -480,15 +480,15 @@
   },
   "src/services": {
    "arquivos": 8,
-   "linhas": 549
+   "linhas": 602
   },
   "src/stores": {
    "arquivos": 34,
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 77,
-   "linhas": 16008
+   "arquivos": 78,
+   "linhas": 16125
   },
   "src/types": {
    "arquivos": 57,
@@ -861,7 +861,7 @@
    "VITE_SUPABASE_URL",
    "VITE_VAPID_PUBLIC_KEY"
   ],
-  "ciclos_de_import": 4,
+  "ciclos_de_import": 3,
   "possiveis_segredos_no_codigo": [
    "scripts/ai-context/cenarios.mjs:102"
   ]
