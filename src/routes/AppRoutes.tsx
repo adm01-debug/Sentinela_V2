@@ -79,6 +79,7 @@ const RetentionPoliciesPage = lazy(() => import("@/pages/admin/RetentionPolicies
 const PolicyExemptionsPage = lazy(() => import("@/pages/admin/PolicyExemptionsPage"));
 const KeystrokeDetailsPage = lazy(() => import("@/pages/admin/KeystrokeDetailsPage"));
 const SIEMPage = lazy(() => import("@/pages/admin/SIEMPage"));
+const MitreMappingPage = lazy(() => import("@/pages/admin/MitreMappingPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -345,6 +346,17 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <SIEMPage />
+              </AdminGuard>
+            }
+          />
+          {/* incident_mitre_mapping aceita escrita admin por RLS e referencia o
+              catalogo seedado em mitre_techniques; nenhuma tela classificava
+              incidente por tecnica antes. */}
+          <Route
+            path="/admin/mitre"
+            element={
+              <AdminGuard>
+                <MitreMappingPage />
               </AdminGuard>
             }
           />
