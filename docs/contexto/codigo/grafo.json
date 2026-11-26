@@ -6,7 +6,7 @@
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 231
+   "importado_por": 232
   },
   {
    "arquivo": "src/components/ui/card.tsx",

@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (70)",
+   "co-localizado (*.test) (71)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: historico de execucoes dos relatorios agendados (#357)",
    "feat: tela de configuracoes globais em /admin/app-config (#355)",
    "feat: tela de dispositivos e sessoes ativas (#356)",
    "feat: tela de feature flags em /admin/feature-flags (#354)",
-   "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)",
-   "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)"
+   "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

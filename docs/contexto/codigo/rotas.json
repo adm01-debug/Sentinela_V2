@@ -2540,6 +2540,7 @@
     "useToast"
    ],
    "tabelas": [
+    "report_logs",
     "scheduled_reports"
    ],
    "rpcs": [],

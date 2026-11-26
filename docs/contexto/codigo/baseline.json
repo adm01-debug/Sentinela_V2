@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "3cc0fa4f65f1df74f73550d448b75b8760dcb7a2",
+  "commit": "16d3063cd51af446185b1e454afc443980358d2a",
   "branch": "main",
-  "data_commit": "2026-11-26T10:31:19-03:00",
+  "data_commit": "2026-11-26T10:48:48-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "16d3063cd",
+    "data": "2026-11-26",
+    "assunto": "feat: historico de execucoes dos relatorios agendados (#357)"
+   },
    {
     "sha": "3cc0fa4f6",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "fffff3c15",
     "data": "2026-11-25",
     "assunto": "fix: gate de admin no send-webhook (#337)"
-   },
-   {
-    "sha": "183a97593",
-    "data": "2026-11-25",
-    "assunto": "fix: identidade do JWT no notify-new-device (#336)"
    }
   ],
-  "arquivos_mudados_7d": 394,
+  "arquivos_mudados_7d": 395,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 253
+    "commits": 254
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1902,
-  "arquivos_codigo": 1446,
-  "linhas_codigo": 174149,
+  "arquivos_total": 1903,
+  "arquivos_codigo": 1447,
+  "linhas_codigo": 174406,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 103,
+  "testes": 104,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -444,7 +444,7 @@
   },
   "src/hooks": {
    "arquivos": 492,
-   "linhas": 36784
+   "linhas": 36830
   },
   "src/i18n": {
    "arquivos": 1,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 118,
-   "linhas": 26240
+   "linhas": 26302
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 71,
-   "linhas": 15053
+   "arquivos": 72,
+   "linhas": 15202
   },
   "src/types": {
    "arquivos": 57,

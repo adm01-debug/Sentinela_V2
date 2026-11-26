@@ -7756,9 +7756,10 @@
    "hooks_exportados": [
     "useScheduledReportsPage"
    ],
-   "linhas": 298,
+   "linhas": 344,
    "dominio": "hooks",
    "tabelas": [
+    "report_logs",
     "scheduled_reports"
    ],
    "rpcs": [],
@@ -7779,7 +7780,7 @@
    "usado_por_arquivos": [
     "src/pages/ScheduledReportsPage.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useSchema.ts",

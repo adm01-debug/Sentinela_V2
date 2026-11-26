@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `3cc0fa4f65f1df74f73550d448b75b8760dcb7a2` (2026-11-26T10:31:19-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `16d3063cd51af446185b1e454afc443980358d2a` (2026-11-26T10:48:48-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1417), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1418), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1902 |
-| arquivos_codigo | 1446 |
-| linhas_codigo | 174149 |
+| arquivos_total | 1903 |
+| arquivos_codigo | 1447 |
+| linhas_codigo | 174406 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 126 |
 | cron_jobs | 5 |
-| testes | 103 |
+| testes | 104 |
 | workflows | 14 |
 | scripts | 37 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (363), src/pages (102), src/providers (8)
 - hooks: src/hooks (490), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (70), co-localizado (__tests__) (22), outro (10)
+- testes: co-localizado (*.test) (71), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
@@ -82,10 +82,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 492 | 513 | 21 | 99 |
+| hooks | 0 | 0 | 492 | 513 | 21 | 100 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 172 | 15 | 74 |
+| pages | 4 | 38 | 68 | 172 | 15 | 75 |
 | pages/admin | 0 | 27 | 29 | 45 | 8 | 44 |
 | pages/dev | 0 | 3 | 3 | 16 | 0 | 3 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -434,6 +434,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `16d3063cd` feat: historico de execucoes dos relatorios agendados (#357)
 - 2026-11-26 `3cc0fa4f6` feat: tela de configuracoes globais em /admin/app-config (#355)
 - 2026-11-26 `bca911c30` feat: tela de dispositivos e sessoes ativas (#356)
 - 2026-11-26 `00693ffd4` feat: tela de feature flags em /admin/feature-flags (#354)
@@ -448,7 +449,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `437a51b0b` chore: guard de CI contra valor inexistente no enum app_role (#343)
 - 2026-11-25 `433042689` fix: area de gestor abria para qualquer usuario logado (#344)
 - 2026-11-25 `701a41206` fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)
-- 2026-11-25 `5a2118ffa` feat: preenche company_id automatico nas escritas de tenant (#339)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
