@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 482,
+ "total": 483,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -674,7 +674,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 445,
+   "linhas": 447,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -2204,7 +2204,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 58,
+   "usado_por": 59,
    "orfao": false
   },
   {
@@ -3829,7 +3829,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 18,
+   "usado_por": 19,
    "orfao": false
   },
   {
@@ -3862,7 +3862,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 160,
+   "usado_por": 161,
    "orfao": false
   },
   {
@@ -3925,7 +3925,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 200,
+   "usado_por": 201,
    "orfao": false
   },
   {
@@ -3960,7 +3960,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 202,
+   "usado_por": 203,
    "orfao": false
   },
   {
@@ -4625,7 +4625,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 99,
+   "usado_por": 100,
    "orfao": false
   },
   {
@@ -4656,7 +4656,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 73,
+   "usado_por": 74,
    "orfao": false
   },
   {
@@ -5337,7 +5337,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 76,
+   "usado_por": 77,
    "orfao": false
   },
   {
@@ -5469,7 +5469,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 32,
+   "usado_por": 33,
    "orfao": false
   },
   {
@@ -5550,7 +5550,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 22,
+   "usado_por": 23,
    "orfao": false
   },
   {
@@ -6217,6 +6217,22 @@
    "dominio": "pages/admin",
    "hooks_locais": [
     "useAcknowledgmentReport"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/AppConfigPage.tsx",
+   "exports": [
+    "AppConfigPage"
+   ],
+   "export_default": "AppConfigPage",
+   "linhas": 379,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useAppConfigPage"
    ],
    "tabelas": [],
    "edges": [],
@@ -8049,7 +8065,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 534,
+   "linhas": 545,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

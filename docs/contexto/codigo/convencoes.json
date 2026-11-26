@@ -3,15 +3,15 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (67)"
+   "src/pages (68)"
   ],
   "componentes": [
    "src/components (363)",
-   "src/pages (101)",
+   "src/pages (102)",
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (489)",
+   "src/hooks (490)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (69)",
+   "co-localizado (*.test) (70)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (482)"
+  ".tsx (483)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de configuracoes globais em /admin/app-config (#355)",
    "feat: tela de dispositivos e sessoes ativas (#356)",
    "feat: tela de feature flags em /admin/feature-flags (#354)",
    "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)",
-   "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)",
-   "﻿feat: tela de conectores SIEM em /admin/siem (#351)"
+   "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

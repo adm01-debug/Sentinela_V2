@@ -2226,6 +2226,11 @@
   "src/hooks/useAppConfig.ts": [
    "src/lib/supabase.ts"
   ],
+  "src/hooks/useAppConfigPage.ts": [
+   "src/hooks/use-toast.ts",
+   "src/hooks/useAppConfig.ts",
+   "src/integrations/supabase/client.ts"
+  ],
   "src/hooks/useApplicationRules.ts": [
    "src/integrations/supabase/client.ts"
   ],
@@ -3688,6 +3693,19 @@
    "src/hooks/useAcknowledgmentReport.ts",
    "src/utils/acknowledgmentReportPdf.ts"
   ],
+  "src/pages/admin/AppConfigPage.tsx": [
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useAppConfigPage.ts"
+  ],
   "src/pages/admin/DLPIncidentsPage.tsx": [
    "src/components/ui/badge.tsx",
    "src/components/ui/card.tsx",
@@ -4186,6 +4204,7 @@
    "src/pages/WhatsAppIntegrationPage.tsx",
    "src/pages/WorkSchedulesPage.tsx",
    "src/pages/admin/AcknowledgmentReportPage.tsx",
+   "src/pages/admin/AppConfigPage.tsx",
    "src/pages/admin/DLPIncidentsPage.tsx",
    "src/pages/admin/DLPPoliciesPage.tsx",
    "src/pages/admin/DLPRedactionLogPage.tsx",

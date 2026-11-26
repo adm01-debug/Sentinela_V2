@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 102,
+ "total": 103,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 100
+  "unit": 101
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 69
+   "arquivos": 70
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -361,6 +361,17 @@
     "src/lib/apiMonitor.ts"
    ],
    "casos": 7
+  },
+  {
+   "arquivo": "src/test/app-config.test.tsx",
+   "tipo": "unit",
+   "linhas": 351,
+   "testa": [
+    "src/hooks/useAppConfig.ts",
+    "src/hooks/useAppConfigPage.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 25
   },
   {
    "arquivo": "src/test/auth.test.ts",
@@ -1047,6 +1058,8 @@
   "src/hooks/useAIInsights.ts": 1,
   "src/hooks/useAccessControl.ts": 1,
   "src/hooks/useAnomalyDetection.ts": 1,
+  "src/hooks/useAppConfig.ts": 1,
+  "src/hooks/useAppConfigPage.ts": 1,
   "src/hooks/useApplicationRules.ts": 1,
   "src/hooks/useBehaviorPatterns.ts": 1,
   "src/hooks/useChartColors.ts": 1,
@@ -1085,7 +1098,7 @@
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 21,
+  "src/integrations/supabase/client.ts": 22,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1166,6 +1179,7 @@
    "src/pages/WhatsAppIntegrationPage.tsx",
    "src/pages/WorkSchedulesPage.tsx",
    "src/pages/admin/AcknowledgmentReportPage.tsx",
+   "src/pages/admin/AppConfigPage.tsx",
    "src/pages/admin/DLPIncidentsPage.tsx",
    "src/pages/admin/DLPPoliciesPage.tsx",
    "src/pages/admin/DLPRedactionLogPage.tsx",
@@ -1221,7 +1235,6 @@
    "src/hooks/useAnnounce.ts",
    "src/hooks/useAPIKeys.ts",
    "src/hooks/useAppCategories.ts",
-   "src/hooks/useAppConfig.ts",
    "src/hooks/useAsync.ts",
    "src/hooks/useAttachments.ts",
    "src/hooks/useAudio.ts",

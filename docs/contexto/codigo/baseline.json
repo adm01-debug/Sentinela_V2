@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "bca911c307b44cacda5e1a2c291ae45279ebe7a1",
+  "commit": "3cc0fa4f65f1df74f73550d448b75b8760dcb7a2",
   "branch": "main",
-  "data_commit": "2026-11-26T10:30:59-03:00",
+  "data_commit": "2026-11-26T10:31:19-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "3cc0fa4f6",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de configuracoes globais em /admin/app-config (#355)"
+   },
    {
     "sha": "bca911c30",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "183a97593",
     "data": "2026-11-25",
     "assunto": "fix: identidade do JWT no notify-new-device (#336)"
-   },
-   {
-    "sha": "5af2975df",
-    "data": "2026-11-25",
-    "assunto": "fix: escopo de empresa no check-geofence (#335)"
    }
   ],
-  "arquivos_mudados_7d": 391,
+  "arquivos_mudados_7d": 394,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -153,7 +153,7 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 21
+    "mudancas": 22
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
@@ -165,11 +165,11 @@
    },
    {
     "pasta": "src/pages/admin",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "pasta": "package-lock.json",
@@ -215,7 +215,7 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 21
+    "mudancas": 22
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
@@ -227,7 +227,7 @@
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -238,11 +238,11 @@
     "mudancas": 8
    },
    {
-    "arquivo": "supabase/config.toml",
-    "mudancas": 8
+    "arquivo": "docs/prod-readiness.md",
+    "mudancas": 7
    },
    {
-    "arquivo": "docs/prod-readiness.md",
+    "arquivo": "supabase/config.toml",
     "mudancas": 7
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 252
+    "commits": 253
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1899,
-  "arquivos_codigo": 1443,
-  "linhas_codigo": 173089,
-  "rotas": 67,
+  "arquivos_total": 1902,
+  "arquivos_codigo": 1446,
+  "linhas_codigo": 174149,
+  "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 482,
-  "hooks": 536,
+  "componentes": 483,
+  "hooks": 537,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 102,
+  "testes": 103,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 398,
-   "linhas": 46641
+   "linhas": 46643
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 491,
-   "linhas": 36467
+   "arquivos": 492,
+   "linhas": 36784
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 117,
-   "linhas": 25861
+   "arquivos": 118,
+   "linhas": 26240
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 534
+   "linhas": 545
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 70,
-   "linhas": 14702
+   "arquivos": 71,
+   "linhas": 15053
   },
   "src/types": {
    "arquivos": 57,
@@ -561,12 +561,12 @@
    "linhas": 572
   },
   {
-   "arquivo": "src/pages/WorkSchedulesPage.tsx",
-   "linhas": 541
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 545
   },
   {
-   "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 534
+   "arquivo": "src/pages/WorkSchedulesPage.tsx",
+   "linhas": 541
   },
   {
    "arquivo": "src/pages/admin/DlpFingerprintsPage.tsx",
