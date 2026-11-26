@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8d79d8e8422bb1f4557b251369fcd009a681619c",
+  "commit": "8613230d0af678d7dec340d31d060abe51b12da2",
   "branch": "main",
-  "data_commit": "2026-11-26T12:32:15-03:00",
+  "data_commit": "2026-11-26T12:32:19-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "8613230d0",
+    "data": "2026-11-26",
+    "assunto": "infra: habilita RLS nas tabelas com policy inerte (#360)"
+   },
    {
     "sha": "8d79d8e84",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "2f67831c5",
     "data": "2026-11-25",
     "assunto": "ci: trava consulta sem escopo de empresa nas edges de analise (#324)"
-   },
-   {
-    "sha": "767bfe5a3",
-    "data": "2026-11-25",
-    "assunto": "infra: company_id nas tabelas sem tenant (#338)"
    }
   ],
-  "arquivos_mudados_7d": 410,
+  "arquivos_mudados_7d": 411,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 259
+    "commits": 260
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1914,
+  "arquivos_total": 1915,
   "arquivos_codigo": 1457,
   "linhas_codigo": 176430,
   "rotas": 68,
@@ -326,7 +326,7 @@
   "hooks": 539,
   "edge_functions": 48,
   "tabelas": 180,
-  "migrations": 127,
+  "migrations": 128,
   "cron_jobs": 5,
   "testes": 108,
   "workflows": 14,

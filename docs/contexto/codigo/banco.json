@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 127,
+ "migrations": 128,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -546,7 +546,7 @@
  "tabelas": {
   "achievements": {
    "colunas": {},
-   "rls": false,
+   "rls": true,
    "policies": [],
    "indices": [],
    "fks": [],
@@ -4854,7 +4854,7 @@
   },
   "employee_locations": {
    "colunas": {},
-   "rls": false,
+   "rls": true,
    "policies": [],
    "indices": [],
    "fks": [],
@@ -6156,7 +6156,7 @@
   },
   "gamification_leaderboard": {
    "colunas": {},
-   "rls": false,
+   "rls": true,
    "policies": [
     {
      "nome": "gamification_select_company",
@@ -6186,8 +6186,27 @@
   },
   "geo_blocking_settings": {
    "colunas": {},
-   "rls": false,
-   "policies": [],
+   "rls": true,
+   "policies": [
+    {
+     "nome": "geo_blocking_settings_insert_admin",
+     "comando": "insert",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "geo_blocking_settings_select_auth",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "geo_blocking_settings_update_admin",
+     "comando": "update",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
    "indices": [],
    "fks": [],
    "criada_em": null,
@@ -6210,11 +6229,29 @@
   },
   "geo_blocks": {
    "colunas": {},
-   "rls": false,
+   "rls": true,
    "policies": [
     {
      "nome": "Admins can insert geo blocks",
      "comando": "insert",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "geo_blocks_delete_admin",
+     "comando": "delete",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "geo_blocks_select_auth",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "geo_blocks_update_admin",
+     "comando": "update",
      "para": "authenticated",
      "tipo": "permissive"
     }
@@ -6243,7 +6280,7 @@
   },
   "geofence_events": {
    "colunas": {},
-   "rls": false,
+   "rls": true,
    "policies": [
     {
      "nome": "Service role inserts geofence_events",
@@ -6273,7 +6310,7 @@
   },
   "geofence_states": {
    "colunas": {},
-   "rls": false,
+   "rls": true,
    "policies": [],
    "indices": [],
    "fks": [],
@@ -9732,12 +9769,18 @@
      "ref": "auth"
     }
    },
-   "rls": false,
+   "rls": true,
    "policies": [
     {
      "nome": "Allow employee confirmations with own user_id",
      "comando": "insert",
      "para": "anon, authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "policy_acknowledgments_select_auth",
+     "comando": "select",
+     "para": "authenticated",
      "tipo": "permissive"
     }
    ],

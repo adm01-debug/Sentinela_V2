@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "infra: habilita RLS nas tabelas com policy inerte (#360)",
    "fix: escopo de empresa na policy de slack_integrations (#345)",
    "feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)",
    "feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)",
-   "feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)",
-   "feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)"
+   "feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
