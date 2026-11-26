@@ -50,6 +50,7 @@ import {
   GitBranch,
   Book,
   Wifi,
+  CalendarClock,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUIStore } from "@/stores";
@@ -168,6 +169,7 @@ const navSections: NavSection[] = [
       { icon: ShieldAlert, labelKey: "Politicas DLP", path: "/admin/dlp/policies" },
       { icon: AlertOctagon, labelKey: "Incidentes DLP", path: "/admin/dlp/incidents" },
       { icon: ShieldAlert, labelKey: "Palavras Sensiveis", path: "/admin/dlp/keywords" },
+      { icon: CalendarClock, labelKey: "Retencao de Dados", path: "/admin/retention" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       {
