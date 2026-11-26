@@ -7,8 +7,9 @@ import { queryPresets } from "@/lib/queryClient";
  * Trilha de alterações de cadastro (`audit_logs`).
  *
  * A tabela é escrita pelo trigger `audit_trigger_func` em employees, teams,
- * violation_rules, work_schedules, geofences e webhooks
- * (20251219190000_complete_audit_system.sql:174-201), guarda old_values,
+ * violation_rules, work_schedules, employee_schedules, geofences, webhooks,
+ * profiles e departments (20261127150000_ligar_triggers_de_auditoria.sql),
+ * guarda old_values,
  * new_values e changes, e tem SELECT admin-only (mesma migration, :45-56).
  * Nenhuma tela lia -- o gestor não conseguia responder "quem mudou esta escala".
  */
@@ -50,8 +51,11 @@ const ENTITY_LABEL: Record<string, string> = {
   teams: "Time",
   violation_rules: "Regra de violação",
   work_schedules: "Escala de trabalho",
+  employee_schedules: "Atribuição de escala",
   geofences: "Cerca virtual",
   webhooks: "Webhook",
+  profiles: "Usuário",
+  departments: "Departamento",
 };
 
 export function actionLabel(action: string): string {
