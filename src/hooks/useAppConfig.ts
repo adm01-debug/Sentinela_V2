@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
-interface AppConfig {
+export interface AppConfig {
   id: string;
   maintenanceMode: boolean;
   maintenanceMessage?: string;
@@ -26,7 +26,7 @@ interface UseAppConfigReturn {
   refresh: () => Promise<void>;
 }
 
-type AppConfigRow = {
+export type AppConfigRow = {
   id: string;
   maintenance_mode?: boolean | null;
   maintenance_message?: string | null;
@@ -42,7 +42,7 @@ type AppConfigRow = {
 
 // O banco usa snake_case; o hook expoe camelCase. Sem o mapeamento todo
 // campo lido do config vinha undefined (o `as AppConfig` so escondia o tipo).
-function rowToConfig(row: AppConfigRow): AppConfig {
+export function rowToConfig(row: AppConfigRow): AppConfig {
   return {
     id: row.id,
     maintenanceMode: row.maintenance_mode ?? false,
@@ -61,7 +61,7 @@ function rowToConfig(row: AppConfigRow): AppConfig {
   };
 }
 
-function configToRow(config: Partial<AppConfig>): Record<string, unknown> {
+export function configToRow(config: Partial<AppConfig>): Record<string, unknown> {
   const row: Record<string, unknown> = {};
   // defaultConfig.id e 'default' (nao-uuid): enviar isso no upsert quebra o insert.
   if (config.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(config.id)) row.id = config.id;
@@ -78,7 +78,7 @@ function configToRow(config: Partial<AppConfig>): Record<string, unknown> {
   return row;
 }
 
-const defaultConfig: AppConfig = {
+export const defaultConfig: AppConfig = {
   id: 'default',
   maintenanceMode: false,
   maxUploadSize: 10485760, // 10MB

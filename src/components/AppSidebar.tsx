@@ -47,6 +47,7 @@ import {
   Crosshair,
   FileKey,
   Flag,
+  Settings2,
   ShieldAlert,
   Radio,
   AlertOctagon,
@@ -183,6 +184,7 @@ const navSections: NavSection[] = [
       { icon: Crosshair, labelKey: "Classificação MITRE", path: "/admin/mitre" },
       { icon: FileKey, labelKey: "Fingerprints DLP", path: "/admin/dlp/fingerprints" },
       { icon: Flag, labelKey: "Feature Flags", path: "/admin/feature-flags" },
+      { icon: Settings2, labelKey: "Configurações Globais", path: "/admin/app-config" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       {
