@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 486,
+ "total": 487,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -3975,7 +3975,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 203,
+   "usado_por": 204,
    "orfao": false
   },
   {
@@ -4279,7 +4279,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 64,
+   "usado_por": 65,
    "orfao": false
   },
   {
@@ -4706,7 +4706,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 74,
+   "usado_por": 75,
    "orfao": false
   },
   {
@@ -5600,7 +5600,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 23,
+   "usado_por": 24,
    "orfao": false
   },
   {
@@ -5877,6 +5877,23 @@
    ],
    "tabelas": [],
    "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/violations/ViolationAcknowledgeDialog.tsx",
+   "exports": [
+    "ViolationAcknowledgeDialog",
+    "ViolationAcknowledgeDialogProps"
+   ],
+   "export_default": "ViolationAcknowledgeDialog",
+   "linhas": 141,
+   "dominio": "components/violations",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [
+    "acknowledge-violation"
+   ],
    "usado_por": 1,
    "orfao": false
   },
@@ -7902,7 +7919,7 @@
     "ViolationDetailPage"
    ],
    "export_default": "ViolationDetailPage",
-   "linhas": 283,
+   "linhas": 296,
    "dominio": "pages",
    "hooks_locais": [
     "useUpdateViolationStatus",

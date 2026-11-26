@@ -2129,6 +2129,13 @@
    "src/hooks/useVersions.ts",
    "src/lib/utils.ts"
   ],
+  "src/components/violations/ViolationAcknowledgeDialog.tsx": [
+   "src/components/ui/button.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/integrations/supabase/client.ts"
+  ],
   "src/components/violations/ViolationDetailDialog.tsx": [
    "src/components/Skeleton.tsx",
    "src/components/ui/badge.tsx",
@@ -3654,6 +3661,7 @@
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
+   "src/components/violations/ViolationAcknowledgeDialog.tsx",
    "src/components/violations/ViolationDisputeDialog.tsx",
    "src/components/violations/ViolationTimelineDialog.tsx",
    "src/hooks/useSecurityViolations.ts",
@@ -4504,6 +4512,9 @@
   ],
   "supabase/functions/_shared/webPush_test.ts": [
    "supabase/functions/_shared/webPush.ts"
+  ],
+  "supabase/functions/acknowledge-violation/index.ts": [
+   "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/agent-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"

@@ -1848,13 +1848,13 @@
   },
   {
    "modulo": "components/violations",
-   "arquivos": 3,
+   "arquivos": 4,
    "testes": 0,
-   "linhas": 1068,
+   "linhas": 1209,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
-   "componentes": 3,
+   "componentes": 4,
    "hooks_locais": [
     "useAuth",
     "useCreateDispute",
@@ -1865,7 +1865,9 @@
     "useViolationDisputes"
    ],
    "hooks_definidos": [],
-   "edges": [],
+   "edges": [
+    "acknowledge-violation"
+   ],
    "tabelas": [
     "screen_captures",
     "security_violations",
@@ -1885,7 +1887,9 @@
     "admin"
    ],
    "diretos": {
-    "edges": [],
+    "edges": [
+     "acknowledge-violation"
+    ],
     "tabelas": [
      "screen_captures",
      "security_violations"
@@ -4151,7 +4155,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 14289,
+   "linhas": 14302,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4379,6 +4383,7 @@
    ],
    "hooks_definidos": [],
    "edges": [
+    "acknowledge-violation",
     "analyze-activity",
     "award-gamification-points",
     "behavior-pattern",
@@ -5253,6 +5258,7 @@
    ],
    "hooks_definidos": [],
    "edges": [
+    "acknowledge-violation",
     "analyze-activity",
     "award-gamification-points",
     "behavior-pattern",
@@ -5653,7 +5659,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 75,
+   "testes": 76,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

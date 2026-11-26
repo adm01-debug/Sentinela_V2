@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `300eb471d5fd6d7c197e1bc50f12345e13cdfcc4` (2026-11-26T12:03:17-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `eb69d53fa95b113cd88560702acfd29042db3253` (2026-11-26T12:21:42-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1426), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1428), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1911 |
-| arquivos_codigo | 1455 |
-| linhas_codigo | 176168 |
+| arquivos_total | 1913 |
+| arquivos_codigo | 1457 |
+| linhas_codigo | 176430 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 63 |
-| componentes | 486 |
+| componentes | 487 |
 | hooks | 539 |
 | edge_functions | 48 |
 | tabelas | 180 |
 | migrations | 126 |
 | cron_jobs | 5 |
-| testes | 107 |
+| testes | 108 |
 | workflows | 14 |
 | scripts | 37 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (68)
-- componentes: src/components (366), src/pages (102), src/providers (8)
+- componentes: src/components (367), src/pages (102), src/providers (8)
 - hooks: src/hooks (492), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (74), co-localizado (__tests__) (22), outro (10)
+- testes: co-localizado (*.test) (75), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 494 | 515 | 21 | 101 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 175 | 15 | 79 |
+| pages | 4 | 38 | 68 | 175 | 16 | 79 |
 | pages/admin | 0 | 27 | 29 | 45 | 8 | 44 |
 | pages/dev | 0 | 3 | 3 | 16 | 0 | 3 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -182,7 +182,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - (nenhum)
 
 ## Edge functions
-- `acknowledge-violation` (verify_jwt=false) — tabelas: agent_keys, security_violations, settings_audit_log; chamada por 0 arquivo(s) do front
+- `acknowledge-violation` (verify_jwt=false) — tabelas: agent_keys, security_violations, settings_audit_log; chamada por 1 arquivo(s) do front
 - `agent-collector` — tabelas: agent_keys, click_logs, employees, keystroke_logs, productivity_logs, screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `analyze-activity` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 2 arquivo(s) do front
 - `award-gamification-points` — tabelas: employee_points, employees, points_history, user_roles; chamada por 1 arquivo(s) do front
@@ -434,6 +434,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `eb69d53fa` feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)
 - 2026-11-26 `300eb471d` feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)
 - 2026-11-26 `eb313b63c` feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)
 - 2026-11-26 `7190c8998` feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)
@@ -448,7 +449,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `1b3c384f6` feat: tela de isencoes do aceite de politicas em /admin/policy-exemptions (#349)
 - 2026-11-26 `f99bf784b` feat: tela de log de redacoes DLP em /admin/dlp/redactions (#348)
 - 2026-11-26 `715b6b837` feat: historico de acoes da violacao em violation_actions (#347)
-- 2026-11-26 `5755cf976` feat: tela de retencao de dados em /admin/retention (#346)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

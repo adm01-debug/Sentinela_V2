@@ -6,7 +6,7 @@
    "src/pages (68)"
   ],
   "componentes": [
-   "src/components (366)",
+   "src/components (367)",
    "src/pages (102)",
    "src/providers (8)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (74)",
+   "co-localizado (*.test) (75)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (486)"
+  ".tsx (487)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)",
    "feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)",
    "feat: painel de execucoes do gerador de relatorios na tela de relatorios (#361)",
    "feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)",
-   "feat: historico de execucoes dos relatorios agendados (#357)",
-   "feat: tela de configuracoes globais em /admin/app-config (#355)"
+   "feat: historico de execucoes dos relatorios agendados (#357)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

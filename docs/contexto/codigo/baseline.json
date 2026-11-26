@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "300eb471d5fd6d7c197e1bc50f12345e13cdfcc4",
+  "commit": "eb69d53fa95b113cd88560702acfd29042db3253",
   "branch": "main",
-  "data_commit": "2026-11-26T12:03:17-03:00",
+  "data_commit": "2026-11-26T12:21:42-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "eb69d53fa",
+    "data": "2026-11-26",
+    "assunto": "feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)"
+   },
    {
     "sha": "300eb471d",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "de3fb1a1e",
     "data": "2026-11-25",
     "assunto": "feat: liga push no navegador com Web Push/VAPID (#319)"
-   },
-   {
-    "sha": "0e3b73ab6",
-    "data": "2026-11-25",
-    "assunto": "chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)"
    }
   ],
-  "arquivos_mudados_7d": 406,
+  "arquivos_mudados_7d": 409,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 257
+    "commits": 258
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1911,
-  "arquivos_codigo": 1455,
-  "linhas_codigo": 176168,
+  "arquivos_total": 1913,
+  "arquivos_codigo": 1457,
+  "linhas_codigo": 176430,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 63,
-  "componentes": 486,
+  "componentes": 487,
   "hooks": 539,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 107,
+  "testes": 108,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -423,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 401,
-   "linhas": 47404
+   "arquivos": 402,
+   "linhas": 47545
   },
   "src/constants": {
    "arquivos": 7,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 118,
-   "linhas": 26341
+   "linhas": 26354
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 75,
-   "linhas": 15771
+   "arquivos": 76,
+   "linhas": 15843
   },
   "src/types": {
    "arquivos": 57,
@@ -504,7 +504,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 11966
+   "linhas": 12002
   },
   "vite.config.ts": {
    "arquivos": 1,

@@ -2831,14 +2831,16 @@
     "violation_disputes"
    ],
    "rpcs": [],
-   "edges": [],
+   "edges": [
+    "acknowledge-violation"
+   ],
    "canais_realtime": [],
    "flags": [],
    "papeis": [
     "Admin",
     "admin"
    ],
-   "arquivos_puxados": 40
+   "arquivos_puxados": 41
   },
   {
    "protegida": false,

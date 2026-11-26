@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 107,
+ "total": 108,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 105
+  "unit": 106
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 74
+   "arquivos": 75
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -1022,6 +1022,15 @@
    "casos": 9
   },
   {
+   "arquivo": "src/test/violation-acknowledge.test.tsx",
+   "tipo": "unit",
+   "linhas": 72,
+   "testa": [
+    "src/components/violations/ViolationAcknowledgeDialog.tsx"
+   ],
+   "casos": 3
+  },
+  {
    "arquivo": "src/test/violation-actions.test.tsx",
    "tipo": "unit",
    "linhas": 240,
@@ -1091,6 +1100,7 @@
   "src/components/security/SecurityScoreCard.tsx": 1,
   "src/components/settings/BrowserPushCard.tsx": 1,
   "src/components/ui/index.ts": 1,
+  "src/components/violations/ViolationAcknowledgeDialog.tsx": 1,
   "src/constants/index.ts": 1,
   "src/constants/routes.ts": 2,
   "src/guards/MFAGuard.tsx": 1,
