@@ -20,6 +20,25 @@ export interface ScheduledReport {
   created_at: string;
 }
 
+/**
+ * Uma linha de `report_logs`. A tabela e escrita pela edge
+ * `send-scheduled-report` a cada execucao (manual ou agendada) e tem RLS
+ * admin-only desde 20261122030000, mas nenhuma tela lia: o gestor agendava e
+ * nao via se o envio saiu, quantos registros foram e qual foi o erro.
+ */
+export interface ReportExecution {
+  id: string;
+  report_id: string | null;
+  report_name: string;
+  executed_at: string;
+  manual: boolean;
+  status: string;
+  records_count: number;
+  error_message: string | null;
+}
+
+export const EXECUTION_LIMIT = 50;
+
 export interface ReportFormData {
   name: string;
   description: string;
@@ -96,6 +115,29 @@ export function useScheduledReportsPage() {
     },
   });
 
+  const reportIds = useMemo(() => reports.map((r) => r.id), [reports]);
+
+  const executionsQuery = useQuery({
+    queryKey: ["report-logs", reportIds],
+    enabled: reportIds.length > 0,
+    queryFn: async (): Promise<ReportExecution[]> => {
+      const { data, error } = await supabase
+        .from("report_logs")
+        .select("id, report_id, executed_at, manual, status, records_count, error_message")
+        .in("report_id", reportIds)
+        .order("executed_at", { ascending: false })
+        .limit(EXECUTION_LIMIT);
+      if (error) throw error;
+      const nameById = new Map(reports.map((r) => [r.id, r.name]));
+      return ((data || []) as Omit<ReportExecution, "report_name">[]).map((row) => ({
+        ...row,
+        report_name: (row.report_id && nameById.get(row.report_id)) || "Agendamento removido",
+      }));
+    },
+  });
+
+  const executions = useMemo(() => executionsQuery.data ?? [], [executionsQuery.data]);
+
   const createMutation = useMutation({
     mutationFn: async (data: ReportFormData) => {
       // scheduled_reports nao tem colunas schedule_time/schedule_day: o horario
@@ -134,10 +176,7 @@ export function useScheduledReportsPage() {
         filters: { schedule_time: data.schedule_time, schedule_day: data.schedule_day ?? null },
         updated_at: new Date().toISOString(),
       };
-      const { error } = await supabase
-        .from("scheduled_reports")
-        .update(payload)
-        .eq("id", id);
+      const { error } = await supabase.from("scheduled_reports").update(payload).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -180,6 +219,7 @@ export function useScheduledReportsPage() {
     onSuccess: () => {
       toast({ title: "Relatorio sendo gerado!" });
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
+      queryClient.invalidateQueries({ queryKey: ["report-logs"] });
     },
     onError: (error: Error) => {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
@@ -284,6 +324,12 @@ export function useScheduledReportsPage() {
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
     isRunning: runNowMutation.isPending,
+    executions,
+    executionsLoading: executionsQuery.isLoading,
+    executionsError: executionsQuery.error
+      ? (executionsQuery.error as { message?: string }).message || "Erro ao carregar execucoes"
+      : null,
+    executionLimit: EXECUTION_LIMIT,
     handleOpenCreate,
     handleOpenEdit,
     handleCloseDialog,
