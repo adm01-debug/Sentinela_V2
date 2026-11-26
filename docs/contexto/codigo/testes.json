@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 106,
+ "total": 107,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 104
+  "unit": 105
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 73
+   "arquivos": 74
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -564,6 +564,15 @@
    "casos": 4
   },
   {
+   "arquivo": "src/test/employee-gamification.test.tsx",
+   "tipo": "unit",
+   "linhas": 170,
+   "testa": [
+    "src/hooks/useEmployeeGamification.ts"
+   ],
+   "casos": 4
+  },
+  {
    "arquivo": "src/test/employees.test.ts",
    "tipo": "unit",
    "linhas": 148,
@@ -1104,6 +1113,7 @@
   "src/hooks/useDevicesPage.ts": 1,
   "src/hooks/useDisputeMetrics.ts": 1,
   "src/hooks/useDlpFingerprintsPage.ts": 1,
+  "src/hooks/useEmployeeGamification.ts": 1,
   "src/hooks/useEmployeeSchedules.ts": 1,
   "src/hooks/useEmployees.ts": 1,
   "src/hooks/useEmployeesPage.ts": 1,

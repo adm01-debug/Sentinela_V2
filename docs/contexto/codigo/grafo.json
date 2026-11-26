@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1346,
- "arestas": 3098,
+ "nos": 1348,
+ "arestas": 3109,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 234
+   "importado_por": 235
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 205
+   "importado_por": 206
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 202
+   "importado_por": 203
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 163
+   "importado_por": 164
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -30,7 +30,7 @@
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 85
+   "importado_por": 86
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
@@ -42,7 +42,7 @@
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 70
+   "importado_por": 71
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
@@ -58,7 +58,7 @@
   },
   {
    "arquivo": "src/lib/queryClient.ts",
-   "importado_por": 53
+   "importado_por": 54
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
@@ -82,7 +82,7 @@
   },
   {
    "arquivo": "src/hooks/useAuth.ts",
-   "importado_por": 28
+   "importado_por": 29
   },
   {
    "arquivo": "src/utils/cn.ts",
@@ -109,11 +109,11 @@
    "importado_por": 19
   },
   {
-   "arquivo": "src/components/Skeleton.tsx",
-   "importado_por": 17
+   "arquivo": "src/components/ui/avatar.tsx",
+   "importado_por": 18
   },
   {
-   "arquivo": "src/components/ui/avatar.tsx",
+   "arquivo": "src/components/Skeleton.tsx",
    "importado_por": 17
   },
   {
@@ -504,12 +504,12 @@
   {
    "modulo": "hooks",
    "depende_de": 10,
-   "importado_por": 30
+   "importado_por": 31
   },
   {
    "modulo": "components/ui",
    "depende_de": 3,
-   "importado_por": 36
+   "importado_por": 37
   },
   {
    "modulo": "components",
@@ -518,7 +518,7 @@
   },
   {
    "modulo": "pages",
-   "depende_de": 28,
+   "depende_de": 29,
    "importado_por": 1
   },
   {

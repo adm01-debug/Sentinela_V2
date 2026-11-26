@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "eb313b63c594b622162cdb46a0a4af7510c7eb6f",
+  "commit": "300eb471d5fd6d7c197e1bc50f12345e13cdfcc4",
   "branch": "main",
-  "data_commit": "2026-11-26T11:51:16-03:00",
+  "data_commit": "2026-11-26T12:03:17-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "300eb471d",
+    "data": "2026-11-26",
+    "assunto": "feat: detalhe de gamificacao por funcionario com historico e conquistas (#362)"
+   },
    {
     "sha": "eb313b63c",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "0e3b73ab6",
     "data": "2026-11-25",
     "assunto": "chore: remove as duas edges sem chamador (escala e timeline do funcionario) (#312)"
-   },
-   {
-    "sha": "fb72235cf",
-    "data": "2026-11-25",
-    "assunto": "ci: detecta chave embutida no comando dos jobs do agendador (#309)"
    }
   ],
-  "arquivos_mudados_7d": 403,
+  "arquivos_mudados_7d": 406,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 256
+    "commits": 257
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1908,
-  "arquivos_codigo": 1452,
-  "linhas_codigo": 175553,
+  "arquivos_total": 1911,
+  "arquivos_codigo": 1455,
+  "linhas_codigo": 176168,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "modulos": 62,
-  "componentes": 485,
-  "hooks": 538,
+  "modulos": 63,
+  "componentes": 486,
+  "hooks": 539,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 106,
+  "testes": 107,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -423,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 400,
-   "linhas": 47142
+   "arquivos": 401,
+   "linhas": 47404
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 493,
-   "linhas": 37045
+   "arquivos": 494,
+   "linhas": 37223
   },
   "src/i18n": {
    "arquivos": 1,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 118,
-   "linhas": 26336
+   "linhas": 26341
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 74,
-   "linhas": 15601
+   "arquivos": 75,
+   "linhas": 15771
   },
   "src/types": {
    "arquivos": 57,

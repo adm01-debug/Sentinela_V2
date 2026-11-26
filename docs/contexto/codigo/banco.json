@@ -2091,7 +2091,7 @@
     ],
     "so_no_types": []
    },
-   "usada_no_front": 2,
+   "usada_no_front": 3,
    "usada_em_edges": [],
    "triggers": [
     "update_badges_updated_at"
@@ -4653,7 +4653,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 1,
+   "usada_no_front": 2,
    "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
@@ -5484,7 +5484,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 19,
+   "usada_no_front": 20,
    "usada_em_edges": [
     "agent-collector",
     "award-gamification-points",
@@ -9686,7 +9686,7 @@
     ],
     "so_no_types": []
    },
-   "usada_no_front": 1,
+   "usada_no_front": 2,
    "usada_em_edges": [
     "award-gamification-points"
    ],

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 485,
+ "total": 486,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -2008,6 +2008,23 @@
    "orfao": true
   },
   {
+   "arquivo": "src/components/gamification/EmployeeGamificationPanel.tsx",
+   "exports": [
+    "EmployeeGamificationPanel"
+   ],
+   "export_default": "EmployeeGamificationPanel",
+   "linhas": 262,
+   "dominio": "components/gamification",
+   "hooks_locais": [
+    "useAuth",
+    "useEmployeeGamification"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/GenerateReportDialog.tsx",
    "exports": [
     "GenerateReportDialog"
@@ -3880,7 +3897,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 17,
+   "usado_por": 18,
    "orfao": false
   },
   {
@@ -3895,7 +3912,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 163,
+   "usado_por": 164,
    "orfao": false
   },
   {
@@ -3958,7 +3975,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 202,
+   "usado_por": 203,
    "orfao": false
   },
   {
@@ -3993,7 +4010,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 205,
+   "usado_por": 206,
    "orfao": false
   },
   {
@@ -5263,7 +5280,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 70,
+   "usado_por": 71,
    "orfao": false
   },
   {
@@ -7368,7 +7385,7 @@
     "GamificationPage"
    ],
    "export_default": "GamificationPage",
-   "linhas": 361,
+   "linhas": 366,
    "dominio": "pages",
    "hooks_locais": [
     "useAuth",

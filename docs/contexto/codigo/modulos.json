@@ -867,6 +867,61 @@
    "pacotes_externos": []
   },
   {
+   "modulo": "components/gamification",
+   "arquivos": 1,
+   "testes": 0,
+   "linhas": 262,
+   "itens_menu": [],
+   "telas": [],
+   "rotas_http": [],
+   "componentes": 1,
+   "hooks_locais": [
+    "useAuth",
+    "useEmployeeGamification",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "hooks_definidos": [],
+   "edges": [],
+   "tabelas": [
+    "badges",
+    "employee_badges",
+    "employees",
+    "points_history",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "buckets": [],
+   "canais_realtime": [],
+   "env": [
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL"
+   ],
+   "flags": [],
+   "papeis": [
+    "Admin",
+    "admin",
+    "status"
+   ],
+   "diretos": {
+    "edges": [],
+    "tabelas": [],
+    "rpcs": []
+   },
+   "importado_por_outros_modulos": [
+    "pages"
+   ],
+   "depende_de_modulos": [
+    "components/ui",
+    "hooks"
+   ],
+   "pacotes_externos": [
+    "lucide-react"
+   ]
+  },
+  {
    "modulo": "components/geofence",
    "arquivos": 2,
    "testes": 0,
@@ -1624,6 +1679,7 @@
     "components/exports",
     "components/file-transfers",
     "components/forms",
+    "components/gamification",
     "components/geofence",
     "components/layout",
     "components/map",
@@ -2006,9 +2062,9 @@
   },
   {
    "modulo": "hooks",
-   "arquivos": 493,
+   "arquivos": 494,
    "testes": 0,
-   "linhas": 37045,
+   "linhas": 37223,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -2167,6 +2223,7 @@
     "useEmployeeActivity",
     "useEmployeeBadges",
     "useEmployeeDetailPage",
+    "useEmployeeGamification",
     "useEmployeePoints",
     "useEmployeeSchedule",
     "useEmployeeSchedules",
@@ -2697,6 +2754,7 @@
     "useElementSize",
     "useEmailNotification",
     "useEmployeeDetailPage",
+    "useEmployeeGamification",
     "useAssignDevice",
     "useCreateEmployee",
     "useDeleteEmployee",
@@ -3519,6 +3577,7 @@
     "components/employees",
     "components/exports",
     "components/file-transfers",
+    "components/gamification",
     "components/geofence",
     "components/onboarding",
     "components/productivity",
@@ -4092,7 +4151,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 14284,
+   "linhas": 14289,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4208,6 +4267,7 @@
     "useDevicesPage",
     "useDisputeSlaAlerts",
     "useEmployee",
+    "useEmployeeGamification",
     "useEmployeeSchedule",
     "useEmployeeSchedules",
     "useEmployeeStats",
@@ -4350,6 +4410,7 @@
     "dashboard_layouts",
     "departments",
     "devices",
+    "employee_badges",
     "employee_devices",
     "employee_geofences",
     "employee_points",
@@ -4371,6 +4432,7 @@
     "overtime_requests",
     "password_reset_requests",
     "permissions",
+    "points_history",
     "policy_acknowledgments",
     "productivity_logs",
     "profiles",
@@ -4498,6 +4560,7 @@
     "components/dashboard",
     "components/employees",
     "components/exports",
+    "components/gamification",
     "components/geofence",
     "components/layout",
     "components/onboarding",
@@ -5052,6 +5115,7 @@
     "useDocumentTitle",
     "useDuplicateMessageTemplate",
     "useEmployee",
+    "useEmployeeGamification",
     "useEmployeeSchedule",
     "useEmployeeSchedules",
     "useEmployeeStats",
@@ -5238,6 +5302,7 @@
     "dlp_policies",
     "dlp_redaction_log",
     "edge_function_logs",
+    "employee_badges",
     "employee_devices",
     "employee_geofences",
     "employee_points",
@@ -5268,6 +5333,7 @@
     "overtime_requests",
     "password_reset_requests",
     "permissions",
+    "points_history",
     "policy_acknowledgments",
     "policy_exemptions",
     "productivity_logs",
@@ -5587,7 +5653,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 74,
+   "testes": 75,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

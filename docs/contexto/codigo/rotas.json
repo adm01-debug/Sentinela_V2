@@ -1977,6 +1977,7 @@
     "useChartColors",
     "useContext",
     "useEffect",
+    "useEmployeeGamification",
     "useGamificationPage",
     "useLocation",
     "useMemo",
@@ -1992,6 +1993,7 @@
    "hooks_locais": [
     "useAuth",
     "useChartColors",
+    "useEmployeeGamification",
     "useGamificationPage",
     "useMutation",
     "useQuery",
@@ -2001,7 +2003,10 @@
    ],
    "tabelas": [
     "badges",
+    "employee_badges",
     "employee_points",
+    "employees",
+    "points_history",
     "user_roles"
    ],
    "rpcs": [],
@@ -2012,9 +2017,10 @@
    "flags": [],
    "papeis": [
     "Admin",
-    "admin"
+    "admin",
+    "status"
    ],
-   "arquivos_puxados": 32
+   "arquivos_puxados": 35
   },
   {
    "protegida": true,

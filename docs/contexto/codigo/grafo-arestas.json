@@ -1087,6 +1087,15 @@
    "src/components/ui/textarea.tsx",
    "src/lib/utils.ts"
   ],
+  "src/components/gamification/EmployeeGamificationPanel.tsx": [
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/select.tsx",
+   "src/hooks/useAuth.ts",
+   "src/hooks/useEmployeeGamification.ts"
+  ],
   "src/components/geofence/GeofenceDashboard.tsx": [
    "src/components/charts/index.ts",
    "src/components/ui/card.tsx",
@@ -2387,6 +2396,11 @@
    "src/integrations/supabase/client.ts",
    "src/integrations/supabase/types.ts"
   ],
+  "src/hooks/useEmployeeGamification.ts": [
+   "src/hooks/use-toast.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useEmployeeSchedules.ts": [
    "src/hooks/use-toast.ts",
    "src/integrations/supabase/client.ts"
@@ -3308,6 +3322,7 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/pages/GamificationPage.tsx": [
+   "src/components/gamification/EmployeeGamificationPanel.tsx",
    "src/components/layout/PageHeader.tsx",
    "src/components/ui/avatar.tsx",
    "src/components/ui/badge.tsx",
