@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-26",
+  "nota": "Objeto que existe no banco (types.ts e gerado dele) e nao tem CREATE em nenhuma migration. Cada entrada precisa de motivo; resolvido = escrever a migration de baseline (DDL + RLS) e remover a entrada daqui.",
+  "tabelas": [
+    {
+      "name": "achievements",
+      "reason": "tabela viva criada fora do repositorio, sem company_id, com RLS desabilitada (docs/agentes/banco.md:106) e sem policy nenhuma em migration"
+    },
+    {
+      "name": "departments",
+      "reason": "tabela viva sem CREATE TABLE em migration e sem company_id; o RLS foi habilitado depois, em 20261122021000_fix_departments_write_rls.sql:14 (a medicao de docs/agentes/banco.md:106 e anterior a essa migration)"
+    },
+    {
+      "name": "employee_locations",
+      "reason": "tabela viva sem produtor nem consumidor no repositorio (o produtor de cerca grava geofence_violations)"
+    },
+    {
+      "name": "gamification_leaderboard",
+      "reason": "tabela viva criada fora do repositorio e com RLS desabilitada (docs/agentes/banco.md:106); a policy criada em 20261122030000:24 nunca teve efeito porque nenhuma migration faz ENABLE ROW LEVEL SECURITY nela"
+    },
+    {
+      "name": "geo_blocking_settings",
+      "reason": "tabela viva de configuracao do bloqueio geografico, sem migration"
+    },
+    {
+      "name": "geo_blocks",
+      "reason": "tabela viva de bloqueios por IP/pais; tem 2 policies em migration e nenhum ENABLE ROW LEVEL SECURITY (policies inertes)"
+    },
+    {
+      "name": "geofence_events",
+      "reason": "tabela viva sem produtor no repo; tem 3 policies em migration e nenhum ENABLE ROW LEVEL SECURITY (policies inertes)"
+    },
+    {
+      "name": "geofence_states",
+      "reason": "tabela viva sem produtor no repositorio (estado de cerca por dispositivo)"
+    },
+    {
+      "name": "policy_acknowledgments",
+      "reason": "tabela viva criada fora do repositorio; tem 7 policies em migration e nenhum ENABLE ROW LEVEL SECURITY (policies inertes); consumida pelo agente desktop e por usePolicyAcknowledgments"
+    }
+  ],
+  "views": [
+    {
+      "name": "activities",
+      "reason": "view viva sem CREATE VIEW em migration e sem consumidor no repo (nenhum from(\u0027activities\u0027) em src)"
+    },
+    {
+      "name": "violations",
+      "reason": "view viva sobre security_violations; 20261122030000_harden_violations_and_open_selects.sql:16 apenas ALTERa (security_invoker, revoke anon), o CREATE VIEW nunca entrou no repo"
+    }
+  ]
+}

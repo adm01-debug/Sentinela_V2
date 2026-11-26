@@ -3,14 +3,15 @@
 Portado de `adm01-debug/Zapp_Web_V2`. Baseline captura a dívida de HOJE; o ratchet falha só
 se surgir ocorrência **nova** — permite destravar CI sem corrigir tudo de uma vez.
 
-| script                          | o que congela                                                                  | baseline                                                |
-| ------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------- |
-| `lint-ratchet.mjs`              | ESLint (`eslint . --format json`)                                              | `eslint-baseline.json` (1633 ocorrências, 08/11/2026)   |
-| `typecheck-ratchet.mjs`         | `tsc -b --force` (`tsc --noEmit` sozinho é no-op nesta config de `references`) | `typecheck-baseline.json` (307 ocorrências, 08/11/2026) |
-| `format-ratchet.mjs`            | Prettier (`--list-different --ignore-unknown`)                                 | `prettier-baseline.json` (1555 arquivos, 13/11/2026)    |
-| `deno-check-ratchet.mjs`        | `deno check` nas edge functions (`deno test` nao checa tipo)                   | `deno-check-baseline.json` (49 erros, 24/11/2026)       |
-| `edge-gate-guard.mjs`           | gate de credencial + cobertura do `config.toml` nas edge functions             | `edge-gate-baseline.json` (2 exceções, 25/11/2026)      |
-| `check-claude-md-integrity.mjs` | integridade do AGENTS.md/CLAUDE.md/docs/agentes                                | — (git, sem baseline)                                   |
+| script                          | o que congela                                                                     | baseline                                                |
+| ------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `lint-ratchet.mjs`              | ESLint (`eslint . --format json`)                                                 | `eslint-baseline.json` (1633 ocorrências, 08/11/2026)   |
+| `typecheck-ratchet.mjs`         | `tsc -b --force` (`tsc --noEmit` sozinho é no-op nesta config de `references`)    | `typecheck-baseline.json` (307 ocorrências, 08/11/2026) |
+| `format-ratchet.mjs`            | Prettier (`--list-different --ignore-unknown`)                                    | `prettier-baseline.json` (1555 arquivos, 13/11/2026)    |
+| `deno-check-ratchet.mjs`        | `deno check` nas edge functions (`deno test` nao checa tipo)                      | `deno-check-baseline.json` (49 erros, 24/11/2026)       |
+| `edge-gate-guard.mjs`           | gate de credencial + cobertura do `config.toml` nas edge functions                | `edge-gate-baseline.json` (2 exceções, 25/11/2026)      |
+| `schema-drift-guard.mjs`        | objeto no banco (`types.ts` gerado) sem `CREATE TABLE`/`CREATE VIEW` em migration | `schema-drift-baseline.json` (11 objetos, 26/11/2026)   |
+| `check-claude-md-integrity.mjs` | integridade do AGENTS.md/CLAUDE.md/docs/agentes                                   | — (git, sem baseline)                                   |
 
 Uso:
 
@@ -21,6 +22,8 @@ node scripts/ci/typecheck-ratchet.mjs
 node scripts/ci/format-ratchet.mjs          # falha só com arquivo novo fora do padrão
 node scripts/ci/deno-check-ratchet.mjs      # precisa do deno no PATH (CI fixa v2.9.8)
 node --test scripts/ci/deno-check-ratchet.unit.mjs   # testes do parser
+node scripts/ci/schema-drift-guard.mjs      # objeto no banco sem migration
+node --test scripts/ci/schema-drift-guard.unit.mjs   # testes do analisador
 node scripts/ci/edge-gate-guard.mjs         # gate de credencial nas edge functions
 node --test scripts/ci/edge-gate-guard.unit.mjs      # testes do analisador
 

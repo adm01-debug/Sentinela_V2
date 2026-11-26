@@ -179,3 +179,22 @@ jobs:
         run: node scripts/ci/role-enum-guard.mjs
       - name: Role enum guard (testes do analisador)
         run: node --test scripts/ci/role-enum-guard.unit.mjs
+
+  # Guarda de drift entre o schema vivo e as migrations: `src/integrations/supabase/types.ts`
+  # é gerado a partir do banco, então lista o que EXISTE em produção, enquanto as
+  # migrations são o que um ambiente novo reconstrói. Objeto no banco sem CREATE
+  # TABLE/VIEW em nenhuma migration nasceu fora do repositório — ninguém sabe com
+  # qual DDL e com qual RLS. `docs/agentes/banco.md` registrou 9 tabelas vivas sem
+  # migration e 3 delas com RLS desabilitada. A dívida histórica fica em
+  # scripts/ci/schema-drift-baseline.json com motivo obrigatório; drift NOVO quebra
+  # o job. Sem `npm ci`: node puro, sem dependências do projeto.
+  schema-drift-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Objeto no banco sem migration
+        run: node scripts/ci/schema-drift-guard.mjs
+      - name: Schema drift guard (testes do analisador)
+        run: node --test scripts/ci/schema-drift-guard.unit.mjs

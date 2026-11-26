@@ -96,6 +96,20 @@ vivas sem migration** — `achievements`, `departments`, `employee_locations`,
 Portanto: **o banco ao vivo é a verdade**; o repo é uma aproximação. Confirme estrutura por
 `pg_get_functiondef` / `pg_indexes` / `information_schema`, nunca por leitura de migration.
 
+A lista das 9 tabelas está congelada em `scripts/ci/schema-drift-baseline.json` e conferida a cada push
+pela guarda `schema-drift-guard` (`.github/workflows/ci.yml`): **tabela ou view que exista no
+`types.ts` gerado sem `CREATE TABLE`/`CREATE VIEW` em nenhuma migration quebra o build**. Resolver um
+item = escrever a migration de baseline (DDL + RLS) e apagar a entrada da lista. A guarda não vê o banco
+— ela cruza `types.ts` (snapshot do vivo) com `supabase/migrations/`, então objeto criado no banco
+depois do último `gen types` não aparece. As partições mensais (`x_partitioned_AAAA_MM`) são criadas em
+tempo de execução por `create_monthly_partition` e não contam como drift.
+
+Dois itens dessa lista foram encontrados durante o port da guarda e ainda estão abertos:
+`gamification_leaderboard` e `policy_acknowledgments` têm policy em migration mas **nenhum
+`ENABLE ROW LEVEL SECURITY`** (`20261122030000:24` e `20261122090000:30-33`), ou seja a policy nunca
+teve efeito e a tabela seguia aberta a qualquer autenticado. `geofence_events` e `geo_blocks` estão no
+mesmo estado (3 e 2 policies, zero `ENABLE`).
+
 ## RLS
 
 Nas migrations: **364 `CREATE POLICY`** e **121 `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`** (há
