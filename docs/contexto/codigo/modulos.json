@@ -349,6 +349,50 @@
    ]
   },
   {
+   "modulo": "components/audit",
+   "arquivos": 1,
+   "testes": 0,
+   "linhas": 226,
+   "itens_menu": [],
+   "telas": [],
+   "rotas_http": [],
+   "componentes": 1,
+   "hooks_locais": [
+    "useAuditTrail",
+    "useQuery"
+   ],
+   "hooks_definidos": [],
+   "edges": [],
+   "tabelas": [
+    "audit_logs"
+   ],
+   "rpcs": [],
+   "buckets": [],
+   "canais_realtime": [],
+   "env": [
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL"
+   ],
+   "flags": [],
+   "papeis": [],
+   "diretos": {
+    "edges": [],
+    "tabelas": [],
+    "rpcs": []
+   },
+   "importado_por_outros_modulos": [
+    "pages"
+   ],
+   "depende_de_modulos": [
+    "components/ui",
+    "hooks"
+   ],
+   "pacotes_externos": [
+    "date-fns",
+    "lucide-react"
+   ]
+  },
+  {
    "modulo": "components/auth",
    "arquivos": 5,
    "testes": 0,
@@ -1516,6 +1560,7 @@
     "components",
     "components/Cards",
     "components/admin",
+    "components/audit",
     "components/auth",
     "components/dashboard",
     "components/data-display",
@@ -1905,9 +1950,9 @@
   },
   {
    "modulo": "hooks",
-   "arquivos": 492,
+   "arquivos": 493,
    "testes": 0,
-   "linhas": 36830,
+   "linhas": 37045,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -1947,6 +1992,7 @@
     "useAudio",
     "useAuditLog",
     "useAuditLogs",
+    "useAuditTrail",
     "useAuth",
     "useAuthPage",
     "useAvailableEmployees",
@@ -2479,6 +2525,7 @@
     "useAudio",
     "useAuditLog",
     "useAuditLogs",
+    "useAuditTrail",
     "useAuth",
     "useChangePassword",
     "useUpdateProfile",
@@ -3148,6 +3195,7 @@
     "app_config",
     "application_rules",
     "attendance_records",
+    "audit_logs",
     "badges",
     "behavioral_baselines",
     "blocked_ips",
@@ -3301,6 +3349,7 @@
      "app_categories",
      "app_config",
      "application_rules",
+     "audit_logs",
      "badges",
      "behavioral_baselines",
      "blocked_ips",
@@ -3406,6 +3455,7 @@
     "components",
     "components/Cards",
     "components/admin",
+    "components/audit",
     "components/auth",
     "components/charts",
     "components/dashboard",
@@ -3985,7 +4035,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 14273,
+   "linhas": 14277,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4058,6 +4108,7 @@
     "useAssignDevice",
     "useAssignEmployeeSchedule",
     "useAuditLog",
+    "useAuditTrail",
     "useAuth",
     "useAuthPage",
     "useAvailableEmployees",
@@ -4233,6 +4284,7 @@
     "app_categories",
     "application_rules",
     "attendance_records",
+    "audit_logs",
     "badges",
     "blocked_ips",
     "click_logs",
@@ -4381,6 +4433,7 @@
    "depende_de_modulos": [
     "components",
     "components/admin",
+    "components/audit",
     "components/auth",
     "components/charts",
     "components/dashboard",
@@ -4886,6 +4939,7 @@
     "useAssignDevice",
     "useAssignEmployeeSchedule",
     "useAuditLog",
+    "useAuditTrail",
     "useAuth",
     "useAuthPage",
     "useAvailableEmployees",
@@ -5106,6 +5160,7 @@
     "app_config",
     "application_rules",
     "attendance_records",
+    "audit_logs",
     "badges",
     "behavioral_baselines",
     "blocked_ips",
@@ -5469,7 +5524,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 72,
+   "testes": 73,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

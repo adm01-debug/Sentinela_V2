@@ -738,6 +738,15 @@
    "src/components/ui/card.tsx",
    "src/hooks/useChartColors.ts"
   ],
+  "src/components/audit/AuditTrailPanel.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useAuditTrail.ts"
+  ],
   "src/components/auth/PasswordResetApprovalPanel.tsx": [
    "src/components/ui/alert-dialog.tsx",
    "src/components/ui/badge.tsx",
@@ -2242,6 +2251,10 @@
    "src/integrations/supabase/client.ts",
    "src/lib/queryClient.ts"
   ],
+  "src/hooks/useAuditTrail.ts": [
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useAuth.ts": [
    "src/integrations/supabase/client.ts",
    "src/providers/AuthProvider.tsx"
@@ -3109,6 +3122,7 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/pages/AuditLogPage.tsx": [
+   "src/components/audit/AuditTrailPanel.tsx",
    "src/components/layout/PageHeader.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/card.tsx",

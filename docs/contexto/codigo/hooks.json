@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 537,
+ "total": 538,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -897,6 +897,29 @@
    "usado_por": 0,
    "usado_por_arquivos": [],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useAuditTrail.ts",
+   "hooks_exportados": [
+    "useAuditTrail"
+   ],
+   "linhas": 215,
+   "dominio": "hooks",
+   "tabelas": [
+    "audit_logs"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useMemo",
+    "useQuery"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/audit/AuditTrailPanel.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useAuth.ts",
