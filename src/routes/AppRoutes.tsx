@@ -80,6 +80,7 @@ const PolicyExemptionsPage = lazy(() => import("@/pages/admin/PolicyExemptionsPa
 const KeystrokeDetailsPage = lazy(() => import("@/pages/admin/KeystrokeDetailsPage"));
 const SIEMPage = lazy(() => import("@/pages/admin/SIEMPage"));
 const MitreMappingPage = lazy(() => import("@/pages/admin/MitreMappingPage"));
+const DlpFingerprintsPage = lazy(() => import("@/pages/admin/DlpFingerprintsPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -357,6 +358,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <MitreMappingPage />
+              </AdminGuard>
+            }
+          />
+          {/* dlp_fingerprints guarda apenas hashes SHA-256 dos chunks, escrita
+              admin por RLS; a tela gera os hashes no navegador. */}
+          <Route
+            path="/admin/dlp/fingerprints"
+            element={
+              <AdminGuard>
+                <DlpFingerprintsPage />
               </AdminGuard>
             }
           />
