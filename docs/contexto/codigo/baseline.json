@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "7bdeb55798fd9ba5f021e6532d5ca1da10a87085",
+  "commit": "e6344bb69fec865fba79b69946afac23c681a596",
   "branch": "main",
-  "data_commit": "2026-11-26T09:07:10-03:00",
+  "data_commit": "2026-11-26T09:29:33-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "e6344bb69",
+    "data": "2026-11-26",
+    "assunto": "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)"
+   },
    {
     "sha": "7bdeb5579",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "48ac518be",
     "data": "2026-11-25",
     "assunto": "fix: exige admin no send-whatsapp (#332)"
-   },
-   {
-    "sha": "58db51440",
-    "data": "2026-11-25",
-    "assunto": "fix: exige service_role no process-violation-alert (#331)"
    }
   ],
-  "arquivos_mudados_7d": 377,
+  "arquivos_mudados_7d": 380,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "pasta": "package-lock.json",
@@ -169,14 +169,14 @@
    },
    {
     "pasta": "src/pages/admin",
+    "mudancas": 15
+   },
+   {
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 14
    },
    {
     "pasta": "package.json",
-    "mudancas": 13
-   },
-   {
-    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 13
    },
    {
@@ -223,11 +223,11 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 248
+    "commits": 249
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1888,
-  "arquivos_codigo": 1432,
-  "linhas_codigo": 168030,
-  "rotas": 64,
+  "arquivos_total": 1891,
+  "arquivos_codigo": 1435,
+  "linhas_codigo": 169909,
+  "rotas": 65,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 478,
-  "hooks": 533,
+  "componentes": 479,
+  "hooks": 534,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 98,
+  "testes": 99,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46450
+   "linhas": 46452
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 488,
-   "linhas": 34966
+   "arquivos": 489,
+   "linhas": 35552
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 114,
-   "linhas": 24343
+   "arquivos": 115,
+   "linhas": 24957
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 500
+   "linhas": 512
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 66,
-   "linhas": 12887
+   "arquivos": 67,
+   "linhas": 13552
   },
   "src/types": {
    "arquivos": 57,
@@ -541,8 +541,16 @@
    "linhas": 654
   },
   {
+   "arquivo": "src/pages/admin/MitreMappingPage.tsx",
+   "linhas": 614
+  },
+  {
    "arquivo": "src/hooks/useSIEMPage.ts",
    "linhas": 592
+  },
+  {
+   "arquivo": "src/hooks/useMitreMappingPage.ts",
+   "linhas": 586
   },
   {
    "arquivo": "src/components/security/IPWhitelistManager.tsx",
@@ -569,16 +577,16 @@
    "linhas": 523
   },
   {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 512
+  },
+  {
    "arquivo": "src/pages/WebhooksPage.tsx",
    "linhas": 505
   },
   {
    "arquivo": "supabase/functions/slack-notify/index.ts",
    "linhas": 501
-  },
-  {
-   "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 500
   },
   {
    "arquivo": "src/pages/Auth.tsx",
@@ -603,14 +611,6 @@
   {
    "arquivo": "desktop-agent/src/main.ts",
    "linhas": 468
-  },
-  {
-   "arquivo": "src/components/EmptyStates.tsx",
-   "linhas": 467
-  },
-  {
-   "arquivo": "src/components/ActivityFeed.tsx",
-   "linhas": 461
   }
  ],
  "qualidade": {
@@ -619,7 +619,7 @@
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 6,
-  "arquivos_acima_500_linhas": 16
+  "arquivos_acima_500_linhas": 19
  },
  "todos": [
   {

@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 98,
+ "total": 99,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 96
+  "unit": 97
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 65
+   "arquivos": 66
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -693,6 +693,17 @@
    "casos": 27
   },
   {
+   "arquivo": "src/test/mitre-mapping.test.tsx",
+   "tipo": "unit",
+   "linhas": 665,
+   "testa": [
+    "src/hooks/useMitreMappingPage.ts",
+    "src/hooks/useMitreTechniques.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 47
+  },
+  {
    "arquivo": "src/test/observability.test.ts",
    "tipo": "unit",
    "linhas": 173,
@@ -1025,6 +1036,8 @@
   "src/hooks/useKeystrokeDetailsPage.ts": 1,
   "src/hooks/useList.ts": 1,
   "src/hooks/useLocalStorage.ts": 1,
+  "src/hooks/useMitreMappingPage.ts": 1,
+  "src/hooks/useMitreTechniques.ts": 1,
   "src/hooks/usePagination.ts": 1,
   "src/hooks/usePolicies.ts": 1,
   "src/hooks/usePolicyExemptionsPage.ts": 1,
@@ -1039,7 +1052,7 @@
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 17,
+  "src/integrations/supabase/client.ts": 18,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1132,6 +1145,7 @@
    "src/pages/admin/KeystrokeDetailsPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
    "src/pages/admin/MessageTemplatesPage.tsx",
+   "src/pages/admin/MitreMappingPage.tsx",
    "src/pages/admin/MobileMonitoringPage.tsx",
    "src/pages/admin/PolicyExemptionsPage.tsx",
    "src/pages/admin/RateLimitDashboardPage.tsx",
@@ -1370,7 +1384,6 @@
    "src/hooks/useMFA.ts",
    "src/hooks/useMFAPhone.ts",
    "src/hooks/useMicrophone.ts",
-   "src/hooks/useMitreTechniques.ts",
    "src/hooks/useMobileDevices.ts",
    "src/hooks/useMobileMonitoringPage.ts",
    "src/hooks/useModal.ts",

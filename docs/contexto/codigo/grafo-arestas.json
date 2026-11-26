@@ -2466,6 +2466,12 @@
    "src/integrations/supabase/client.ts",
    "src/lib/logger.ts"
   ],
+  "src/hooks/useMitreMappingPage.ts": [
+   "src/hooks/use-toast.ts",
+   "src/hooks/useMitreTechniques.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useMitreTechniques.ts": [
    "src/integrations/supabase/client.ts"
   ],
@@ -3807,6 +3813,24 @@
    "src/components/ui/textarea.tsx",
    "src/hooks/useMessageTemplates.ts"
   ],
+  "src/pages/admin/MitreMappingPage.tsx": [
+   "src/components/EmptyStates.tsx",
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/table.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useMitreMappingPage.ts",
+   "src/hooks/useMitreTechniques.ts"
+  ],
   "src/pages/admin/MobileMonitoringPage.tsx": [
    "src/components/EmptyStates.tsx",
    "src/components/MobileDevicesMap.tsx",
@@ -4120,6 +4144,7 @@
    "src/pages/admin/KeystrokeDetailsPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
    "src/pages/admin/MessageTemplatesPage.tsx",
+   "src/pages/admin/MitreMappingPage.tsx",
    "src/pages/admin/MobileMonitoringPage.tsx",
    "src/pages/admin/PolicyExemptionsPage.tsx",
    "src/pages/admin/RateLimitDashboardPage.tsx",

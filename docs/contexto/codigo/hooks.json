@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 533,
+ "total": 534,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 81,
+   "usado_por": 82,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -5299,6 +5299,36 @@
    "coberto_por_testes": 0
   },
   {
+   "arquivo": "src/hooks/useMitreMappingPage.ts",
+   "hooks_exportados": [
+    "useMitreMappingPage"
+   ],
+   "linhas": 586,
+   "dominio": "hooks",
+   "tabelas": [
+    "dlp_incidents",
+    "incident_mitre_mapping",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/MitreMappingPage.tsx"
+   ],
+   "coberto_por_testes": 1
+  },
+  {
    "arquivo": "src/hooks/useMitreTechniques.ts",
    "hooks_exportados": [
     "useMitreTechniques"
@@ -5315,11 +5345,13 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
+   "usado_por": 3,
    "usado_por_arquivos": [
+    "src/hooks/useMitreMappingPage.ts",
+    "src/pages/admin/MitreMappingPage.tsx",
     "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useMobileDevices.ts",

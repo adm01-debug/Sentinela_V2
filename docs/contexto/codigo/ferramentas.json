@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1403)",
+   "TypeScript (1406)",
    "Markdown (176)",
    "SQL (130)",
    "JSON (45)",
@@ -1312,6 +1312,10 @@
     "arquivos": 2
    },
    {
+    "host": "attack.mitre.org",
+    "arquivos": 2
+   },
+   {
     "host": "graph.facebook.com",
     "arquivos": 2
    },
@@ -1365,10 +1369,6 @@
    },
    {
     "host": "app.local",
-    "arquivos": 1
-   },
-   {
-    "host": "attack.mitre.org",
     "arquivos": 1
    },
    {
@@ -1654,7 +1654,7 @@
    "src/guards/MFAGuard.tsx",
    "src/guards/index.tsx"
   ],
-  "rotas_protegidas": 30,
+  "rotas_protegidas": 31,
   "rotas_publicas": [
    "/*",
    "/activities/:id",

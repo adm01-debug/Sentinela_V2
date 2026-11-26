@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1334,
- "arestas": 2997,
+ "nos": 1336,
+ "arestas": 3018,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 222
+   "importado_por": 224
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 199
+   "importado_por": 200
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 196
+   "importado_por": 197
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,59 +22,59 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 156
+   "importado_por": 157
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 96
+   "importado_por": 97
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 81
+   "importado_por": 82
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 72
+   "importado_por": 73
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 70
+   "importado_por": 71
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 66
+   "importado_por": 67
+  },
+  {
+   "arquivo": "src/components/ui/dialog.tsx",
+   "importado_por": 60
   },
   {
    "arquivo": "src/lib/logger.ts",
    "importado_por": 60
   },
   {
-   "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 59
-  },
-  {
    "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 55
+   "importado_por": 56
   },
   {
    "arquivo": "src/lib/queryClient.ts",
-   "importado_por": 50
+   "importado_por": 51
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
    "importado_por": 36
   },
   {
+   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "importado_por": 31
+  },
+  {
    "arquivo": "src/components/ui/switch.tsx",
    "importado_por": 31
   },
   {
-   "arquivo": "src/components/ui/alert-dialog.tsx",
-   "importado_por": 30
-  },
-  {
    "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 30
+   "importado_por": 31
   },
   {
    "arquivo": "supabase/functions/_shared/auth.ts",
@@ -102,7 +102,7 @@
   },
   {
    "arquivo": "src/components/ui/textarea.tsx",
-   "importado_por": 19
+   "importado_por": 20
   },
   {
    "arquivo": "src/components/Skeleton.tsx",
@@ -125,6 +125,10 @@
    "importado_por": 16
   },
   {
+   "arquivo": "src/components/ui/alert.tsx",
+   "importado_por": 15
+  },
+  {
    "arquivo": "src/components/ui/popover.tsx",
    "importado_por": 15
   },
@@ -133,15 +137,11 @@
    "importado_por": 15
   },
   {
-   "arquivo": "src/components/ui/alert.tsx",
+   "arquivo": "src/components/EmptyStates.tsx",
    "importado_por": 14
   },
   {
    "arquivo": "desktop-agent/src/config.ts",
-   "importado_por": 13
-  },
-  {
-   "arquivo": "src/components/EmptyStates.tsx",
    "importado_por": 13
   },
   {

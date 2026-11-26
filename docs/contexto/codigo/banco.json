@@ -4120,7 +4120,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 1,
+   "usada_no_front": 2,
    "usada_em_edges": [
     "dlp-incident-report",
     "ingest-file-transfer",
@@ -6733,11 +6733,11 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 0,
+   "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": true
+   "nao_usada": false
   },
   "internet_access_rules": {
    "colunas": {
@@ -13489,7 +13489,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 20,
+   "usada_no_front": 21,
    "usada_em_edges": [
     "acknowledge-violation",
     "generate-insights",

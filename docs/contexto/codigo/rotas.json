@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 64,
+  "urls": 65,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 93
+  "lazy": 94
  },
  "urls": [
   {
@@ -685,6 +685,57 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 31
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/mitre",
+   "componente": "MitreMappingPage",
+   "arquivo": "src/pages/admin/MitreMappingPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMitreMappingPage",
+    "useMitreTechniques",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMitreMappingPage",
+    "useMitreTechniques",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "dlp_incidents",
+    "incident_mitre_mapping",
+    "mitre_techniques",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 33
   },
   {
    "protegida": true,
@@ -3192,6 +3243,7 @@
   "LiveViewReportPage": "src/pages/admin/LiveViewReportPage.tsx",
   "LiveViewSimulatorPage": "src/pages/dev/LiveViewSimulatorPage.tsx",
   "MessageTemplatesPage": "src/pages/admin/MessageTemplatesPage.tsx",
+  "MitreMappingPage": "src/pages/admin/MitreMappingPage.tsx",
   "MobileMonitoringPage": "src/pages/admin/MobileMonitoringPage.tsx",
   "MonitoringPage": "src/pages/MonitoringPage.tsx",
   "NotFoundPage": "src/pages/NotFoundPage.tsx",
