@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { AuditTrailPanel } from '@/components/audit/AuditTrailPanel';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -84,7 +85,7 @@ export default function AuditLogPage() {
     overscan: 5,
   });
 
-  if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
+  if (isLoading && tab !== 'data') return <div className="p-6"><Skeleton className="h-96" /></div>;
 
   return (
     <div className="space-y-6">
@@ -95,7 +96,7 @@ export default function AuditLogPage() {
       />
 
 
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap" hidden={tab === 'data'}>
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Buscar por tipo, detalhe ou IP..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} />
@@ -120,10 +121,13 @@ export default function AuditLogPage() {
           <TabsTrigger value="all">Todos ({events?.length ?? 0})</TabsTrigger>
           <TabsTrigger value="security">Segurança ({events?.filter(e => e.source === 'security').length ?? 0})</TabsTrigger>
           <TabsTrigger value="settings">Configurações ({events?.filter(e => e.source === 'settings').length ?? 0})</TabsTrigger>
+          <TabsTrigger value="data">Alterações de cadastro</TabsTrigger>
         </TabsList>
       </Tabs>
 
-      {filtered.length === 0 ? (
+      {tab === 'data' ? (
+        <AuditTrailPanel />
+      ) : filtered.length === 0 ? (
         <Card><CardContent className="py-12 text-center text-muted-foreground"><FileText className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum evento encontrado.</p></CardContent></Card>
       ) : (
         <Card>
