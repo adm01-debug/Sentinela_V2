@@ -172,3 +172,27 @@ Rastreados pelo git hoje (valores não reproduzidos aqui):
 Regra: segredo novo **nunca** em código, commit ou resposta — só em env/secret do serviço
 (`supabase secrets set` ou painel). Achou segredo em commit → reporte `arquivo:linha` + tipo, nunca o
 valor, e trate rotação com o dono.
+
+## Integridade da trilha de auditoria
+
+A trilha **oficial** é `audit_logs`, exibida em `AuditLogPage` (aba "Alterações de cadastro" →
+`AuditTrailPanel` → `useAuditTrail`). Triggers `audit_trigger_func` gravam em `employees`, `teams`,
+`violation_rules`, `work_schedules`, `geofences`, `webhooks` e, desde
+`20261127090000_auditoria_integridade_e_user_roles.sql`, também em `user_roles` — é o evento de maior
+valor probatório (quem concedeu ou revogou papel, e quando). `AuditTrailPanel` monta os tipos de
+registro a partir dos dados (`useAuditTrail.ts:200`), então entidade nova aparece na tela sem mudança
+de front.
+
+Escrita de auditoria é **exclusiva de `service_role` e das triggers**: `create_audit_log`,
+`audit_trigger_func`, `log_activity` e `auto_log_activity` não têm EXECUTE para `anon`,
+`authenticated` nem PUBLIC. Antes dessa migration, `create_audit_log` nasceu com o GRANT default do
+Postgres e qualquer chave autenticada podia inserir linha de auditoria com `user_id`/`email`/`action`
+inventados — a policy de INSERT de `audit_logs` já tinha sido fechada em `20261122010000:58-63`, mas a
+RPC SECURITY DEFINER passava por cima. As triggers continuam funcionando porque `audit_trigger_func` é
+SECURITY DEFINER e executa a RPC como dono.
+
+`activity_logs` (`20260102000000_activity_logs.sql`) é uma **segunda trilha, nunca ligada**: nenhum
+`CREATE TRIGGER` usa `auto_log_activity` e nenhum consumidor vivo a lê (`useActivityHistory` e
+`useRealtimeActivity` são órfãos). As policies abertas saíram, a tabela ficou restrita a
+`service_role` e ganhou `COMMENT` de obsoleta — os dados existentes foram preservados. Não criar
+trilha paralela: use `audit_logs`.
