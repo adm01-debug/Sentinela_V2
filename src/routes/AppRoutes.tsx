@@ -76,6 +76,7 @@ const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
 const DLPRedactionLogPage = lazy(() => import("@/pages/admin/DLPRedactionLogPage"));
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
 const RetentionPoliciesPage = lazy(() => import("@/pages/admin/RetentionPoliciesPage"));
+const PolicyExemptionsPage = lazy(() => import("@/pages/admin/PolicyExemptionsPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -312,6 +313,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <RetentionPoliciesPage />
+              </AdminGuard>
+            }
+          />
+          {/* policy_exemptions e lida pela RPC my_policy_acknowledgment_status
+              (is_exempt alimenta o PolicyGate); a escrita e admin-only por RLS. */}
+          <Route
+            path="/admin/policy-exemptions"
+            element={
+              <AdminGuard>
+                <PolicyExemptionsPage />
               </AdminGuard>
             }
           />
