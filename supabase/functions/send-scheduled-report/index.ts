@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
-import { callerClient, callerCompanyId, companyScope, withCompanyScope } from '../_shared/auth.ts';
+import { callerCompanyId, companyScope, withCompanyScope } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -95,9 +95,6 @@ serve(async (req) => {
       isServiceRole: false,
     });
     const scope = companyScope(callerCompany);
-    // productivity_metrics nao tem company_id; a policy escopa via employees,
-    // entao essa leitura fala como o chamador (RLS vale).
-    const dataClient = callerClient(req);
 
     // Get report configuration
     const { data: report, error: reportError } = await supabase
@@ -150,10 +147,20 @@ serve(async (req) => {
         break;
       }
       case 'productivity': {
-        const { data: productivity } = await dataClient
-          .from('productivity_metrics')
-          .select('*')
-          .gte('date', new Date().toISOString().split('T')[0]);
+        // `productivity_metrics` nao tem produtor no repo: a leitura devolvia
+        // sempre vazio e o relatorio saia com records_count 0. A fonte viva do
+        // dado de produtividade e `productivity_logs` (mesma que alimenta o
+        // painel de produtividade), que tem company_id e entra no escopo.
+        const { data: productivity } = await withCompanyScope(
+          supabase
+            .from('productivity_logs')
+            .select(
+              'employee_name, recorded_date, productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, device'
+            )
+            .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+            .order('recorded_date', { ascending: false }),
+          scope
+        );
         reportData = productivity;
         break;
       }
