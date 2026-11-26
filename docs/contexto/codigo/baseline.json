@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2c86ad5c981e0304ee09e3758c72052de21cf178",
+  "commit": "00693ffd4d0e45d2cad39ac4a7d42a5eb602e3d9",
   "branch": "main",
-  "data_commit": "2026-11-26T09:40:10-03:00",
+  "data_commit": "2026-11-26T10:06:59-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "00693ffd4",
+    "data": "2026-11-26",
+    "assunto": "feat: tela de feature flags em /admin/feature-flags (#354)"
+   },
    {
     "sha": "2c86ad5c9",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "4fdfa8fd4",
     "data": "2026-11-25",
     "assunto": "fix: escopo de empresa e trava de URL no ocr-screenshot (#334)"
-   },
-   {
-    "sha": "a90ee69b7",
-    "data": "2026-11-25",
-    "assunto": "fix: escopo de empresa no notify-dispute-decision (#333)"
    }
   ],
-  "arquivos_mudados_7d": 383,
+  "arquivos_mudados_7d": 386,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -152,11 +152,11 @@
     "mudancas": 22
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 20
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 21
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
+    "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 20
    },
    {
@@ -165,14 +165,14 @@
    },
    {
     "pasta": "src/pages/admin",
+    "mudancas": 17
+   },
+   {
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 16
    },
    {
     "pasta": "package-lock.json",
-    "mudancas": 15
-   },
-   {
-    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 15
    },
    {
@@ -214,11 +214,11 @@
     "mudancas": 22
    },
    {
-    "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 20
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 21
    },
    {
-    "arquivo": "src/routes/AppRoutes.tsx",
+    "arquivo": "scripts/ci/prettier-baseline.json",
     "mudancas": 20
    },
    {
@@ -227,7 +227,7 @@
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 250
+    "commits": 251
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1894,
-  "arquivos_codigo": 1438,
-  "linhas_codigo": 171475,
-  "rotas": 66,
+  "arquivos_total": 1897,
+  "arquivos_codigo": 1441,
+  "linhas_codigo": 172472,
+  "rotas": 67,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 480,
-  "hooks": 535,
+  "componentes": 481,
+  "hooks": 536,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 100,
+  "testes": 101,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46454
+   "linhas": 46456
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 490,
-   "linhas": 36043
+   "arquivos": 491,
+   "linhas": 36334
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 116,
-   "linhas": 25487
+   "arquivos": 117,
+   "linhas": 25845
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 523
+   "linhas": 534
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 68,
-   "linhas": 14084
+   "arquivos": 69,
+   "linhas": 14419
   },
   "src/types": {
    "arquivos": 57,
@@ -565,6 +565,10 @@
    "linhas": 541
   },
   {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 534
+  },
+  {
    "arquivo": "src/pages/admin/DlpFingerprintsPage.tsx",
    "linhas": 530
   },
@@ -578,10 +582,6 @@
   },
   {
    "arquivo": "src/components/violations/ViolationTimelineDialog.tsx",
-   "linhas": 523
-  },
-  {
-   "arquivo": "src/routes/AppRoutes.tsx",
    "linhas": 523
   },
   {

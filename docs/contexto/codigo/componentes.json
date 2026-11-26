@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 480,
+ "total": 481,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -674,7 +674,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 443,
+   "linhas": 445,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1921,7 +1921,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 14,
+   "usado_por": 15,
    "orfao": false
   },
   {
@@ -2204,7 +2204,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 57,
+   "usado_por": 58,
    "orfao": false
   },
   {
@@ -3796,7 +3796,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 32,
+   "usado_por": 33,
    "orfao": false
   },
   {
@@ -3813,7 +3813,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 16,
+   "usado_por": 17,
    "orfao": false
   },
   {
@@ -3846,7 +3846,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 158,
+   "usado_por": 159,
    "orfao": false
   },
   {
@@ -3909,7 +3909,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 198,
+   "usado_por": 199,
    "orfao": false
   },
   {
@@ -3944,7 +3944,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 201,
+   "usado_por": 202,
    "orfao": false
   },
   {
@@ -4213,7 +4213,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 61,
+   "usado_por": 62,
    "orfao": false
   },
   {
@@ -4609,7 +4609,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 98,
+   "usado_por": 99,
    "orfao": false
   },
   {
@@ -4640,7 +4640,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 72,
+   "usado_por": 73,
    "orfao": false
   },
   {
@@ -5321,7 +5321,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 74,
+   "usado_por": 75,
    "orfao": false
   },
   {
@@ -5453,7 +5453,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 31,
+   "usado_por": 32,
    "orfao": false
   },
   {
@@ -5474,7 +5474,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 32,
+   "usado_por": 33,
    "orfao": false
   },
   {
@@ -5534,7 +5534,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 21,
+   "usado_por": 22,
    "orfao": false
   },
   {
@@ -6328,6 +6328,22 @@
    "tabelas": [
     "edge_function_logs"
    ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/FeatureFlagsPage.tsx",
+   "exports": [
+    "FeatureFlagsPage"
+   ],
+   "export_default": "FeatureFlagsPage",
+   "linhas": 358,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useFeatureFlagsPage"
+   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false
@@ -8017,7 +8033,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 523,
+   "linhas": 534,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 100,
+ "total": 101,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 98
+  "unit": 99
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 67
+   "arquivos": 68
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -592,6 +592,16 @@
    "casos": 70
   },
   {
+   "arquivo": "src/test/feature-flags.test.tsx",
+   "tipo": "unit",
+   "linhas": 334,
+   "testa": [
+    "src/hooks/useFeatureFlagsPage.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 29
+  },
+  {
    "arquivo": "src/test/forms.test.tsx",
    "tipo": "unit",
    "linhas": 74,
@@ -841,7 +851,7 @@
   {
    "arquivo": "src/test/setup.ts",
    "tipo": "unit",
-   "linhas": 100,
+   "linhas": 101,
    "testa": [],
    "casos": 0
   },
@@ -1041,6 +1051,7 @@
   "src/hooks/useEmployeeSchedules.ts": 1,
   "src/hooks/useEmployees.ts": 1,
   "src/hooks/useEmployeesPage.ts": 1,
+  "src/hooks/useFeatureFlagsPage.ts": 1,
   "src/hooks/useFilter.ts": 1,
   "src/hooks/useGeofencingPage.ts": 1,
   "src/hooks/useGlobalShortcuts.ts": 1,
@@ -1063,7 +1074,7 @@
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 19,
+  "src/integrations/supabase/client.ts": 20,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1151,6 +1162,7 @@
    "src/pages/admin/DisputeMetricsPage.tsx",
    "src/pages/admin/DlpFingerprintsPage.tsx",
    "src/pages/admin/EdgeFunctionDashboard.tsx",
+   "src/pages/admin/FeatureFlagsPage.tsx",
    "src/pages/admin/FileTransfersPage.tsx",
    "src/pages/admin/IceDiagnosticsPage.tsx",
    "src/pages/admin/IntegrationsHealthPage.tsx",

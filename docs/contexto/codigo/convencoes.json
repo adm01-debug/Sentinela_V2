@@ -3,15 +3,15 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (66)"
+   "src/pages (67)"
   ],
   "componentes": [
    "src/components (362)",
-   "src/pages (100)",
+   "src/pages (101)",
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (488)",
+   "src/hooks (489)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (67)",
+   "co-localizado (*.test) (68)",
    "co-localizado (__tests__) (22)",
    "outro (10)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 21,
  "extensao_componentes": [
-  ".tsx (480)"
+  ".tsx (481)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de feature flags em /admin/feature-flags (#354)",
    "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)",
    "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)",
    "﻿feat: tela de conectores SIEM em /admin/siem (#351)",
-   "feat: tela de detalhe de digitacao em /admin/keystrokes (#350)",
-   "feat: tela de isencoes do aceite de politicas em /admin/policy-exemptions (#349)"
+   "feat: tela de detalhe de digitacao em /admin/keystrokes (#350)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

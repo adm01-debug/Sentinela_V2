@@ -7,7 +7,7 @@
    "modulo": "components",
    "arquivos": 102,
    "testes": 0,
-   "linhas": 15282,
+   "linhas": 15284,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -1903,9 +1903,9 @@
   },
   {
    "modulo": "hooks",
-   "arquivos": 490,
+   "arquivos": 491,
    "testes": 0,
-   "linhas": 36043,
+   "linhas": 36334,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -2076,6 +2076,7 @@
     "useEscapeKey",
     "useEventSource",
     "useFeatureFlags",
+    "useFeatureFlagsPage",
     "useFileDrop",
     "useFileReader",
     "useFileTransfers",
@@ -2608,6 +2609,7 @@
     "useEventSource",
     "useExport",
     "useFeatureFlags",
+    "useFeatureFlagsPage",
     "useFetch",
     "useField",
     "useFieldArray",
@@ -3237,6 +3239,7 @@
    "rpcs": [
     "check_rate_limit",
     "get_ip_whitelist_info",
+    "get_user_company_id",
     "get_user_permissions",
     "has_permission",
     "is_ip_blocked"
@@ -3387,6 +3390,7 @@
     "rpcs": [
      "check_rate_limit",
      "get_ip_whitelist_info",
+     "get_user_company_id",
      "get_user_permissions",
      "has_permission",
      "is_ip_blocked"
@@ -4441,9 +4445,9 @@
   },
   {
    "modulo": "pages/admin",
-   "arquivos": 27,
+   "arquivos": 28,
    "testes": 0,
-   "linhas": 8671,
+   "linhas": 9029,
    "itens_menu": [],
    "telas": [
     "/admin/acknowledgment-report",
@@ -4455,6 +4459,7 @@
     "/admin/dlp/policies",
     "/admin/dlp/redactions",
     "/admin/edge-functions",
+    "/admin/feature-flags",
     "/admin/file-transfers",
     "/admin/ice-diagnostics",
     "/admin/integrations-health",
@@ -4473,7 +4478,7 @@
     "/admin/ueba/settings"
    ],
    "rotas_http": [],
-   "componentes": 27,
+   "componentes": 28,
    "hooks_locais": [
     "useAcknowledgmentReport",
     "useBehavioralBaseline",
@@ -4486,6 +4491,7 @@
     "useDisputeSlaAlerts",
     "useDlpFingerprintsPage",
     "useDuplicateMessageTemplate",
+    "useFeatureFlagsPage",
     "useFileTransfers",
     "useKeystrokeDetailsPage",
     "useLatestRiskScore",
@@ -4542,6 +4548,7 @@
     "dlp_redaction_log",
     "edge_function_logs",
     "employees",
+    "feature_flags",
     "file_transfers",
     "incident_mitre_mapping",
     "keystroke_details",
@@ -4573,7 +4580,9 @@
     "whatsapp_message_logs",
     "whatsapp_notification_settings"
    ],
-   "rpcs": [],
+   "rpcs": [
+    "get_user_company_id"
+   ],
    "buckets": [],
    "canais_realtime": [
     "dlp-incidents-feed",
@@ -4832,7 +4841,7 @@
    "modulo": "routes",
    "arquivos": 1,
    "testes": 0,
-   "linhas": 523,
+   "linhas": 534,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4921,6 +4930,7 @@
     "useEnrollMFA",
     "useEntityFilters",
     "useEntityVersions",
+    "useFeatureFlagsPage",
     "useFileTransfers",
     "useFormContext",
     "useFormField",
@@ -5102,6 +5112,7 @@
     "employees",
     "entity_versions",
     "error_reports",
+    "feature_flags",
     "file_transfers",
     "geo_blocking_settings",
     "geo_blocks",
@@ -5179,6 +5190,7 @@
    ],
    "rpcs": [
     "get_ip_whitelist_info",
+    "get_user_company_id",
     "get_user_permissions",
     "has_permission",
     "my_policy_acknowledgment_status"
@@ -5438,7 +5450,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 68,
+   "testes": 69,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 66,
+  "urls": 67,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 95
+  "lazy": 96
  },
  "urls": [
   {
@@ -482,6 +482,54 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 13
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/feature-flags",
+   "componente": "FeatureFlagsPage",
+   "arquivo": "src/pages/admin/FeatureFlagsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useFeatureFlagsPage",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useFeatureFlagsPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "feature_flags"
+   ],
+   "rpcs": [
+    "get_user_company_id"
+   ],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 30
   },
   {
    "protegida": true,
@@ -3274,6 +3322,7 @@
   "EmployeeDetailPage": "src/pages/EmployeeDetailPage.tsx",
   "EmployeeRiskProfilePage": "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",
   "EmployeesPage": "src/pages/EmployeesPage.tsx",
+  "FeatureFlagsPage": "src/pages/admin/FeatureFlagsPage.tsx",
   "FileTransfersPage": "src/pages/admin/FileTransfersPage.tsx",
   "ForgotPasswordPage": "src/pages/ForgotPasswordPage.tsx",
   "GamificationPage": "src/pages/GamificationPage.tsx",

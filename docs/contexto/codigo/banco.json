@@ -5843,7 +5843,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 1,
+   "usada_no_front": 2,
    "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
@@ -18818,7 +18818,7 @@
   {
    "nome": "get_user_company_id",
    "definida": true,
-   "usada_em": 2
+   "usada_em": 3
   },
   {
    "nome": "get_user_permissions",
