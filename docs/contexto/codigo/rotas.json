@@ -1393,6 +1393,7 @@
     "useMutation",
     "useQuery",
     "useQueryClient",
+    "useRecordViolationAction",
     "useSearchParams",
     "useSecurityViolations",
     "useState",
@@ -1401,6 +1402,7 @@
     "useUnreadViolationsCount",
     "useUpdateViolationStatus",
     "useViolation",
+    "useViolationActions",
     "useViolationStats"
    ],
    "hooks_locais": [
@@ -1410,6 +1412,7 @@
     "useMutation",
     "useQuery",
     "useQueryClient",
+    "useRecordViolationAction",
     "useSearchParams",
     "useSecurityViolations",
     "useTheme",
@@ -1417,10 +1420,13 @@
     "useUnreadViolationsCount",
     "useUpdateViolationStatus",
     "useViolation",
+    "useViolationActions",
     "useViolationStats"
    ],
    "tabelas": [
-    "security_violations"
+    "profiles",
+    "security_violations",
+    "violation_actions"
    ],
    "rpcs": [],
    "edges": [],
@@ -1430,7 +1436,7 @@
     "button",
     "navigation"
    ],
-   "arquivos_puxados": 29
+   "arquivos_puxados": 30
   },
   {
    "protegida": false,
@@ -2408,6 +2414,7 @@
     "useNavigate",
     "useQuery",
     "useQueryClient",
+    "useRecordViolationAction",
     "useRef",
     "useResolveDispute",
     "useSecurityViolations",
@@ -2417,6 +2424,7 @@
     "useUpdateViolationComment",
     "useUpdateViolationStatus",
     "useViolation",
+    "useViolationActions",
     "useViolationComments",
     "useViolationDisputes",
     "useViolationStats"
@@ -2431,6 +2439,7 @@
     "useMutation",
     "useQuery",
     "useQueryClient",
+    "useRecordViolationAction",
     "useResolveDispute",
     "useSecurityViolations",
     "useToast",
@@ -2438,14 +2447,17 @@
     "useUpdateViolationComment",
     "useUpdateViolationStatus",
     "useViolation",
+    "useViolationActions",
     "useViolationComments",
     "useViolationDisputes",
     "useViolationStats"
    ],
    "tabelas": [
+    "profiles",
     "screen_captures",
     "security_violations",
     "user_roles",
+    "violation_actions",
     "violation_comments",
     "violation_disputes"
    ],
@@ -2457,7 +2469,7 @@
     "Admin",
     "admin"
    ],
-   "arquivos_puxados": 38
+   "arquivos_puxados": 40
   },
   {
    "protegida": false,

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 473,
+ "total": 474,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -3434,7 +3434,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 16,
+   "usado_por": 17,
    "orfao": false
   },
   {
@@ -3846,7 +3846,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 151,
+   "usado_por": 152,
    "orfao": false
   },
   {
@@ -3909,7 +3909,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 191,
+   "usado_por": 192,
    "orfao": false
   },
   {
@@ -3944,7 +3944,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 194,
+   "usado_por": 195,
    "orfao": false
   },
   {
@@ -4213,7 +4213,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 56,
+   "usado_por": 57,
    "orfao": false
   },
   {
@@ -4640,7 +4640,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 65,
+   "usado_por": 66,
    "orfao": false
   },
   {
@@ -5214,7 +5214,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 61,
+   "usado_por": 62,
    "orfao": false
   },
   {
@@ -5534,7 +5534,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 16,
+   "usado_por": 17,
    "orfao": false
   },
   {
@@ -5770,6 +5770,24 @@
    "dominio": "components/versions",
    "hooks_locais": [
     "useVersions"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ViolationActionsTimeline.tsx",
+   "exports": [
+    "ViolationActionsTimeline"
+   ],
+   "export_default": null,
+   "linhas": 214,
+   "dominio": "components",
+   "hooks_locais": [
+    "useRecordViolationAction",
+    "useUpdateViolationStatus",
+    "useViolationActions"
    ],
    "tabelas": [],
    "edges": [],
@@ -7689,7 +7707,7 @@
     "ViolationDetailPage"
    ],
    "export_default": "ViolationDetailPage",
-   "linhas": 277,
+   "linhas": 283,
    "dominio": "pages",
    "hooks_locais": [
     "useUpdateViolationStatus",

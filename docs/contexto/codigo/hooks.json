@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 528,
+ "total": 529,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 78,
+   "usado_por": 79,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -7969,7 +7969,7 @@
     "useViolation",
     "useViolationStats"
    ],
-   "linhas": 382,
+   "linhas": 399,
    "dominio": "hooks",
    "tabelas": [
     "security_violations"
@@ -7983,10 +7983,11 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 10,
+   "usado_por": 11,
    "usado_por_arquivos": [
     "src/components/EmployeeViolationsRanking.tsx",
     "src/components/NotificationsPanel.tsx",
+    "src/components/ViolationActionsTimeline.tsx",
     "src/components/ViolationsByEmployeeChart.tsx",
     "src/components/ViolationsBySeverityChart.tsx",
     "src/components/ViolationsByTypeChart.tsx",
@@ -9620,6 +9621,34 @@
    "usado_por": 0,
    "usado_por_arquivos": [],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useViolationActions.ts",
+   "hooks_exportados": [
+    "useRecordViolationAction",
+    "useViolationActions"
+   ],
+   "linhas": 197,
+   "dominio": "hooks",
+   "tabelas": [
+    "profiles",
+    "violation_actions"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 2,
+   "usado_por_arquivos": [
+    "src/components/ViolationActionsTimeline.tsx",
+    "src/hooks/useSecurityViolations.ts"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useViolationComments.ts",

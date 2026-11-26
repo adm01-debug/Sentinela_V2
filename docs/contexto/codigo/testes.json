@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 93,
+ "total": 94,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 91
+  "unit": 92
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 60
+   "arquivos": 61
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -891,6 +891,16 @@
    "casos": 9
   },
   {
+   "arquivo": "src/test/violation-actions.test.tsx",
+   "tipo": "unit",
+   "linhas": 240,
+   "testa": [
+    "src/hooks/useViolationActions.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 10
+  },
+  {
    "arquivo": "src/test/violations.test.ts",
    "tipo": "unit",
    "linhas": 113,
@@ -981,10 +991,11 @@
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
+  "src/hooks/useViolationActions.ts": 1,
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 12,
+  "src/integrations/supabase/client.ts": 13,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,

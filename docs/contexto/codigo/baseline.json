@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "5755cf9768b047f7930d950328ffea48804f4c07",
+  "commit": "715b6b837f40cebc4bc617b2763185bc638952c2",
   "branch": "main",
-  "data_commit": "2026-11-26T07:25:25-03:00",
+  "data_commit": "2026-11-26T07:46:18-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "715b6b837",
+    "data": "2026-11-26",
+    "assunto": "feat: historico de acoes da violacao em violation_actions (#347)"
+   },
    {
     "sha": "5755cf976",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "ef7078fc3",
     "data": "2026-11-25",
     "assunto": "fix: exige admin e escopo de empresa no send-scheduled-report (#327)"
-   },
-   {
-    "sha": "27c44f6f5",
-    "data": "2026-11-25",
-    "assunto": "fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)"
    }
   ],
-  "arquivos_mudados_7d": 361,
+  "arquivos_mudados_7d": 365,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 243
+    "commits": 244
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1873,
-  "arquivos_codigo": 1417,
-  "linhas_codigo": 162729,
+  "arquivos_total": 1876,
+  "arquivos_codigo": 1420,
+  "linhas_codigo": 163405,
   "rotas": 60,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 473,
-  "hooks": 528,
+  "componentes": 474,
+  "hooks": 529,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 93,
+  "testes": 94,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -423,8 +423,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 396,
-   "linhas": 46229
+   "arquivos": 397,
+   "linhas": 46443
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 483,
-   "linhas": 33359
+   "arquivos": 484,
+   "linhas": 33573
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/lib": {
    "arquivos": 42,
-   "linhas": 3041
+   "linhas": 3043
   },
   "src/main.tsx": {
    "arquivos": 1,
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 110,
-   "linhas": 22673
+   "linhas": 22679
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 61,
-   "linhas": 11130
+   "arquivos": 62,
+   "linhas": 11370
   },
   "src/types": {
    "arquivos": 57,

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5755cf9768b047f7930d950328ffea48804f4c07` (2026-11-26T07:25:25-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `715b6b837f40cebc4bc617b2763185bc638952c2` (2026-11-26T07:46:18-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1388), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1391), Markdown (176), SQL (130), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1873 |
-| arquivos_codigo | 1417 |
-| linhas_codigo | 162729 |
+| arquivos_total | 1876 |
+| arquivos_codigo | 1420 |
+| linhas_codigo | 163405 |
 | rotas | 60 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 60 |
-| componentes | 473 |
-| hooks | 528 |
+| componentes | 474 |
+| hooks | 529 |
 | edge_functions | 48 |
 | tabelas | 180 |
 | migrations | 126 |
 | cron_jobs | 5 |
-| testes | 93 |
+| testes | 94 |
 | workflows | 14 |
 | scripts | 37 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (60)
-- componentes: src/components (361), src/pages (94), src/providers (8)
-- hooks: src/hooks (481), src/stores (33), src/lib (5)
+- componentes: src/components (362), src/pages (94), src/providers (8)
+- hooks: src/hooks (482), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (60), co-localizado (__tests__) (22), outro (10)
+- testes: co-localizado (*.test) (61), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 101 | 88 | 5 | 20 |
+| components | 0 | 0 | 102 | 90 | 5 | 22 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 4 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -82,12 +82,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 483 | 503 | 21 | 89 |
+| hooks | 0 | 0 | 484 | 505 | 21 | 90 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 169 | 15 | 72 |
+| pages | 4 | 38 | 68 | 171 | 15 | 73 |
 | pages/admin | 0 | 19 | 21 | 36 | 8 | 33 |
-| pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
+| pages/dev | 0 | 3 | 3 | 16 | 0 | 3 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
 | services | 0 | 0 | 8 | 20 | 2 | 10 |
 | stores | 0 | 0 | 34 | 3 | 0 | 2 |
@@ -426,6 +426,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `715b6b837` feat: historico de acoes da violacao em violation_actions (#347)
 - 2026-11-26 `5755cf976` feat: tela de retencao de dados em /admin/retention (#346)
 - 2026-11-25 `437a51b0b` chore: guard de CI contra valor inexistente no enum app_role (#343)
 - 2026-11-25 `433042689` fix: area de gestor abria para qualquer usuario logado (#344)
@@ -440,7 +441,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `fb72235cf` ci: detecta chave embutida no comando dos jobs do agendador (#309)
 - 2026-11-25 `d8d0f15c8` ci: nao persiste credencial do checkout nos jobs que nao dao push (#317)
 - 2026-11-25 `fffff3c15` fix: gate de admin no send-webhook (#337)
-- 2026-11-25 `183a97593` fix: identidade do JWT no notify-new-device (#336)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
