@@ -96,10 +96,34 @@ test("excecao paga (funcao ganhou gate) sai do baseline", () => {
 test("parseConfigFunctions le verify_jwt de cada bloco", () => {
   const entries = parseConfigFunctions(CONFIG);
   assert.deepEqual(entries, [
-    { name: "gated", hasVerifyJwt: true },
-    { name: "legacy", hasVerifyJwt: true },
+    { name: "gated", hasVerifyJwt: true, duplicateKeys: [] },
+    { name: "legacy", hasVerifyJwt: true, duplicateKeys: [] },
   ]);
   assert.deepEqual(parseConfigFunctions("[functions.sem_flag]\nenabled = true\n"), [
-    { name: "sem_flag", hasVerifyJwt: false },
+    { name: "sem_flag", hasVerifyJwt: false, duplicateKeys: [] },
   ]);
+});
+
+test("chave repetida na mesma tabela do config.toml reprova o guard", () => {
+  const functions = [{ name: "gated", source: "await requireServiceRole(req);" }];
+  const duplicated = "[functions.gated]\nverify_jwt = true\nverify_jwt = true\n";
+  const result = analyze({ functions, configText: duplicated, baseline: { exceptions: [] } });
+  assert.deepEqual(result.tomlRedefinitions, ["gated.verify_jwt"]);
+});
+
+test("tabela de funcao repetida no config.toml reprova o guard", () => {
+  const functions = [{ name: "gated", source: "await requireServiceRole(req);" }];
+  const duplicated =
+    "[functions.gated]\nverify_jwt = true\n[functions.gated]\nverify_jwt = false\n";
+  const result = analyze({ functions, configText: duplicated, baseline: { exceptions: [] } });
+  assert.deepEqual(result.tomlRedefinitions, ["[functions.gated]"]);
+});
+
+test("config.toml valido nao acusa redefinicao", () => {
+  const functions = [
+    { name: "gated", source: "await requireServiceRole(req);" },
+    { name: "legacy", source: "await requireServiceRole(req);" },
+  ];
+  const result = analyze({ functions, configText: CONFIG, baseline: { exceptions: [] } });
+  assert.deepEqual(result.tomlRedefinitions, []);
 });

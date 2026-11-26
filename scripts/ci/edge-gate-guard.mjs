@@ -58,19 +58,31 @@ export function detectGate(source) {
 export function parseConfigFunctions(tomlText) {
   const entries = [];
   let current = null;
+  let keys = new Set();
   for (const rawLine of String(tomlText ?? "").split("\n")) {
     const line = rawLine.trim();
     const header = /^\[functions\.([A-Za-z0-9_-]+)\]$/u.exec(line);
     if (header) {
-      current = { name: header[1], hasVerifyJwt: false };
+      current = { name: header[1], hasVerifyJwt: false, duplicateKeys: [] };
       entries.push(current);
+      keys = new Set();
       continue;
     }
     if (line.startsWith("[")) {
       current = null;
+      keys = new Set();
       continue;
     }
-    if (current && /^verify_jwt\s*=/u.test(line)) current.hasVerifyJwt = true;
+    const key = /^([A-Za-z0-9_-]+)\s*=/u.exec(line);
+    if (!key || !current) continue;
+    // TOML nao aceita chave repetida na mesma tabela: o CLI do Supabase aborta
+    // com "trying to redefine an already defined table or value" antes de
+    // tocar o banco, e o deploy fica vermelho sem nenhum job ter avisado.
+    if (keys.has(key[1]) && !current.duplicateKeys.includes(key[1])) {
+      current.duplicateKeys.push(key[1]);
+    }
+    keys.add(key[1]);
+    if (key[1] === "verify_jwt") current.hasVerifyJwt = true;
   }
   return entries;
 }
@@ -109,6 +121,7 @@ export function analyze({ functions, configText, baseline }) {
     suppressed: [],
     paid: [],
     pendingReason: [],
+    tomlRedefinitions: [],
   };
 
   for (const fn of sorted) {
@@ -123,7 +136,15 @@ export function analyze({ functions, configText, baseline }) {
     if (reason === "" || reason.startsWith(PENDING_REASON)) result.pendingReason.push(fn.name);
   }
 
+  const declaredTables = new Set();
   for (const entry of declared) {
+    if (declaredTables.has(entry.name)) {
+      result.tomlRedefinitions.push(`[functions.${entry.name}]`);
+    }
+    declaredTables.add(entry.name);
+    for (const duplicated of entry.duplicateKeys) {
+      result.tomlRedefinitions.push(`${entry.name}.${duplicated}`);
+    }
     if (!sourceByName.has(entry.name)) result.orphanConfig.push(entry.name);
     if (!entry.hasVerifyJwt) result.noVerifyJwt.push(entry.name);
   }
@@ -223,7 +244,7 @@ Opcoes de teste: --baseline <arquivo> --root <diretorio>`);
     console.log(
       `Edge gate guard: funcoes=${result.totalFunctions}, declaradas=${result.totalDeclared}, ` +
         `com gate=${withGate}, excecoes=${result.suppressed.length}, ` +
-        `novas=${result.ungated.length + result.missingConfig.length + result.orphanConfig.length + result.noVerifyJwt.length + result.pendingReason.length}`
+        `novas=${result.ungated.length + result.missingConfig.length + result.orphanConfig.length + result.noVerifyJwt.length + result.pendingReason.length + result.tomlRedefinitions.length}`
     );
 
     if (result.paid.length > 0) {
@@ -237,7 +258,8 @@ Opcoes de teste: --baseline <arquivo> --root <diretorio>`);
       result.missingConfig.length +
       result.orphanConfig.length +
       result.noVerifyJwt.length +
-      result.pendingReason.length;
+      result.pendingReason.length +
+      result.tomlRedefinitions.length;
     if (failures === 0) {
       console.log(
         "OK: toda edge function tem gate de credencial e entrada explicita no config.toml."
@@ -274,6 +296,16 @@ Opcoes de teste: --baseline <arquivo> --root <diretorio>`);
     }
     if (result.pendingReason.length > 0) {
       printList("FALHA: excecao sem motivo escrito no baseline:", result.pendingReason);
+    }
+    if (result.tomlRedefinitions.length > 0) {
+      printList(
+        "FALHA: supabase/config.toml redefine tabela ou chave (o CLI do Supabase rejeita o arquivo):",
+        result.tomlRedefinitions
+      );
+      console.error("  O deploy aborta em `supabase db push` e `supabase functions deploy` com");
+      console.error(
+        "  'trying to redefine an already defined table or value' antes de tocar o banco."
+      );
     }
     return 1;
   } catch (error) {
