@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cf56543709132faadafae6e0a4336c518fafaaff` (2026-11-26T16:39:45-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `fd336449252a0f50c7dc28e80fa3cbdac0757b80` (2026-11-26T18:00:17-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1440), Markdown (176), SQL (132), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1440), Markdown (176), SQL (133), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1927 |
+| arquivos_total | 1928 |
 | arquivos_codigo | 1469 |
 | linhas_codigo | 178486 |
 | rotas | 68 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 542 |
 | edge_functions | 49 |
 | tabelas | 180 |
-| migrations | 128 |
+| migrations | 129 |
 | cron_jobs | 5 |
 | testes | 111 |
 | workflows | 14 |
@@ -435,6 +435,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `fd3364492` fix: fecha a forja da trilha de auditoria e audita user_roles (#364)
 - 2026-11-26 `cf5654370` feat: convite de usuario real e detalhe com papeis reais (#368)
 - 2026-11-26 `2dce6b780` fix: relatorio de produtividade agendado lia tabela sem produtor (#372)
 - 2026-11-26 `8c42a4807` feat: teste de posicao na tela de geofencing (edge check-geofence) (#370)
@@ -449,7 +450,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `3cc0fa4f6` feat: tela de configuracoes globais em /admin/app-config (#355)
 - 2026-11-26 `bca911c30` feat: tela de dispositivos e sessoes ativas (#356)
 - 2026-11-26 `00693ffd4` feat: tela de feature flags em /admin/feature-flags (#354)
-- 2026-11-26 `2c86ad5c9` feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

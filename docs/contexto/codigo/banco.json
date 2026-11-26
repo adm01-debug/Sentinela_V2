@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 128,
+ "migrations": 129,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -405,6 +405,13 @@
    "funcao": "enqueue_siem_event"
   },
   {
+   "nome": "audit_user_roles",
+   "quando": "after",
+   "evento": "insert or update or delete",
+   "tabela": "user_roles",
+   "funcao": "audit_trigger_func"
+  },
+  {
    "nome": "trigger_violation_comment_updated",
    "quando": "before",
    "evento": "update",
@@ -649,20 +656,7 @@
     }
    },
    "rls": true,
-   "policies": [
-    {
-     "nome": "Authenticated users can view activity logs",
-     "comando": "select",
-     "para": "public",
-     "tipo": "permissive"
-    },
-    {
-     "nome": "Users can create activity logs",
-     "comando": "insert",
-     "para": "public",
-     "tipo": "permissive"
-    }
-   ],
+   "policies": [],
    "indices": [
     {
      "nome": "idx_activity_date",
@@ -16558,7 +16552,9 @@
     "send-whatsapp",
     "sync-whatsapp-templates"
    ],
-   "triggers": [],
+   "triggers": [
+    "audit_user_roles"
+   ],
    "sem_rls": false,
    "nao_usada": false
   },

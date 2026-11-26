@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: fecha a forja da trilha de auditoria e audita user_roles (#364)",
    "feat: convite de usuario real e detalhe com papeis reais (#368)",
    "fix: relatorio de produtividade agendado lia tabela sem produtor (#372)",
    "feat: teste de posicao na tela de geofencing (edge check-geofence) (#370)",
-   "feat: telas de recomendacoes e previsao de tendencias de IA (#369)",
-   "infra: habilita RLS nas tabelas com policy inerte (#360)"
+   "feat: telas de recomendacoes e previsao de tendencias de IA (#369)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

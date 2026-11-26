@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "cf56543709132faadafae6e0a4336c518fafaaff",
+  "commit": "fd336449252a0f50c7dc28e80fa3cbdac0757b80",
   "branch": "main",
-  "data_commit": "2026-11-26T16:39:45-03:00",
+  "data_commit": "2026-11-26T18:00:17-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "fd3364492",
+    "data": "2026-11-26",
+    "assunto": "fix: fecha a forja da trilha de auditoria e audita user_roles (#364)"
+   },
    {
     "sha": "cf5654370",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "433042689",
     "data": "2026-11-25",
     "assunto": "fix: area de gestor abria para qualquer usuario logado (#344)"
-   },
-   {
-    "sha": "701a41206",
-    "data": "2026-11-25",
-    "assunto": "fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)"
    }
   ],
-  "arquivos_mudados_7d": 426,
+  "arquivos_mudados_7d": 427,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 264
+    "commits": 265
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1927,
+  "arquivos_total": 1928,
   "arquivos_codigo": 1469,
   "linhas_codigo": 178486,
   "rotas": 68,
@@ -326,7 +326,7 @@
   "hooks": 542,
   "edge_functions": 49,
   "tabelas": 180,
-  "migrations": 128,
+  "migrations": 129,
   "cron_jobs": 5,
   "testes": 111,
   "workflows": 14,
