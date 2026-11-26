@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8c42a4807ef3a927c10961f82ca1c575f683f622",
+  "commit": "2dce6b78044c553f3daa558483ebb9dedb512b2c",
   "branch": "main",
-  "data_commit": "2026-11-26T14:36:44-03:00",
+  "data_commit": "2026-11-26T16:22:28-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2dce6b780",
+    "data": "2026-11-26",
+    "assunto": "fix: relatorio de produtividade agendado lia tabela sem produtor (#372)"
+   },
    {
     "sha": "8c42a4807",
     "data": "2026-11-26",
@@ -126,11 +131,6 @@
     "sha": "5a2118ffa",
     "data": "2026-11-25",
     "assunto": "feat: preenche company_id automatico nas escritas de tenant (#339)"
-   },
-   {
-    "sha": "c3d33e9cc",
-    "data": "2026-11-25",
-    "assunto": "fix: tira super_admin inexistente dos gates de admin (#341)"
    }
   ],
   "arquivos_mudados_7d": 422,
@@ -282,6 +282,10 @@
     "mudancas": 5
    },
    {
+    "arquivo": "supabase/functions/send-scheduled-report/index.ts",
+    "mudancas": 5
+   },
+   {
     "arquivo": "supabase/functions/send-webhook/index.ts",
     "mudancas": 5
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": ".github/workflows/lint.yml",
     "mudancas": 4
-   },
-   {
-    "arquivo": ".github/workflows/release.yml",
-    "mudancas": 4
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 262
+    "commits": 263
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1923,
   "arquivos_codigo": 1465,
-  "linhas_codigo": 177734,
+  "linhas_codigo": 177741,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -504,7 +504,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 12002
+   "linhas": 12009
   },
   "vite.config.ts": {
    "arquivos": 1,

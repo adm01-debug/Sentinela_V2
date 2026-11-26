@@ -1096,13 +1096,13 @@
    "nome": "send-scheduled-report",
    "entrada": "supabase/functions/send-scheduled-report/index.ts",
    "arquivos": 1,
-   "linhas": 191,
+   "linhas": 198,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "productivity_metrics",
+    "productivity_logs",
     "report_logs",
     "scheduled_reports",
     "security_violations",

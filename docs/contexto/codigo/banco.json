@@ -10043,7 +10043,8 @@
    "usada_em_edges": [
     "agent-collector",
     "analyze-activity",
-    "generate-report"
+    "generate-report",
+    "send-scheduled-report"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -10566,12 +10567,10 @@
     "so_no_types": []
    },
    "usada_no_front": 0,
-   "usada_em_edges": [
-    "send-scheduled-report"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": false
+   "nao_usada": true
   },
   "profiles": {
    "colunas": {
