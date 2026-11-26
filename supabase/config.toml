@@ -9,7 +9,6 @@ verify_jwt = false
 verify_jwt = true
 [functions.admin-remove-user]
 verify_jwt = true
-verify_jwt = true
 [functions.agent-collector]
 verify_jwt = true
 [functions.analyze-activity]
