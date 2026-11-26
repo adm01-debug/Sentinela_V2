@@ -74,6 +74,7 @@ const AdminTelemetriaPage = lazy(() => import("@/pages/AdminTelemetriaPage"));
 const DLPPoliciesPage = lazy(() => import("@/pages/admin/DLPPoliciesPage"));
 const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
+const RetentionPoliciesPage = lazy(() => import("@/pages/admin/RetentionPoliciesPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -289,6 +290,17 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <SensitiveKeywordsPage />
+              </AdminGuard>
+            }
+          />
+          {/* data_retention_policies e lida por upload-recording-chunk e
+              expire-recordings; liberar a tela so para admin acompanha o RLS
+              ("retention_admin_write"). */}
+          <Route
+            path="/admin/retention"
+            element={
+              <AdminGuard>
+                <RetentionPoliciesPage />
               </AdminGuard>
             }
           />
