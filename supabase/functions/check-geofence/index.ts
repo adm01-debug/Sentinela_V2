@@ -190,18 +190,18 @@ serve(async (req) => {
 
     const violations: string[] = [];
 
-    // Get previous location state for this employee (ultimo registro por geofence em geofence_violations)
+    // Estado anterior por cerca vem de geofence_states (uma linha por
+    // funcionario/device/cerca); geofence_violations guarda violacao, nao estado.
     const { data: previousState } = await supabase
-      .from("geofence_violations")
-      .select("nearest_geofence_id, action_taken")
-      .eq("employee_name", employee_id)
-      .eq("device", device_id)
-      .order("created_at", { ascending: false })
-      .limit(50);
+      .from("geofence_states")
+      .select("geofence_id, is_inside")
+      .eq("employee_id", employee_id)
+      .eq("device_id", device_id);
 
     const previousStates = new Map(
-      (previousState ?? []).map((s) => [s.nearest_geofence_id, s.action_taken === "inside"])
+      (previousState ?? []).map((s) => [s.geofence_id, s.is_inside === true])
     );
+    const knownStates = new Set((previousState ?? []).map((s) => s.geofence_id));
 
     for (const geofence of geofences || []) {
       let isInside = false;
@@ -256,21 +256,64 @@ serve(async (req) => {
         violations.push(geofence.id);
       }
 
-      // Registra o estado atual em geofence_violations (action_taken guarda o estado)
-      await supabase.from("geofence_violations").insert({
-        // a cerca carrega o dono da empresa; `employee_name` aqui recebe o id do
-        // funcionario, então o trigger de preenchimento não consegue resolver
-        company_id: geofence.company_id ?? scope,
-        employee_name: employee_id,
-        device: device_id,
-        nearest_geofence_id: geofence.id,
-        latitude: location.latitude,
-        longitude: location.longitude,
-        distance_meters: Math.round(
-          haversineMeters(location, { latitude: geofence.latitude, longitude: geofence.longitude })
-        ),
-        action_taken: isInside ? "inside" : "outside",
-      });
+      // Estado atual em geofence_states (sobrescreve a linha do par
+      // funcionario/device/cerca). Nao grava em geofence_violations: aquela
+      // tabela alimenta a tela de violacoes e so recebe violacao de verdade.
+      if (knownStates.has(geofence.id)) {
+        const { error: stateError } = await supabase
+          .from("geofence_states")
+          .update({ is_inside: isInside, last_checked: now })
+          .eq("employee_id", employee_id)
+          .eq("device_id", device_id)
+          .eq("geofence_id", geofence.id);
+        if (stateError) throw stateError;
+      } else {
+        const { error: stateError } = await supabase.from("geofence_states").insert({
+          employee_id,
+          device_id,
+          geofence_id: geofence.id,
+          is_inside: isInside,
+          last_checked: now,
+        });
+        if (stateError) throw stateError;
+        knownStates.add(geofence.id);
+      }
+
+      // Historico de entrada/saida: so registra transicao (enter/exit).
+      if (eventType === "enter" || eventType === "exit") {
+        const { error: eventError } = await supabase.from("geofence_events").insert({
+          employee_id,
+          device_id,
+          geofence_id: geofence.id,
+          event_type: eventType,
+          location,
+          occurred_at: now,
+        });
+        if (eventError) throw eventError;
+      }
+
+      // Violacao de verdade: cerca restrita invadida ou cerca obrigatoria
+      // abandonada. Antes disso o insert acontecia para toda checagem e
+      // enchia a tela de violacoes com registros que nao eram violacao.
+      if ((geofence.restricted && isInside) || (geofence.required && !isInside)) {
+        await supabase.from("geofence_violations").insert({
+          // a cerca carrega o dono da empresa; `employee_name` aqui recebe o id do
+          // funcionario, então o trigger de preenchimento não consegue resolver
+          company_id: geofence.company_id ?? scope,
+          employee_name: employee_id,
+          device: device_id,
+          nearest_geofence_id: geofence.id,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          distance_meters: Math.round(
+            haversineMeters(location, {
+              latitude: geofence.latitude,
+              longitude: geofence.longitude,
+            })
+          ),
+          action_taken: isInside ? "inside" : "outside",
+        });
+      }
     }
 
     // Create violations if any
