@@ -7,6 +7,29 @@ import ReportsPage from "../ReportsPage";
 import * as useReportsHook from "@/hooks/useReports";
 
 // Mocks
+vi.mock("@/providers/AuthProvider", () => ({
+  useAuth: () => ({ user: { id: "admin-teste", isAdmin: true } }),
+}));
+
+// O painel de execucoes do gerador tem contexto proprio (auth + hook); aqui o
+// teste cobre a listagem da pagina, entao o painel entra com estado vazio.
+vi.mock("@/hooks/useReportsPage", () => ({
+  useReportsPage: () => ({
+    reports: [],
+    stats: { total: 0, completed: 0, pending: 0, failed: 0 },
+    typeFilter: "all",
+    isGenerateOpen: false,
+    selectedType: "summary",
+    isLoading: false,
+    isGenerating: false,
+    setTypeFilter: vi.fn(),
+    setIsGenerateOpen: vi.fn(),
+    setSelectedType: vi.fn(),
+    handleGenerate: vi.fn(),
+    handleDelete: vi.fn(),
+    handleDownload: vi.fn(),
+  }),
+}));
 vi.mock("@/hooks/useReports", () => ({
   useReports: vi.fn(),
   useReportTemplates: vi.fn(),
