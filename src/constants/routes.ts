@@ -57,6 +57,8 @@ export const ROUTES = {
   // Admin routes
   ADMIN: '/admin',
   ADMIN_USERS: '/admin/users',
+  ADMIN_USER_INVITE: '/admin/users/invite',
+  ADMIN_USER_DETAIL: '/admin/users/:id',
   ADMIN_ROLES: '/admin/roles',
   ADMIN_DEPARTMENTS: '/admin/departments',
   ADMIN_TEAMS: '/admin/teams',
@@ -92,6 +94,7 @@ export const generateRoute = {
   report: (id: string) => `/reports/${id}`,
   team: (id: string) => `/admin/teams/${id}`,
   department: (id: string) => `/admin/departments/${id}`,
+  adminUser: (id: string) => `/admin/users/${id}`,
 };
 
 // Route groups for access control

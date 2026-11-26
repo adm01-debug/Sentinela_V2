@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useUsers, useDeleteUser } from "@/hooks/useUsers";
 import { useToast } from "@/hooks/use-toast";
+import { ROUTES, generateRoute } from "@/constants/routes";
 
 export default function UsersPage() {
   const [search, setSearch] = useState("");
@@ -56,7 +57,7 @@ export default function UsersPage() {
         title="Usuários"
         showBackButton={false}
         actions={
-          <Link to="/users/invite">
+          <Link to={ROUTES.ADMIN_USER_INVITE}>
             <Button className="h-9 gap-2">
               <Plus className="h-4 w-4" />
               Convidar
@@ -79,7 +80,10 @@ export default function UsersPage() {
         <CardContent className="divide-y p-0">
           {filtered.map((user) => (
             <div key={user.id} className="hover:bg-accent/50 flex items-center justify-between p-4">
-              <Link to={`/users/${user.id}`} className="flex flex-1 items-center gap-4">
+              <Link
+                to={generateRoute.adminUser(user.id)}
+                className="flex flex-1 items-center gap-4"
+              >
                 <Avatar>
                   <AvatarImage src={user.avatar ?? undefined} />
                   <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
@@ -111,7 +115,7 @@ export default function UsersPage() {
                       Enviar email
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to={`/users/${user.id}`}>
+                      <Link to={generateRoute.adminUser(user.id)}>
                         <Shield className="mr-2 h-4 w-4" />
                         Gerenciar permissões
                       </Link>

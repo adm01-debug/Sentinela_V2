@@ -43,6 +43,8 @@ const IntegrationSettingsPage = lazy(() => import("@/pages/IntegrationSettingsPa
 const BillingSettingsPage = lazy(() => import("@/pages/BillingSettingsPage"));
 const ApiKeysPage = lazy(() => import("@/pages/ApiKeysPage"));
 const UsersPage = lazy(() => import("@/pages/UsersPage"));
+const InviteUserPage = lazy(() => import("@/pages/InviteUserPage"));
+const UserDetailPage = lazy(() => import("@/pages/UserDetailPage"));
 const RolesPage = lazy(() => import("@/pages/RolesPage"));
 const TeamsPage = lazy(() => import("@/pages/TeamsPage"));
 const TeamDetailPage = lazy(() => import("@/pages/TeamDetailPage"));
@@ -228,6 +230,26 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <AdminSecurityPage />
+              </AdminGuard>
+            }
+          />
+
+          {/* Subrotas de usuarios: /admin/users/invite e /admin/users/:id cobrem os
+              links que UsersPage ja usava (/users/invite e /users/:id) e que nao
+              existiam em nenhum lugar - davam 404. */}
+          <Route
+            path={ROUTES.ADMIN_USER_INVITE}
+            element={
+              <AdminGuard>
+                <InviteUserPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path={ROUTES.ADMIN_USER_DETAIL}
+            element={
+              <AdminGuard>
+                <UserDetailPage />
               </AdminGuard>
             }
           />

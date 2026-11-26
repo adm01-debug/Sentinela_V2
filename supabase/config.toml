@@ -5,6 +5,8 @@ project_id = "jgnmwvzephsozsqmcpzb"
 
 [functions.acknowledge-violation]
 verify_jwt = false
+[functions.admin-invite-user]
+verify_jwt = true
 [functions.agent-collector]
 verify_jwt = true
 [functions.analyze-activity]
