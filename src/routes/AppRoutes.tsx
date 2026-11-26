@@ -82,6 +82,7 @@ const SIEMPage = lazy(() => import("@/pages/admin/SIEMPage"));
 const MitreMappingPage = lazy(() => import("@/pages/admin/MitreMappingPage"));
 const DlpFingerprintsPage = lazy(() => import("@/pages/admin/DlpFingerprintsPage"));
 const FeatureFlagsPage = lazy(() => import("@/pages/admin/FeatureFlagsPage"));
+const AppConfigPage = lazy(() => import("@/pages/admin/AppConfigPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -379,6 +380,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <FeatureFlagsPage />
+              </AdminGuard>
+            }
+          />
+          {/* app_config guarda uma linha por tenant com modo de manutencao,
+              limites e tema; leitura e escrita so de admin por RLS. */}
+          <Route
+            path="/admin/app-config"
+            element={
+              <AdminGuard>
+                <AppConfigPage />
               </AdminGuard>
             }
           />
