@@ -101,7 +101,15 @@ jobs:
           bash scripts/lib/supabase-retry.sh supabase link --project-ref jgnmwvzephsozsqmcpzb
           bash scripts/lib/supabase-retry.sh supabase functions deploy --yes --use-api
 
+  # Vigia do deploy: confere que o commit da main virou production na Vercel.
+  # `needs` e obrigatorio: sem ele os tres jobs rodam em paralelo e este job
+  # fecha VERDE enquanto `migrate` e `deploy-functions` estao vermelhos — foi o
+  # que aconteceu em 261126 (run 45895830189: verify=success, migrate=failure,
+  # deploy-functions=failure, e o pipeline inteiro parecia saudavel por 2 dias
+  # com 5 migrations e 1 edge function presas). Agora o deploy quebrado nao
+  # pode mais se disfarcar de verde.
   verify-production-deploy:
+    needs: [migrate, deploy-functions]
     runs-on: ubuntu-latest
     steps:
       - name: Confirma deployment de producao para o commit
