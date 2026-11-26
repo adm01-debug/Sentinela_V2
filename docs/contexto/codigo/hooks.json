@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 532,
+ "total": 533,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 80,
+   "usado_por": 81,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -8328,6 +8328,36 @@
    "usado_por": 0,
    "usado_por_arquivos": [],
    "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useSIEMPage.ts",
+   "hooks_exportados": [
+    "useSIEMPage"
+   ],
+   "linhas": 592,
+   "dominio": "hooks",
+   "tabelas": [
+    "siem_connectors",
+    "siem_delivery_log",
+    "siem_event_outbox"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useCallback",
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/SIEMPage.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useSingleton.ts",

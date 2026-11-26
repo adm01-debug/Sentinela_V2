@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "824cca877f97ad6d3a92e00d6e2fa963e40c4fca",
+  "commit": "7bdeb55798fd9ba5f021e6532d5ca1da10a87085",
   "branch": "main",
-  "data_commit": "2026-11-26T08:38:49-03:00",
+  "data_commit": "2026-11-26T09:07:10-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7bdeb5579",
+    "data": "2026-11-26",
+    "assunto": "﻿feat: tela de conectores SIEM em /admin/siem (#351)"
+   },
    {
     "sha": "824cca877",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "58db51440",
     "data": "2026-11-25",
     "assunto": "fix: exige service_role no process-violation-alert (#331)"
-   },
-   {
-    "sha": "ce03e8e63",
-    "data": "2026-11-25",
-    "assunto": "fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)"
    }
   ],
-  "arquivos_mudados_7d": 374,
+  "arquivos_mudados_7d": 377,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -161,23 +161,23 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "pasta": "package-lock.json",
     "mudancas": 15
    },
    {
+    "pasta": "src/pages/admin",
+    "mudancas": 14
+   },
+   {
     "pasta": "package.json",
     "mudancas": 13
    },
    {
-    "pasta": "src/pages/admin",
-    "mudancas": 13
-   },
-   {
     "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "pasta": ".github/workflows/ci.yml",
@@ -223,11 +223,11 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": ".github/workflows/ci.yml",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 247
+    "commits": 248
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1885,
-  "arquivos_codigo": 1429,
-  "linhas_codigo": 166129,
-  "rotas": 63,
+  "arquivos_total": 1888,
+  "arquivos_codigo": 1432,
+  "linhas_codigo": 168030,
+  "rotas": 64,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 60,
-  "componentes": 477,
-  "hooks": 532,
+  "componentes": 478,
+  "hooks": 533,
   "edge_functions": 48,
   "tabelas": 180,
   "migrations": 126,
   "cron_jobs": 5,
-  "testes": 97,
+  "testes": 98,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -424,7 +424,7 @@
   },
   "src/components": {
    "arquivos": 397,
-   "linhas": 46448
+   "linhas": 46450
   },
   "src/constants": {
    "arquivos": 7,
@@ -443,8 +443,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 487,
-   "linhas": 34374
+   "arquivos": 488,
+   "linhas": 34966
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 113,
-   "linhas": 23635
+   "arquivos": 114,
+   "linhas": 24343
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 489
+   "linhas": 500
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 65,
-   "linhas": 12299
+   "arquivos": 66,
+   "linhas": 12887
   },
   "src/types": {
    "arquivos": 57,
@@ -529,12 +529,20 @@
    "linhas": 733
   },
   {
+   "arquivo": "src/pages/admin/SIEMPage.tsx",
+   "linhas": 708
+  },
+  {
    "arquivo": "scripts/ci/lint-ratchet.mjs",
    "linhas": 661
   },
   {
    "arquivo": "src/pages/admin/DisputeEscalationAuditPage.tsx",
    "linhas": 654
+  },
+  {
+   "arquivo": "src/hooks/useSIEMPage.ts",
+   "linhas": 592
   },
   {
    "arquivo": "src/components/security/IPWhitelistManager.tsx",
@@ -570,7 +578,7 @@
   },
   {
    "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 489
+   "linhas": 500
   },
   {
    "arquivo": "src/pages/Auth.tsx",
@@ -603,14 +611,6 @@
   {
    "arquivo": "src/components/ActivityFeed.tsx",
    "linhas": 461
-  },
-  {
-   "arquivo": "src/components/BlockedIPsPanel.tsx",
-   "linhas": 460
-  },
-  {
-   "arquivo": "src/components/NotificationCenter.tsx",
-   "linhas": 456
   }
  ],
  "qualidade": {
@@ -619,7 +619,7 @@
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 6,
-  "arquivos_acima_500_linhas": 14
+  "arquivos_acima_500_linhas": 16
  },
  "todos": [
   {

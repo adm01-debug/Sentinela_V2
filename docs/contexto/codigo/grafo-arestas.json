@@ -2602,6 +2602,11 @@
   "src/hooks/useRoles.ts": [
    "src/integrations/supabase/client.ts"
   ],
+  "src/hooks/useSIEMPage.ts": [
+   "src/hooks/use-toast.ts",
+   "src/integrations/supabase/client.ts",
+   "src/lib/queryClient.ts"
+  ],
   "src/hooks/useSavedFilters.ts": [
    "src/integrations/supabase/client.ts",
    "src/lib/logger.ts"
@@ -3863,6 +3868,25 @@
    "src/components/ui/table.tsx",
    "src/hooks/useRetentionPoliciesPage.ts"
   ],
+  "src/pages/admin/SIEMPage.tsx": [
+   "src/components/EmptyStates.tsx",
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/alert-dialog.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/checkbox.tsx",
+   "src/components/ui/dialog.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/components/ui/switch.tsx",
+   "src/components/ui/table.tsx",
+   "src/components/ui/textarea.tsx",
+   "src/hooks/useSIEMPage.ts"
+  ],
   "src/pages/admin/SensitiveKeywordsPage.tsx": [
    "src/components/EmptyStates.tsx",
    "src/components/layout/PageHeader.tsx",
@@ -4100,6 +4124,7 @@
    "src/pages/admin/PolicyExemptionsPage.tsx",
    "src/pages/admin/RateLimitDashboardPage.tsx",
    "src/pages/admin/RetentionPoliciesPage.tsx",
+   "src/pages/admin/SIEMPage.tsx",
    "src/pages/admin/SensitiveKeywordsPage.tsx",
    "src/pages/admin/SessionRecordingsPage.tsx",
    "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",

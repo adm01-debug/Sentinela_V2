@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 63,
+  "urls": 64,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 92
+  "lazy": 93
  },
  "urls": [
   {
@@ -916,6 +916,54 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 29
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/siem",
+   "componente": "SIEMPage",
+   "arquivo": "src/pages/admin/SIEMPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useSIEMPage",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useSIEMPage",
+    "useToast"
+   ],
+   "tabelas": [
+    "siem_connectors",
+    "siem_delivery_log",
+    "siem_event_outbox"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 34
   },
   {
    "protegida": true,
@@ -3158,6 +3206,7 @@
   "ResetPasswordPage": "src/pages/ResetPasswordPage.tsx",
   "RetentionPoliciesPage": "src/pages/admin/RetentionPoliciesPage.tsx",
   "RolesPage": "src/pages/RolesPage.tsx",
+  "SIEMPage": "src/pages/admin/SIEMPage.tsx",
   "ScheduledReportsPage": "src/pages/ScheduledReportsPage.tsx",
   "ScreenshotDetailPage": "src/pages/ScreenshotDetailPage.tsx",
   "ScreenshotsPage": "src/pages/ScreenshotsPage.tsx",

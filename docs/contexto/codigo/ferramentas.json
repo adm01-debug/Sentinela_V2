@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1400)",
+   "TypeScript (1403)",
    "Markdown (176)",
    "SQL (130)",
    "JSON (45)",
@@ -1328,7 +1328,15 @@
     "arquivos": 2
    },
    {
+    "host": "webhook.exemplo.com",
+    "arquivos": 2
+   },
+   {
     "host": "www.openstreetmap.org",
+    "arquivos": 2
+   },
+   {
+    "host": "x.com",
     "arquivos": 2
    },
    {
@@ -1408,6 +1416,10 @@
     "arquivos": 1
    },
    {
+    "host": "splunk.exemplo.com",
+    "arquivos": 1
+   },
+   {
     "host": "storage.test",
     "arquivos": 1
    },
@@ -1421,10 +1433,6 @@
    },
    {
     "host": "www.google.com",
-    "arquivos": 1
-   },
-   {
-    "host": "x.com",
     "arquivos": 1
    }
   ],
@@ -1646,7 +1654,7 @@
    "src/guards/MFAGuard.tsx",
    "src/guards/index.tsx"
   ],
-  "rotas_protegidas": 29,
+  "rotas_protegidas": 30,
   "rotas_publicas": [
    "/*",
    "/activities/:id",
