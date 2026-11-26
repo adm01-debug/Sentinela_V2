@@ -2,52 +2,17 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 import { geofenceService } from '@/services/geofenceService';
+import type {
+  CreateGeofenceInput,
+  Geofence,
+  UpdateGeofenceInput,
+} from '@/services/geofenceService';
 
 // ============================================================
 // TYPES
 // ============================================================
 
-export interface Geofence {
-  id: string;
-  name: string;
-  description?: string;
-  type: 'circle' | 'polygon';
-  coordinates: number[][];
-  radius?: number;
-  is_active: boolean;
-  alert_on_enter: boolean;
-  alert_on_exit: boolean;
-  applies_to: 'all' | 'teams' | 'employees';
-  target_ids?: string[];
-  created_at: string;
-  updated_at: string;
-}
-
-export interface CreateGeofenceInput {
-  name: string;
-  description?: string;
-  type: 'circle' | 'polygon';
-  coordinates: number[][];
-  radius?: number;
-  is_active?: boolean;
-  alert_on_enter?: boolean;
-  alert_on_exit?: boolean;
-  applies_to?: 'all' | 'teams' | 'employees';
-  target_ids?: string[];
-}
-
-export interface UpdateGeofenceInput {
-  id: string;
-  name?: string;
-  description?: string;
-  coordinates?: number[][];
-  radius?: number;
-  is_active?: boolean;
-  alert_on_enter?: boolean;
-  alert_on_exit?: boolean;
-  applies_to?: 'all' | 'teams' | 'employees';
-  target_ids?: string[];
-}
+export type { Geofence, CreateGeofenceInput, UpdateGeofenceInput };
 
 // ============================================================
 // QUERIES
@@ -96,15 +61,18 @@ export function useCreateGeofence() {
       const optimisticGeofence: Geofence = {
         id: `temp-${Date.now()}`,
         name: input.name,
-        description: input.description,
-        type: input.type,
-        coordinates: input.coordinates,
-        radius: input.radius,
+        description: input.description ?? null,
+        address: input.address ?? null,
+        color: input.color ?? null,
+        type: input.type ?? 'circle',
+        geometry: input.geometry ?? null,
+        latitude: input.latitude,
+        longitude: input.longitude,
+        radius_meters: input.radius_meters ?? 100,
         is_active: input.is_active ?? true,
-        alert_on_enter: input.alert_on_enter ?? true,
-        alert_on_exit: input.alert_on_exit ?? true,
-        applies_to: input.applies_to ?? 'all',
-        target_ids: input.target_ids,
+        restricted: input.restricted ?? false,
+        required: input.required ?? false,
+        company_id: input.company_id ?? null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
