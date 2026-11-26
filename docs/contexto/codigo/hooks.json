@@ -9862,26 +9862,33 @@
     "useInviteUser",
     "useUpdateUser",
     "useUser",
+    "useUserDetail",
     "useUsers"
    ],
-   "linhas": 99,
+   "linhas": 228,
    "dominio": "hooks",
    "tabelas": [
-    "profiles"
+    "profiles",
+    "user_companies",
+    "user_roles"
    ],
    "rpcs": [],
-   "edges": [],
+   "edges": [
+    "admin-invite-user"
+   ],
    "hooks_internos": [
     "useMutation",
     "useQuery",
     "useQueryClient"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
+   "usado_por": 3,
    "usado_por_arquivos": [
+    "src/pages/InviteUserPage.tsx",
+    "src/pages/UserDetailPage.tsx",
     "src/pages/UsersPage.tsx"
    ],
-   "coberto_por_testes": 1
+   "coberto_por_testes": 2
   },
   {
    "arquivo": "src/hooks/useValidation.ts",

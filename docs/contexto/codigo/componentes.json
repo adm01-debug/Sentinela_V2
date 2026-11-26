@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 490,
+ "total": 492,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -2253,7 +2253,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 59,
+   "usado_por": 61,
    "orfao": false
   },
   {
@@ -3895,7 +3895,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 21,
+   "usado_por": 23,
    "orfao": false
   },
   {
@@ -3913,7 +3913,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 18,
+   "usado_por": 19,
    "orfao": false
   },
   {
@@ -3928,7 +3928,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 166,
+   "usado_por": 167,
    "orfao": false
   },
   {
@@ -3991,7 +3991,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 207,
+   "usado_por": 209,
    "orfao": false
   },
   {
@@ -4026,7 +4026,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 209,
+   "usado_por": 211,
    "orfao": false
   },
   {
@@ -4691,7 +4691,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 102,
+   "usado_por": 103,
    "orfao": false
   },
   {
@@ -4722,7 +4722,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 76,
+   "usado_por": 77,
    "orfao": false
   },
   {
@@ -5296,7 +5296,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 74,
+   "usado_por": 75,
    "orfao": false
   },
   {
@@ -5403,7 +5403,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 80,
+   "usado_por": 81,
    "orfao": false
   },
   {
@@ -7530,6 +7530,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/pages/InviteUserPage.tsx",
+   "exports": [
+    "InviteUserPage"
+   ],
+   "export_default": "InviteUserPage",
+   "linhas": 163,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useInviteUser"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/pages/LiveViewPage.tsx",
    "exports": [
     "LiveViewPage"
@@ -7927,12 +7943,28 @@
    "orfao": false
   },
   {
+   "arquivo": "src/pages/UserDetailPage.tsx",
+   "exports": [
+    "UserDetailPage"
+   ],
+   "export_default": "UserDetailPage",
+   "linhas": 154,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useUserDetail"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/pages/UsersPage.tsx",
    "exports": [
     "UsersPage"
    ],
    "export_default": "UsersPage",
-   "linhas": 165,
+   "linhas": 169,
    "dominio": "pages",
    "hooks_locais": [
     "useDeleteUser",
@@ -8181,7 +8213,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 549,
+   "linhas": 571,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

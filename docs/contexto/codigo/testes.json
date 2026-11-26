@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 110,
+ "total": 111,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 108
+  "unit": 109
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 77
+   "arquivos": 78
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -318,12 +318,12 @@
   {
    "arquivo": "src/pages/__tests__/Users.test.tsx",
    "tipo": "unit",
-   "linhas": 62,
+   "linhas": 72,
    "testa": [
     "src/hooks/useUsers.ts",
     "src/pages/UsersPage.tsx"
    ],
-   "casos": 2
+   "casos": 3
   },
   {
    "arquivo": "src/pages/__tests__/Violations.test.tsx",
@@ -1017,6 +1017,15 @@
    "casos": 20
   },
   {
+   "arquivo": "src/test/users-management.test.tsx",
+   "tipo": "unit",
+   "linhas": 97,
+   "testa": [
+    "src/hooks/useUsers.ts"
+   ],
+   "casos": 3
+  },
+  {
    "arquivo": "src/test/utils-comprehensive.test.ts",
    "tipo": "unit",
    "linhas": 109,
@@ -1171,7 +1180,7 @@
   "src/hooks/useSessionManager.ts": 1,
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
-  "src/hooks/useUsers.ts": 1,
+  "src/hooks/useUsers.ts": 2,
   "src/hooks/useViolationActions.ts": 1,
   "src/hooks/useWorkSchedules.ts": 1,
   "src/hooks/useWorkSchedulesPage.ts": 1,
@@ -1784,6 +1793,7 @@
   ],
   "edges": [
    "acknowledge-violation",
+   "admin-invite-user",
    "agent-collector",
    "analyze-activity",
    "award-gamification-points",

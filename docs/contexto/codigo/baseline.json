@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2dce6b78044c553f3daa558483ebb9dedb512b2c",
+  "commit": "cf56543709132faadafae6e0a4336c518fafaaff",
   "branch": "main",
-  "data_commit": "2026-11-26T16:22:28-03:00",
+  "data_commit": "2026-11-26T16:39:45-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "cf5654370",
+    "data": "2026-11-26",
+    "assunto": "feat: convite de usuario real e detalhe com papeis reais (#368)"
+   },
    {
     "sha": "2dce6b780",
     "data": "2026-11-26",
@@ -126,22 +131,17 @@
     "sha": "701a41206",
     "data": "2026-11-25",
     "assunto": "fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)"
-   },
-   {
-    "sha": "5a2118ffa",
-    "data": "2026-11-25",
-    "assunto": "feat: preenche company_id automatico nas escritas de tenant (#339)"
    }
   ],
-  "arquivos_mudados_7d": 422,
+  "arquivos_mudados_7d": 426,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
-    "mudancas": 28
+    "mudancas": 29
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 23
+    "mudancas": 24
    },
    {
     "pasta": "supabase/functions/_shared",
@@ -192,8 +192,8 @@
     "mudancas": 8
    },
    {
-    "pasta": "docs/prod-readiness.md",
-    "mudancas": 7
+    "pasta": "supabase/config.toml",
+    "mudancas": 8
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -207,7 +207,7 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 23
+    "mudancas": 24
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
@@ -238,11 +238,11 @@
     "mudancas": 8
    },
    {
-    "arquivo": "docs/prod-readiness.md",
-    "mudancas": 7
+    "arquivo": "supabase/config.toml",
+    "mudancas": 8
    },
    {
-    "arquivo": "supabase/config.toml",
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 7
    },
    {
@@ -260,6 +260,10 @@
    {
     "arquivo": "supabase/functions/summarize-activity/index.ts",
     "mudancas": 6
+   },
+   {
+    "arquivo": "src/constants/routes.ts",
+    "mudancas": 5
    },
    {
     "arquivo": "src/index.css",
@@ -292,16 +296,12 @@
    {
     "arquivo": "supabase/functions/send-whatsapp/index.ts",
     "mudancas": 5
-   },
-   {
-    "arquivo": ".github/workflows/lint.yml",
-    "mudancas": 4
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 263
+    "commits": 264
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1923,
-  "arquivos_codigo": 1465,
-  "linhas_codigo": 177741,
+  "arquivos_total": 1927,
+  "arquivos_codigo": 1469,
+  "linhas_codigo": 178486,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 63,
-  "componentes": 490,
+  "componentes": 492,
   "hooks": 542,
-  "edge_functions": 48,
+  "edge_functions": 49,
   "tabelas": 180,
   "migrations": 128,
   "cron_jobs": 5,
-  "testes": 110,
+  "testes": 111,
   "workflows": 14,
   "scripts": 37,
   "docs_md": 176
@@ -428,7 +428,7 @@
   },
   "src/constants": {
    "arquivos": 7,
-   "linhas": 263
+   "linhas": 266
   },
   "src/data": {
    "arquivos": 4,
@@ -444,7 +444,7 @@
   },
   "src/hooks": {
    "arquivos": 497,
-   "linhas": 37567
+   "linhas": 37696
   },
   "src/i18n": {
    "arquivos": 1,
@@ -467,8 +467,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 120,
-   "linhas": 26784
+   "arquivos": 122,
+   "linhas": 27115
   },
   "src/providers": {
    "arquivos": 9,
@@ -476,7 +476,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 549
+   "linhas": 571
   },
   "src/services": {
    "arquivos": 8,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 78,
-   "linhas": 16125
+   "arquivos": 79,
+   "linhas": 16222
   },
   "src/types": {
    "arquivos": 57,
@@ -503,8 +503,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 69,
-   "linhas": 12009
+   "arquivos": 70,
+   "linhas": 12172
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -562,7 +562,7 @@
   },
   {
    "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 549
+   "linhas": 571
   },
   {
    "arquivo": "src/pages/WorkSchedulesPage.tsx",

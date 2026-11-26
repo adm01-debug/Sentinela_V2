@@ -3432,6 +3432,17 @@
    "src/components/ui/switch.tsx",
    "src/hooks/useInternetAccessPage.ts"
   ],
+  "src/pages/InviteUserPage.tsx": [
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
+   "src/components/ui/select.tsx",
+   "src/constants/routes.ts",
+   "src/hooks/useUsers.ts"
+  ],
   "src/pages/LiveViewPage.tsx": [
    "src/components/layout/PageHeader.tsx",
    "src/components/layout/PageLayout.tsx",
@@ -3673,6 +3684,17 @@
    "src/hooks/useChartColors.ts",
    "src/hooks/useTrendForecastPage.ts"
   ],
+  "src/pages/UserDetailPage.tsx": [
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/alert.tsx",
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/constants/routes.ts",
+   "src/hooks/useUsers.ts"
+  ],
   "src/pages/UsersPage.tsx": [
    "src/components/layout/PageHeader.tsx",
    "src/components/ui/alert-dialog.tsx",
@@ -3682,6 +3704,7 @@
    "src/components/ui/card.tsx",
    "src/components/ui/dropdown-menu.tsx",
    "src/components/ui/input.tsx",
+   "src/constants/routes.ts",
    "src/hooks/use-toast.ts",
    "src/hooks/useUsers.ts"
   ],
@@ -4264,6 +4287,7 @@
    "src/pages/IntegrationSettingsPage.tsx",
    "src/pages/IntegrationsPage.tsx",
    "src/pages/InternetAccessPage.tsx",
+   "src/pages/InviteUserPage.tsx",
    "src/pages/LiveViewPage.tsx",
    "src/pages/MonitoringPage.tsx",
    "src/pages/NotFoundPage.tsx",
@@ -4286,6 +4310,7 @@
    "src/pages/TimeClockPage.tsx",
    "src/pages/TimesheetsPage.tsx",
    "src/pages/TrendForecastPage.tsx",
+   "src/pages/UserDetailPage.tsx",
    "src/pages/UsersPage.tsx",
    "src/pages/VerifyReportPage.tsx",
    "src/pages/ViolationDetailPage.tsx",
@@ -4556,6 +4581,10 @@
   ],
   "supabase/functions/acknowledge-violation/index.ts": [
    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/admin-invite-user/index.ts": [
+   "supabase/functions/_shared/auth.ts",
+   "supabase/functions/_shared/rateLimiting.ts"
   ],
   "supabase/functions/agent-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"

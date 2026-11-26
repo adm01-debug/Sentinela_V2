@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1436)",
+   "TypeScript (1440)",
    "Markdown (176)",
    "SQL (132)",
    "JSON (45)",
@@ -1332,6 +1332,10 @@
     "arquivos": 2
    },
    {
+    "host": "sentinela-v2.vercel.app",
+    "arquivos": 2
+   },
+   {
     "host": "webhook.exemplo.com",
     "arquivos": 2
    },
@@ -1409,10 +1413,6 @@
    },
    {
     "host": "project-inexistente.invalid",
-    "arquivos": 1
-   },
-   {
-    "host": "sentinela-v2.vercel.app",
     "arquivos": 1
    },
    {
@@ -1502,7 +1502,7 @@
    },
    {
     "papel": "admin",
-    "ocorrencias": 15
+    "ocorrencias": 16
    },
    {
     "papel": "alert",
@@ -1517,6 +1517,10 @@
     "ocorrencias": 7
    },
    {
+    "papel": "Admin",
+    "ocorrencias": 4
+   },
+   {
     "papel": "combobox",
     "ocorrencias": 3
    },
@@ -1527,10 +1531,6 @@
    {
     "papel": "progressbar",
     "ocorrencias": 3
-   },
-   {
-    "papel": "Admin",
-    "ocorrencias": 2
    },
    {
     "papel": "dialog",

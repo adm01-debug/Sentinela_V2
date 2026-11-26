@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2dce6b78044c553f3daa558483ebb9dedb512b2c` (2026-11-26T16:22:28-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cf56543709132faadafae6e0a4336c518fafaaff` (2026-11-26T16:39:45-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1436), Markdown (176), SQL (132), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
+- linguagens: TypeScript (1440), Markdown (176), SQL (132), JSON (45), YAML (37), JavaScript (31), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1923 |
-| arquivos_codigo | 1465 |
-| linhas_codigo | 177741 |
+| arquivos_total | 1927 |
+| arquivos_codigo | 1469 |
+| linhas_codigo | 178486 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 63 |
-| componentes | 490 |
+| componentes | 492 |
 | hooks | 542 |
-| edge_functions | 48 |
+| edge_functions | 49 |
 | tabelas | 180 |
 | migrations | 128 |
 | cron_jobs | 5 |
-| testes | 110 |
+| testes | 111 |
 | workflows | 14 |
 | scripts | 37 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (68)
-- componentes: src/components (368), src/pages (104), src/providers (8)
+- componentes: src/components (368), src/pages (106), src/providers (8)
 - hooks: src/hooks (495), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (77), co-localizado (__tests__) (22), outro (10)
+- testes: co-localizado (*.test) (78), co-localizado (__tests__) (22), outro (10)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (8), scripts/ai-context (2), scripts/inventario (2)
@@ -82,10 +82,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 497 | 518 | 21 | 101 |
+| hooks | 0 | 0 | 497 | 518 | 22 | 101 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 70 | 178 | 17 | 79 |
+| pages | 4 | 38 | 72 | 180 | 18 | 79 |
 | pages/admin | 0 | 27 | 29 | 45 | 8 | 44 |
 | pages/dev | 0 | 3 | 3 | 16 | 0 | 3 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -183,6 +183,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Edge functions
 - `acknowledge-violation` (verify_jwt=false) — tabelas: agent_keys, security_violations, settings_audit_log; chamada por 1 arquivo(s) do front
+- `admin-invite-user` — tabelas: profiles, user_companies, user_roles; chamada por 1 arquivo(s) do front
 - `agent-collector` — tabelas: agent_keys, click_logs, employees, keystroke_logs, productivity_logs, screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `analyze-activity` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 2 arquivo(s) do front
 - `award-gamification-points` — tabelas: employee_points, employees, points_history, user_roles; chamada por 1 arquivo(s) do front
@@ -240,12 +241,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
-- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, attack.mitre.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, push.test, releases.sentinela.app, webhook.exemplo.com, www.openstreetmap.org, x.com, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com
+- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, attack.mitre.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, push.test, releases.sentinela.app, sentinela-v2.vercel.app, webhook.exemplo.com, www.openstreetmap.org, x.com, x.supabase.co, api.lovable.dev, api.mapbox.com
 - webhooks recebidos: acknowledge-violation, dlp-incident-report, dlp-policy-sync, generate-report, health-check, ingest-file-transfer, live-view-authorize, pending-employee-violations, process-violation-alert, send-whatsapp, upload-recording-chunk, webrtc-ice-config
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (22), admin (15), alert (14), user (8), button (7), combobox (3), presentation (3), progressbar (3), Admin (2), dialog (2), group (2), list (2), region (2), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (22), admin (16), alert (14), user (8), button (7), Admin (4), combobox (3), presentation (3), progressbar (3), dialog (2), group (2), list (2), region (2), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 34 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -273,7 +274,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
-- src/routes/AppRoutes.tsx (23)
+- src/routes/AppRoutes.tsx (24)
 - docs/pendencias/_linha-de-base.md (22)
 - scripts/ci/eslint-baseline.json (22)
 - scripts/ci/prettier-baseline.json (20)
@@ -281,8 +282,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/components/AppSidebar.tsx (18)
 - .github/workflows/ci.yml (11)
 - scripts/ci/deno-check-baseline.json (8)
+- supabase/config.toml (8)
 - docs/prod-readiness.md (7)
-- supabase/config.toml (7)
 - supabase/functions/_shared/auth.ts (6)
 - supabase/functions/award-gamification-points/index.ts (6)
 - supabase/functions/behavior-pattern/index.ts (6)
@@ -434,6 +435,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `cf5654370` feat: convite de usuario real e detalhe com papeis reais (#368)
 - 2026-11-26 `2dce6b780` fix: relatorio de produtividade agendado lia tabela sem produtor (#372)
 - 2026-11-26 `8c42a4807` feat: teste de posicao na tela de geofencing (edge check-geofence) (#370)
 - 2026-11-26 `5ef95d95f` feat: telas de recomendacoes e previsao de tendencias de IA (#369)
@@ -448,7 +450,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `bca911c30` feat: tela de dispositivos e sessoes ativas (#356)
 - 2026-11-26 `00693ffd4` feat: tela de feature flags em /admin/feature-flags (#354)
 - 2026-11-26 `2c86ad5c9` feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)
-- 2026-11-26 `e6344bb69` ﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

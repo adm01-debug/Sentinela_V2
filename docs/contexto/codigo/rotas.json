@@ -6,7 +6,7 @@
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 99
+  "lazy": 101
  },
  "urls": [
   {
@@ -3399,6 +3399,7 @@
   "IntegrationsHealthPage": "src/pages/admin/IntegrationsHealthPage.tsx",
   "IntegrationsPage": "src/pages/IntegrationsPage.tsx",
   "InternetAccessPage": "src/pages/InternetAccessPage.tsx",
+  "InviteUserPage": "src/pages/InviteUserPage.tsx",
   "KeystrokeDetailsPage": "src/pages/admin/KeystrokeDetailsPage.tsx",
   "LiveViewPage": "src/pages/LiveViewPage.tsx",
   "LiveViewReportPage": "src/pages/admin/LiveViewReportPage.tsx",
@@ -3435,6 +3436,7 @@
   "TrendForecastPage": "src/pages/TrendForecastPage.tsx",
   "UEBADashboardPage": "src/pages/admin/ueba/UEBADashboardPage.tsx",
   "UEBASettingsPage": "src/pages/admin/ueba/UEBASettingsPage.tsx",
+  "UserDetailPage": "src/pages/UserDetailPage.tsx",
   "UsersPage": "src/pages/UsersPage.tsx",
   "VerifyReportPage": "src/pages/VerifyReportPage.tsx",
   "VerifyReportSimulatorPage": "src/pages/dev/VerifyReportSimulatorPage.tsx",
