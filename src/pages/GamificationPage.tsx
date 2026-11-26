@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useGamificationPage } from "@/hooks/useGamificationPage";
+import { EmployeeGamificationPanel } from "@/components/gamification/EmployeeGamificationPanel";
 import { useAuth } from "@/hooks/useAuth";
 import { useChartColors } from "@/hooks/useChartColors";
 
@@ -227,6 +228,7 @@ export default function GamificationPage() {
         <TabsList>
           <TabsTrigger value="leaderboard">🏆 Ranking</TabsTrigger>
           <TabsTrigger value="achievements">🎖️ Conquistas</TabsTrigger>
+          <TabsTrigger value="employee">Por funcionário</TabsTrigger>
         </TabsList>
 
         <TabsContent value="leaderboard" className="mt-4 space-y-3">
@@ -308,6 +310,9 @@ export default function GamificationPage() {
               ))}
             </div>
           )}
+        </TabsContent>
+        <TabsContent value="employee" className="mt-4">
+          <EmployeeGamificationPanel />
         </TabsContent>
       </Tabs>
 
