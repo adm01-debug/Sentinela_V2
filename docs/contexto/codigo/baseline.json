@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "eb69d53fa95b113cd88560702acfd29042db3253",
+  "commit": "8d79d8e8422bb1f4557b251369fcd009a681619c",
   "branch": "main",
-  "data_commit": "2026-11-26T12:21:42-03:00",
+  "data_commit": "2026-11-26T12:32:15-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "8d79d8e84",
+    "data": "2026-11-26",
+    "assunto": "fix: escopo de empresa na policy de slack_integrations (#345)"
+   },
    {
     "sha": "eb69d53fa",
     "data": "2026-11-26",
@@ -126,14 +131,9 @@
     "sha": "767bfe5a3",
     "data": "2026-11-25",
     "assunto": "infra: company_id nas tabelas sem tenant (#338)"
-   },
-   {
-    "sha": "de3fb1a1e",
-    "data": "2026-11-25",
-    "assunto": "feat: liga push no navegador com Web Push/VAPID (#319)"
    }
   ],
-  "arquivos_mudados_7d": 409,
+  "arquivos_mudados_7d": 410,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 258
+    "commits": 259
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1913,
+  "arquivos_total": 1914,
   "arquivos_codigo": 1457,
   "linhas_codigo": 176430,
   "rotas": 68,
@@ -326,7 +326,7 @@
   "hooks": 539,
   "edge_functions": 48,
   "tabelas": 180,
-  "migrations": 126,
+  "migrations": 127,
   "cron_jobs": 5,
   "testes": 108,
   "workflows": 14,
