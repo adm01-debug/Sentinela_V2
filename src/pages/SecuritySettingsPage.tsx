@@ -1,9 +1,10 @@
-import { Key, Lock, Smartphone } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { MFASettings } from '@/components/MFASettings';
-import { BlockedIPsPanel } from '@/components/BlockedIPsPanel';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { ChangePasswordForm } from '@/components/security/ChangePasswordForm';
+import { Key, Lock, Laptop, Smartphone } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { MFASettings } from "@/components/MFASettings";
+import { BlockedIPsPanel } from "@/components/BlockedIPsPanel";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { ChangePasswordForm } from "@/components/security/ChangePasswordForm";
+import { SessionDevicesPanel } from "@/components/security/SessionDevicesPanel";
 
 export default function SecuritySettingsPage() {
   return (
@@ -42,6 +43,21 @@ export default function SecuritySettingsPage() {
         </CardHeader>
         <CardContent>
           <MFASettings />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Laptop className="h-5 w-5" aria-hidden="true" />
+            Dispositivos e sessões
+          </CardTitle>
+          <CardDescription>
+            Veja de quais aparelhos sua conta foi acessada e encerre os que você não reconhece.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SessionDevicesPanel />
         </CardContent>
       </Card>
 
