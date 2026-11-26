@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `18b0191f9fca86140411728ca1943b9f541e3114` (2026-11-26T19:59:06-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `70235a93b54c1e67c03bb64a7e26991e8c94d2cf` (2026-11-26T20:00:54-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1443), Markdown (176), SQL (138), JSON (46), YAML (37), JavaScript (33), Shell (22), HTML (4)
+- linguagens: TypeScript (1443), Markdown (176), SQL (139), JSON (46), YAML (37), JavaScript (33), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1939 |
+| arquivos_total | 1940 |
 | arquivos_codigo | 1474 |
-| linhas_codigo | 179297 |
+| linhas_codigo | 179353 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 542 |
 | edge_functions | 50 |
 | tabelas | 180 |
-| migrations | 134 |
+| migrations | 135 |
 | cron_jobs | 5 |
 | testes | 113 |
 | workflows | 14 |
@@ -278,8 +278,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/routes/AppRoutes.tsx (25)
 - docs/pendencias/_linha-de-base.md (22)
 - scripts/ci/eslint-baseline.json (22)
+- .github/workflows/deploy.yml (20)
 - scripts/ci/prettier-baseline.json (20)
-- .github/workflows/deploy.yml (19)
 - src/components/AppSidebar.tsx (18)
 - .github/workflows/ci.yml (12)
 - supabase/config.toml (10)
@@ -436,6 +436,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-26 `70235a93b` chore: remove objetos de banco superados por equivalentes vivos (#373)
+- 2026-11-26 `c60ad808e` fix: vigia do deploy passa a depender de migrate e deploy-functions (#376)
+- 2026-11-26 `9db16a016` fix: guard de TOML no config.toml (o CI passava com arquivo invalido) (#375)
 - 2026-11-26 `18b0191f9` feat: liga as triggers de auditoria nas tabelas de cadastro (#377)
 - 2026-11-26 `0dca49beb` fix(deploy): destrava o db push e o config.toml que impediam migrate e deploy-functions (#374)
 - 2026-11-26 `1b3d0a4e9` fix: historico de entrada e saida das cercas e estado por funcionario (#371)
@@ -448,9 +451,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `2dce6b780` fix: relatorio de produtividade agendado lia tabela sem produtor (#372)
 - 2026-11-26 `8c42a4807` feat: teste de posicao na tela de geofencing (edge check-geofence) (#370)
 - 2026-11-26 `5ef95d95f` feat: telas de recomendacoes e previsao de tendencias de IA (#369)
-- 2026-11-26 `8613230d0` infra: habilita RLS nas tabelas com policy inerte (#360)
-- 2026-11-26 `8d79d8e84` fix: escopo de empresa na policy de slack_integrations (#345)
-- 2026-11-26 `eb69d53fa` feat: registrar ciencia da violacao pelo painel (edge + UI) (#363)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

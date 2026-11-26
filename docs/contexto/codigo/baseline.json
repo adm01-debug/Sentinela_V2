@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "18b0191f9fca86140411728ca1943b9f541e3114",
+  "commit": "70235a93b54c1e67c03bb64a7e26991e8c94d2cf",
   "branch": "main",
-  "data_commit": "2026-11-26T19:59:06-03:00",
+  "data_commit": "2026-11-26T20:00:54-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "70235a93b",
+    "data": "2026-11-26",
+    "assunto": "chore: remove objetos de banco superados por equivalentes vivos (#373)"
+   },
+   {
+    "sha": "c60ad808e",
+    "data": "2026-11-26",
+    "assunto": "fix: vigia do deploy passa a depender de migrate e deploy-functions (#376)"
+   },
+   {
+    "sha": "9db16a016",
+    "data": "2026-11-26",
+    "assunto": "fix: guard de TOML no config.toml (o CI passava com arquivo invalido) (#375)"
+   },
    {
     "sha": "18b0191f9",
     "data": "2026-11-26",
@@ -116,24 +131,9 @@
     "sha": "00693ffd4",
     "data": "2026-11-26",
     "assunto": "feat: tela de feature flags em /admin/feature-flags (#354)"
-   },
-   {
-    "sha": "2c86ad5c9",
-    "data": "2026-11-26",
-    "assunto": "feat: tela de fingerprints DLP com hash SHA-256 no navegador (#353)"
-   },
-   {
-    "sha": "e6344bb69",
-    "data": "2026-11-26",
-    "assunto": "﻿feat: tela de classificacao MITRE ATT&CK em /admin/mitre (#352)"
-   },
-   {
-    "sha": "7bdeb5579",
-    "data": "2026-11-26",
-    "assunto": "﻿feat: tela de conectores SIEM em /admin/siem (#351)"
    }
   ],
-  "arquivos_mudados_7d": 433,
+  "arquivos_mudados_7d": 434,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -156,12 +156,12 @@
     "mudancas": 22
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 20
    },
    {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 19
+    "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 20
    },
    {
     "pasta": "src/components/AppSidebar.tsx",
@@ -218,12 +218,12 @@
     "mudancas": 22
    },
    {
-    "arquivo": "scripts/ci/prettier-baseline.json",
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 20
    },
    {
-    "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 19
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 20
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 272
+    "commits": 275
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1939,
+  "arquivos_total": 1940,
   "arquivos_codigo": 1474,
-  "linhas_codigo": 179297,
+  "linhas_codigo": 179353,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -326,7 +326,7 @@
   "hooks": 542,
   "edge_functions": 50,
   "tabelas": 180,
-  "migrations": 134,
+  "migrations": 135,
   "cron_jobs": 5,
   "testes": 113,
   "workflows": 14,
@@ -396,7 +396,7 @@
   },
   "scripts/ci": {
    "arquivos": 17,
-   "linhas": 5057
+   "linhas": 5113
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,

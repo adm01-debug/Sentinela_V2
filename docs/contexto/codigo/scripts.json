@@ -118,7 +118,7 @@
   {
    "arquivo": "scripts/ci/edge-gate-guard.mjs",
    "descricao": "Gate de credencial nas edge functions. Por que existe: a chave publicavel do app (`sb_publishable_...`) vai no bundle",
-   "linhas": 288,
+   "linhas": 320,
    "env": [],
    "npm_scripts": [],
    "workflows": [

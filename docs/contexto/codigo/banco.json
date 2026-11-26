@@ -8,10 +8,10 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 134,
+ "migrations": 135,
  "seeds": [],
  "avisos": [
-  "11 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
+  "12 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
  ],
  "extensoes": [],
  "enums": {
@@ -59,8 +59,6 @@
   "all_mobile_activity_logs",
   "all_productivity_logs",
   "default_filters",
-  "latest_versions",
-  "recent_activities",
   "slack_webhook_mttr"
  ],
  "funcoes": [
@@ -93,7 +91,6 @@
   "my_policy_acknowledgment_status",
   "preenche_company_id_do_criador",
   "preenche_company_id_do_funcionario",
-  "record_violation_action",
   "set_sensitive_keywords_updated_at",
   "sync_violation_dispute_status",
   "update_roles_updated_at",
@@ -6156,15 +6153,8 @@
   },
   "gamification_leaderboard": {
    "colunas": {},
-   "rls": true,
-   "policies": [
-    {
-     "nome": "gamification_select_company",
-     "comando": "select",
-     "para": "authenticated",
-     "tipo": "permissive"
-    }
-   ],
+   "rls": false,
+   "policies": [],
    "indices": [],
    "fks": [],
    "criada_em": null,
@@ -10503,89 +10493,12 @@
    "nao_usada": true
   },
   "productivity_metrics": {
-   "colunas": {
-    "active_minutes": {
-     "tipo": "integer",
-     "nn": true,
-     "pk": false,
-     "default": "0",
-     "ref": null
-    },
-    "created_at": {
-     "tipo": "timestamptz",
-     "nn": true,
-     "pk": false,
-     "default": "now()",
-     "ref": null
-    },
-    "date": {
-     "tipo": "date",
-     "nn": true,
-     "pk": false,
-     "default": "CURRENT_DATE",
-     "ref": null
-    },
-    "employee_id": {
-     "tipo": "uuid",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": "employees"
-    },
-    "id": {
-     "tipo": "uuid",
-     "nn": false,
-     "pk": true,
-     "default": "gen_random_uuid()",
-     "ref": null
-    },
-    "idle_minutes": {
-     "tipo": "integer",
-     "nn": true,
-     "pk": false,
-     "default": "0",
-     "ref": null
-    },
-    "productivity_score": {
-     "tipo": "numeric(5,2)",
-     "nn": false,
-     "pk": false,
-     "default": null,
-     "ref": null
-    },
-    "total_minutes": {
-     "tipo": "integer",
-     "nn": true,
-     "pk": false,
-     "default": "0",
-     "ref": null
-    }
-   },
-   "rls": true,
-   "policies": [
-    {
-     "nome": "productivity_metrics_select_company",
-     "comando": "select",
-     "para": "authenticated",
-     "tipo": "permissive"
-    }
-   ],
-   "indices": [
-    {
-     "nome": "productivity_metrics_date_idx",
-     "colunas": "date DESC",
-     "unico": false
-    },
-    {
-     "nome": "productivity_metrics_employee_idx",
-     "colunas": "employee_id",
-     "unico": false
-    }
-   ],
-   "fks": [
-    "employee_id->employees"
-   ],
-   "criada_em": "20261121200000_create_missing_edge_tables.sql",
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
    "colunas_types": {
     "active_minutes": "number",
     "created_at": "string",
@@ -10595,10 +10508,6 @@
     "idle_minutes": "number",
     "productivity_score": "number | null",
     "total_minutes": "number"
-   },
-   "drift": {
-    "so_na_migration": [],
-    "so_no_types": []
    },
    "usada_no_front": 0,
    "usada_em_edges": [],

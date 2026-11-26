@@ -69,11 +69,11 @@
   {
    "arquivo": "scripts/ci/edge-gate-guard.unit.mjs",
    "tipo": "unit",
-   "linhas": 106,
+   "linhas": 130,
    "testa": [
     "scripts/ci/edge-gate-guard.mjs"
    ],
-   "casos": 8
+   "casos": 11
   },
   {
    "arquivo": "scripts/ci/format-ratchet.unit.mjs",
