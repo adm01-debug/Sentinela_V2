@@ -45,6 +45,7 @@ import {
   Gauge,
   Keyboard,
   Crosshair,
+  FileKey,
   ShieldAlert,
   Radio,
   AlertOctagon,
@@ -179,6 +180,7 @@ const navSections: NavSection[] = [
       { icon: Keyboard, labelKey: "Detalhe de Digitação", path: "/admin/keystrokes" },
       { icon: Radio, labelKey: "Conectores SIEM", path: "/admin/siem" },
       { icon: Crosshair, labelKey: "Classificação MITRE", path: "/admin/mitre" },
+      { icon: FileKey, labelKey: "Fingerprints DLP", path: "/admin/dlp/fingerprints" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       {
