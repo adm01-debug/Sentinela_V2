@@ -78,6 +78,7 @@ const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywords
 const RetentionPoliciesPage = lazy(() => import("@/pages/admin/RetentionPoliciesPage"));
 const PolicyExemptionsPage = lazy(() => import("@/pages/admin/PolicyExemptionsPage"));
 const KeystrokeDetailsPage = lazy(() => import("@/pages/admin/KeystrokeDetailsPage"));
+const SIEMPage = lazy(() => import("@/pages/admin/SIEMPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
@@ -334,6 +335,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <KeystrokeDetailsPage />
+              </AdminGuard>
+            }
+          />
+          {/* siem_connectors aceita escrita admin por RLS e os triggers de
+              enqueue_siem_event (ADR-008) alimentam a fila por conector. */}
+          <Route
+            path="/admin/siem"
+            element={
+              <AdminGuard>
+                <SIEMPage />
               </AdminGuard>
             }
           />

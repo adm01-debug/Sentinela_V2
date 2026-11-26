@@ -45,6 +45,7 @@ import {
   Gauge,
   Keyboard,
   ShieldAlert,
+  Radio,
   AlertOctagon,
   Fingerprint,
   Zap,
@@ -175,6 +176,7 @@ const navSections: NavSection[] = [
       { icon: CalendarClock, labelKey: "Retencao de Dados", path: "/admin/retention" },
       { icon: UserCheck, labelKey: "Isenções de Aceite", path: "/admin/policy-exemptions" },
       { icon: Keyboard, labelKey: "Detalhe de Digitação", path: "/admin/keystrokes" },
+      { icon: Radio, labelKey: "Conectores SIEM", path: "/admin/siem" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       {
