@@ -133,7 +133,7 @@
     "assunto": "feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)"
    }
   ],
-  "arquivos_mudados_7d": 385,
+  "arquivos_mudados_7d": 383,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
