@@ -322,8 +322,8 @@
   {
    "nome": "delete-user-data",
    "entrada": "supabase/functions/delete-user-data/index.ts",
-   "arquivos": 1,
-   "linhas": 228,
+   "arquivos": 2,
+   "linhas": 372,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

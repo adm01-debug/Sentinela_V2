@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "test: contrato estatico da edge delete-user-data (LGPD) (#379)",
    "feat: restaura exclusao de dados do titular (LGPD) de ponta a ponta (#378)",
    "chore: remove objetos de banco superados por equivalentes vivos (#373)",
    "fix: vigia do deploy passa a depender de migrate e deploy-functions (#376)",
-   "fix: guard de TOML no config.toml (o CI passava com arquivo invalido) (#375)",
-   "feat: liga as triggers de auditoria nas tabelas de cadastro (#377)"
+   "fix: guard de TOML no config.toml (o CI passava com arquivo invalido) (#375)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "58dfcdbbc659345f5548fae16c72edd703217e69",
+  "commit": "2f1409cc36531aa22efffa7dc0a1285424ec5eba",
   "branch": "main",
-  "data_commit": "2026-11-26T21:23:30-03:00",
+  "data_commit": "2026-11-27T10:05:40-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2f1409cc3",
+    "data": "2026-11-27",
+    "assunto": "test: contrato estatico da edge delete-user-data (LGPD) (#379)"
+   },
    {
     "sha": "58dfcdbbc",
     "data": "2026-11-26",
@@ -126,11 +131,6 @@
     "sha": "3cc0fa4f6",
     "data": "2026-11-26",
     "assunto": "feat: tela de configuracoes globais em /admin/app-config (#355)"
-   },
-   {
-    "sha": "bca911c30",
-    "data": "2026-11-26",
-    "assunto": "feat: tela de dispositivos e sessoes ativas (#356)"
    }
   ],
   "arquivos_mudados_7d": 390,
@@ -176,12 +176,12 @@
     "mudancas": 15
    },
    {
-    "pasta": "package.json",
+    "pasta": ".github/workflows/ci.yml",
     "mudancas": 13
    },
    {
-    "pasta": ".github/workflows/ci.yml",
-    "mudancas": 12
+    "pasta": "package.json",
+    "mudancas": 13
    },
    {
     "pasta": "supabase/config.toml",
@@ -231,7 +231,7 @@
    },
    {
     "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "supabase/config.toml",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 276
+    "commits": 277
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1943,
-  "arquivos_codigo": 1477,
-  "linhas_codigo": 179914,
+  "arquivos_total": 1944,
+  "arquivos_codigo": 1478,
+  "linhas_codigo": 180058,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -503,8 +503,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 72,
-   "linhas": 12573
+   "arquivos": 73,
+   "linhas": 12717
   },
   "vite.config.ts": {
    "arquivos": 1,
