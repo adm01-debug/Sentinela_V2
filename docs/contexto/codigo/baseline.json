@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2f1409cc36531aa22efffa7dc0a1285424ec5eba",
+  "commit": "c2ad18b1dae464ecadf459edd17791ba74b88aca",
   "branch": "main",
-  "data_commit": "2026-11-27T10:05:40-03:00",
+  "data_commit": "2026-11-27T10:08:46-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c2ad18b1d",
+    "data": "2026-11-27",
+    "assunto": "feat: painel de integracoes confere no gateway quais funcoes estao no ar (#380)"
+   },
    {
     "sha": "2f1409cc3",
     "data": "2026-11-27",
@@ -126,14 +131,9 @@
     "sha": "16d3063cd",
     "data": "2026-11-26",
     "assunto": "feat: historico de execucoes dos relatorios agendados (#357)"
-   },
-   {
-    "sha": "3cc0fa4f6",
-    "data": "2026-11-26",
-    "assunto": "feat: tela de configuracoes globais em /admin/app-config (#355)"
    }
   ],
-  "arquivos_mudados_7d": 390,
+  "arquivos_mudados_7d": 391,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -165,7 +165,7 @@
    },
    {
     "pasta": "src/pages/admin",
-    "mudancas": 19
+    "mudancas": 20
    },
    {
     "pasta": "src/components/AppSidebar.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 277
+    "commits": 278
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1944,
-  "arquivos_codigo": 1478,
-  "linhas_codigo": 180058,
+  "arquivos_total": 1945,
+  "arquivos_codigo": 1479,
+  "linhas_codigo": 180290,
   "rotas": 68,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 180,
   "migrations": 135,
   "cron_jobs": 5,
-  "testes": 113,
+  "testes": 114,
   "workflows": 14,
   "scripts": 38,
   "docs_md": 176
@@ -468,7 +468,7 @@
   },
   "src/pages": {
    "arquivos": 122,
-   "linhas": 27150
+   "linhas": 27302
   },
   "src/providers": {
    "arquivos": 9,
@@ -487,8 +487,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 80,
-   "linhas": 16368
+   "arquivos": 81,
+   "linhas": 16448
   },
   "src/types": {
    "arquivos": 57,
@@ -597,6 +597,10 @@
    "linhas": 491
   },
   {
+   "arquivo": "src/pages/admin/IntegrationsHealthPage.tsx",
+   "linhas": 486
+  },
+  {
    "arquivo": "src/pages/Auth.tsx",
    "linhas": 486
   },
@@ -607,10 +611,6 @@
   {
    "arquivo": "src/components/security/GeoBlockingManager.tsx",
    "linhas": 476
-  },
-  {
-   "arquivo": "src/components/ScreenCapturesCard.tsx",
-   "linhas": 474
   }
  ],
  "qualidade": {

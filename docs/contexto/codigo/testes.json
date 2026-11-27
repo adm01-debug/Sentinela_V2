@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 113,
+ "total": 114,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 111
+  "unit": 112
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 79
+   "arquivos": 80
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -747,6 +747,15 @@
    "casos": 80
   },
   {
+   "arquivo": "src/test/integrations-health-edges.test.tsx",
+   "tipo": "unit",
+   "linhas": 80,
+   "testa": [
+    "src/pages/admin/IntegrationsHealthPage.tsx"
+   ],
+   "casos": 2
+  },
+  {
    "arquivo": "src/test/keystroke-details.test.tsx",
    "tipo": "unit",
    "linhas": 328,
@@ -1247,6 +1256,7 @@
   "src/pages/TrendForecastPage.tsx": 1,
   "src/pages/UsersPage.tsx": 1,
   "src/pages/ViolationsPage.tsx": 1,
+  "src/pages/admin/IntegrationsHealthPage.tsx": 1,
   "src/providers/ThemeProvider.tsx": 5,
   "src/routes/AppRoutes.tsx": 1,
   "src/services/geofenceService.ts": 1,
@@ -1302,7 +1312,6 @@
    "src/pages/admin/FeatureFlagsPage.tsx",
    "src/pages/admin/FileTransfersPage.tsx",
    "src/pages/admin/IceDiagnosticsPage.tsx",
-   "src/pages/admin/IntegrationsHealthPage.tsx",
    "src/pages/admin/KeystrokeDetailsPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
    "src/pages/admin/MessageTemplatesPage.tsx",

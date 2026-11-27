@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (79)",
+   "co-localizado (*.test) (80)",
    "co-localizado (__tests__) (22)",
    "outro (11)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: painel de integracoes confere no gateway quais funcoes estao no ar (#380)",
    "test: contrato estatico da edge delete-user-data (LGPD) (#379)",
    "feat: restaura exclusao de dados do titular (LGPD) de ponta a ponta (#378)",
    "chore: remove objetos de banco superados por equivalentes vivos (#373)",
-   "fix: vigia do deploy passa a depender de migrate e deploy-functions (#376)",
-   "fix: guard de TOML no config.toml (o CI passava com arquivo invalido) (#375)"
+   "fix: vigia do deploy passa a depender de migrate e deploy-functions (#376)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

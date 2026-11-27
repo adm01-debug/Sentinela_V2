@@ -6534,7 +6534,7 @@
     "IntegrationsHealthPage"
    ],
    "export_default": "IntegrationsHealthPage",
-   "linhas": 334,
+   "linhas": 486,
    "dominio": "pages/admin",
    "hooks_locais": [
     "useQuery"

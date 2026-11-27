@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2f1409cc36531aa22efffa7dc0a1285424ec5eba` (2026-11-27T10:05:40-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c2ad18b1dae464ecadf459edd17791ba74b88aca` (2026-11-27T10:08:46-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1447), Markdown (176), SQL (139), JSON (46), YAML (37), JavaScript (33), Shell (22), HTML (4)
+- linguagens: TypeScript (1448), Markdown (176), SQL (139), JSON (46), YAML (37), JavaScript (33), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1944 |
-| arquivos_codigo | 1478 |
-| linhas_codigo | 180058 |
+| arquivos_total | 1945 |
+| arquivos_codigo | 1479 |
+| linhas_codigo | 180290 |
 | rotas | 68 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 135 |
 | cron_jobs | 5 |
-| testes | 113 |
+| testes | 114 |
 | workflows | 14 |
 | scripts | 38 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (370), src/pages (106), src/providers (8)
 - hooks: src/hooks (496), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (79), co-localizado (__tests__) (22), outro (11)
+- testes: co-localizado (*.test) (80), co-localizado (__tests__) (22), outro (11)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (9), scripts/ai-context (2), scripts/inventario (2)
@@ -437,6 +437,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-27 `c2ad18b1d` feat: painel de integracoes confere no gateway quais funcoes estao no ar (#380)
 - 2026-11-27 `2f1409cc3` test: contrato estatico da edge delete-user-data (LGPD) (#379)
 - 2026-11-26 `58dfcdbbc` feat: restaura exclusao de dados do titular (LGPD) de ponta a ponta (#378)
 - 2026-11-26 `70235a93b` chore: remove objetos de banco superados por equivalentes vivos (#373)
@@ -451,7 +452,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `7179a8646` chore: guarda de CI contra objeto no banco sem migration (#359)
 - 2026-11-26 `fd3364492` fix: fecha a forja da trilha de auditoria e audita user_roles (#364)
 - 2026-11-26 `cf5654370` feat: convite de usuario real e detalhe com papeis reais (#368)
-- 2026-11-26 `2dce6b780` fix: relatorio de produtividade agendado lia tabela sem produtor (#372)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
