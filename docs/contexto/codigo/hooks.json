@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 542,
+ "total": 543,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,10 +160,11 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 85,
+   "usado_por": 86,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
+    "src/components/compliance/DeleteSubjectDataDialog.tsx",
     "src/components/exports/XlsxExportButton.tsx",
     "src/components/geofence/PolygonUpload.tsx",
     "src/components/productivity/AppCategoryManager.tsx",
@@ -190,8 +191,7 @@
     "src/hooks/useGeofences.ts",
     "src/hooks/useGeofencingPage.ts",
     "src/hooks/useInstallPage.ts",
-    "src/hooks/useInternetAccess.ts",
-    "src/hooks/useInternetAccessPage.ts"
+    "src/hooks/useInternetAccess.ts"
    ],
    "coberto_por_testes": 0
   },
@@ -1832,7 +1832,7 @@
    "hooks_exportados": [
     "useCompliance"
    ],
-   "linhas": 78,
+   "linhas": 103,
    "dominio": "hooks",
    "tabelas": [
     "blocked_ips",
@@ -2425,6 +2425,31 @@
    "canais_realtime": [],
    "usado_por": 0,
    "usado_por_arquivos": [],
+   "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useDeleteSubjectData.ts",
+   "hooks_exportados": [
+    "useDeleteSubjectData",
+    "useSubjectDataPreview"
+   ],
+   "linhas": 112,
+   "dominio": "hooks",
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [
+    "delete-user-data"
+   ],
+   "hooks_internos": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/compliance/DeleteSubjectDataDialog.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

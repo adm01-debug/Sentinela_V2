@@ -1907,7 +1907,9 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [],
+   "usada_em_edges": [
+    "delete-user-data"
+   ],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -5485,6 +5487,7 @@
    "usada_em_edges": [
     "agent-collector",
     "award-gamification-points",
+    "delete-user-data",
     "generate-insights",
     "health-check",
     "ingest-file-transfer",
@@ -16391,6 +16394,7 @@
     "admin-invite-user",
     "admin-remove-user",
     "award-gamification-points",
+    "delete-user-data",
     "rate-limit-logs",
     "send-push-notification",
     "send-scheduled-report",

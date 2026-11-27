@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1443)",
+   "TypeScript (1446)",
    "Markdown (176)",
    "SQL (139)",
    "JSON (46)",
@@ -1504,7 +1504,7 @@
    },
    {
     "papel": "admin",
-    "ocorrencias": 17
+    "ocorrencias": 18
    },
    {
     "papel": "alert",
@@ -1520,7 +1520,7 @@
    },
    {
     "papel": "Admin",
-    "ocorrencias": 5
+    "ocorrencias": 6
    },
    {
     "papel": "combobox",

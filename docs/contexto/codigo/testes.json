@@ -485,11 +485,11 @@
   {
    "arquivo": "src/test/compliance-policy-gate.test.tsx",
    "tipo": "unit",
-   "linhas": 56,
+   "linhas": 64,
    "testa": [
     "src/pages/CompliancePage.tsx"
    ],
-   "casos": 2
+   "casos": 3
   },
   {
    "arquivo": "src/test/comprehensive-validation.test.ts",
@@ -1417,6 +1417,7 @@
    "src/hooks/useDeepCompareEffect.ts",
    "src/hooks/useDeepMerge.ts",
    "src/hooks/useDeferredValue.ts",
+   "src/hooks/useDeleteSubjectData.ts",
    "src/hooks/useDenormalize.ts",
    "src/hooks/useDepartments.ts",
    "src/hooks/useDeviceDetection.ts",
@@ -1821,6 +1822,7 @@
    "award-gamification-points",
    "behavior-pattern",
    "check-geofence",
+   "delete-user-data",
    "dlp-incident-report",
    "dlp-policy-sync",
    "escalate-dispute-sla",

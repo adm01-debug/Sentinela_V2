@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 50,
+ "total": 51,
  "verify_jwt_false": [
   "acknowledge-violation",
   "dlp-incident-report",
@@ -313,6 +313,40 @@
    ],
    "chamada_pelo_front": [
     "src/services/geofenceService.ts"
+   ],
+   "chamada_por_edges": [],
+   "chamada_por_sql_ou_cron": false,
+   "orfa": false,
+   "testes": 0
+  },
+  {
+   "nome": "delete-user-data",
+   "entrada": "supabase/functions/delete-user-data/index.ts",
+   "arquivos": 1,
+   "linhas": 228,
+   "verify_jwt": true,
+   "metodos": [
+    "OPTIONS"
+   ],
+   "tabelas": [
+    "audit_logs",
+    "employees",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "env": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+   ],
+   "buckets": [],
+   "chama_edges": [],
+   "hosts_externos": [],
+   "usa_shared": [
+    "auth.ts",
+    "rateLimiting.ts"
+   ],
+   "chamada_pelo_front": [
+    "src/hooks/useDeleteSubjectData.ts"
    ],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,

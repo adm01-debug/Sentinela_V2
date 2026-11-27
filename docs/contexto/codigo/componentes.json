@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 493,
+ "total": 494,
  "orfaos": 93,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -1017,6 +1017,24 @@
    "dominio": "components",
    "hooks_locais": [
     "useCommandSearch"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/compliance/DeleteSubjectDataDialog.tsx",
+   "exports": [
+    "DeleteSubjectDataDialog"
+   ],
+   "export_default": null,
+   "linhas": 162,
+   "dominio": "components/compliance",
+   "hooks_locais": [
+    "useDeleteSubjectData",
+    "useSubjectDataPreview",
+    "useToast"
    ],
    "tabelas": [],
    "edges": [],
@@ -3894,7 +3912,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 35,
+   "usado_por": 36,
    "orfao": false
   },
   {
@@ -4007,7 +4025,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 210,
+   "usado_por": 212,
    "orfao": false
   },
   {
@@ -4707,7 +4725,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 103,
+   "usado_por": 104,
    "orfao": false
   },
   {
@@ -4738,7 +4756,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 77,
+   "usado_por": 78,
    "orfao": false
   },
   {
@@ -7144,7 +7162,7 @@
     "CompliancePage"
    ],
    "export_default": "CompliancePage",
-   "linhas": 151,
+   "linhas": 161,
    "dominio": "pages",
    "hooks_locais": [
     "useAuth",
@@ -7380,7 +7398,7 @@
     "EmployeeDetailPage"
    ],
    "export_default": "EmployeeDetailPage",
-   "linhas": 294,
+   "linhas": 310,
    "dominio": "pages",
    "hooks_locais": [
     "useDailyJourney",

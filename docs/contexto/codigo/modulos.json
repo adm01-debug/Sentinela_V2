@@ -533,6 +533,53 @@
    ]
   },
   {
+   "modulo": "components/compliance",
+   "arquivos": 1,
+   "testes": 0,
+   "linhas": 162,
+   "itens_menu": [],
+   "telas": [],
+   "rotas_http": [],
+   "componentes": 1,
+   "hooks_locais": [
+    "useDeleteSubjectData",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useSubjectDataPreview",
+    "useToast"
+   ],
+   "hooks_definidos": [],
+   "edges": [
+    "delete-user-data"
+   ],
+   "tabelas": [],
+   "rpcs": [],
+   "buckets": [],
+   "canais_realtime": [],
+   "env": [
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL"
+   ],
+   "flags": [],
+   "papeis": [],
+   "diretos": {
+    "edges": [],
+    "tabelas": [],
+    "rpcs": []
+   },
+   "importado_por_outros_modulos": [
+    "pages"
+   ],
+   "depende_de_modulos": [
+    "components/ui",
+    "hooks"
+   ],
+   "pacotes_externos": [
+    "lucide-react"
+   ]
+  },
+  {
    "modulo": "components/dashboard",
    "arquivos": 34,
    "testes": 0,
@@ -1683,6 +1730,7 @@
     "components/admin",
     "components/audit",
     "components/auth",
+    "components/compliance",
     "components/dashboard",
     "components/data-display",
     "components/disputes",
@@ -2077,9 +2125,9 @@
   },
   {
    "modulo": "hooks",
-   "arquivos": 497,
+   "arquivos": 498,
    "testes": 0,
-   "linhas": 37667,
+   "linhas": 37804,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -2739,6 +2787,8 @@
     "useDeepCompareEffect",
     "useDeepMerge",
     "useDeferredValue",
+    "useDeleteSubjectData",
+    "useSubjectDataPreview",
     "useDenormalize",
     "useDepartment",
     "useDepartments",
@@ -3300,6 +3350,7 @@
     "award-gamification-points",
     "behavior-pattern",
     "check-geofence",
+    "delete-user-data",
     "generate-insights",
     "generate-report",
     "get-mapbox-token",
@@ -3458,6 +3509,7 @@
      "analyze-activity",
      "award-gamification-points",
      "behavior-pattern",
+     "delete-user-data",
      "generate-insights",
      "generate-report",
      "get-mapbox-token",
@@ -3593,6 +3645,7 @@
     "components/audit",
     "components/auth",
     "components/charts",
+    "components/compliance",
     "components/dashboard",
     "components/disputes",
     "components/employees",
@@ -4172,7 +4225,7 @@
    "modulo": "pages",
    "arquivos": 72,
    "testes": 0,
-   "linhas": 15062,
+   "linhas": 15088,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4276,6 +4329,7 @@
     "useDashboardStats",
     "useDeleteEmployee",
     "useDeleteRole",
+    "useDeleteSubjectData",
     "useDeleteTeam",
     "useDeleteUser",
     "useDeleteViolation",
@@ -4358,6 +4412,7 @@
     "useSessionManager",
     "useSettings",
     "useSmartRecommendationsPage",
+    "useSubjectDataPreview",
     "useSubscription",
     "useTeam",
     "useTeamMembers",
@@ -4413,6 +4468,7 @@
     "award-gamification-points",
     "behavior-pattern",
     "check-geofence",
+    "delete-user-data",
     "export-data",
     "generate-insights",
     "generate-report",
@@ -4589,6 +4645,7 @@
     "components/audit",
     "components/auth",
     "components/charts",
+    "components/compliance",
     "components/dashboard",
     "components/employees",
     "components/exports",
@@ -5131,6 +5188,7 @@
     "useDeleteEmployee",
     "useDeleteMessageTemplate",
     "useDeleteRole",
+    "useDeleteSubjectData",
     "useDeleteTeam",
     "useDeleteUser",
     "useDeleteViolation",
@@ -5240,6 +5298,7 @@
     "useSessionManager",
     "useSettings",
     "useSmartRecommendationsPage",
+    "useSubjectDataPreview",
     "useSubscription",
     "useTeam",
     "useTeamMembers",
@@ -5298,6 +5357,7 @@
     "award-gamification-points",
     "behavior-pattern",
     "check-geofence",
+    "delete-user-data",
     "escalate-dispute-sla",
     "export-data",
     "generate-insights",
