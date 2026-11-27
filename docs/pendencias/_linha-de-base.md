@@ -229,6 +229,12 @@ tem 0 ocorrencias de `body.admin` e `admin.path` (antes tinham 17 ocorrencias de
 `admin`); POST sem header e com header errado retornam 401, inclusive no
 payload `{"admin":{...}}`.
 
+Consumidor (revisado em 27/11/2026): **nenhum dentro do repositorio**. Grep em
+`origin/main` por `mcp-query`, `x-mcp-secret` e `MCP_` so encontra esta
+documentacao; nao ha cliente no `src`, script ou workflow. Producao segue no ar
+por decisao do dono (uso externo de automacao) — remover a funcao publicada e
+acao de regra 8.
+
 ## Seguranca / 2FA (fechado em 261122)
 
 `MFAVerify.tsx` e `useMFAStatus()` existiam e funcionavam, mas **nenhum codigo
