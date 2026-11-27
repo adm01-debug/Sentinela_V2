@@ -104,7 +104,9 @@ jobs:
           # --allow-read=supabase/functions: os contratos estaticos leem o fonte
           # das edges para provar o que o codigo faz (ex.: escopo de empresa em
           # toda consulta feita com service_role).
-          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net --allow-read=supabase/functions --node-modules-dir=none {}
+          # --allow-read=supabase,src/integrations: contratos tambem conferem o
+          # config.toml e se as tabelas apagadas existem no schema tipado.
+          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net --allow-read=supabase,src/integrations --node-modules-dir=none {}
 
   # `deno test` passa com dezenas de erros de tipo no codigo das edges — foi por
   # esse buraco que dois bugs reais chegaram na main (rate limit lendo campo
