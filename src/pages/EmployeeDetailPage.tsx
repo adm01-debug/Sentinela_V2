@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { format, subDays, addDays, parseISO } from "date-fns";
-import { Calendar, CheckCircle, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
+import { Calendar, CheckCircle, ChevronLeft, ChevronRight, FileDown, Trash2 } from "lucide-react";
 import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from "@/hooks/useEmployees";
 import { EmployeeHeader } from "@/components/EmployeeHeader";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
@@ -21,9 +21,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { generateJourneyPdf } from "@/utils/journeyPdf";
+import { DeleteSubjectDataDialog } from "@/components/compliance/DeleteSubjectDataDialog";
 
 export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { data: employeeRaw, isLoading } = useEmployee(id!);
   const employee = employeeRaw as EmployeeWithDetails | undefined;
   const startDate = format(subDays(new Date(), 7), "yyyy-MM-dd");
@@ -33,6 +35,7 @@ export default function EmployeeDetailPage() {
   const [journeyDate, setJourneyDate] = useState<string>(format(new Date(), "yyyy-MM-dd"));
   const [screenshotId, setScreenshotId] = useState<string | null>(null);
   const [violationId, setViolationId] = useState<string | null>(null);
+  const [deleteDataOpen, setDeleteDataOpen] = useState(false);
   const shiftDay = (delta: number) =>
     setJourneyDate((d) => format(addDays(parseISO(d), delta), "yyyy-MM-dd"));
 
@@ -60,6 +63,11 @@ export default function EmployeeDetailPage() {
       <PageHeader
         title={displayName}
         description={`Detalhes e histórico de atividades de ${displayName}.`}
+        actions={
+          <Button variant="outline" size="sm" onClick={() => setDeleteDataOpen(true)}>
+            <Trash2 className="mr-2 h-4 w-4" /> Excluir dados (LGPD)
+          </Button>
+        }
       />
 
       <EmployeeHeader employee={employee} />
@@ -268,6 +276,14 @@ export default function EmployeeDetailPage() {
           <EntityVersionsPanel entityType="employees" entityId={id!} entityLabel="funcionário" />
         </TabsContent>
       </Tabs>
+
+      <DeleteSubjectDataDialog
+        employeeId={id!}
+        employeeName={displayName}
+        open={deleteDataOpen}
+        onOpenChange={setDeleteDataOpen}
+        onDeleted={() => navigate("/employees")}
+      />
     </div>
   );
 }

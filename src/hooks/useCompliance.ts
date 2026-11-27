@@ -16,6 +16,30 @@ async function checkTableExists(tableName: string): Promise<boolean> {
   return count !== null;
 }
 
+/**
+ * A edge de exclusao do titular existe e esta publicada?
+ *
+ * Mesma semantica do workflow `prune-edge-functions.yml` (a fonte oficial do
+ * repositorio): o gateway responde 404 para function fora do ar e outro status
+ * (401/200) para function viva. Sem isso a regra "Direito ao Esquecimento"
+ * afirmava conformidade por um valor constante, mesmo com a edge removida.
+ */
+async function checkEdgeFunctionPublished(functionName: string): Promise<boolean | null> {
+  const base = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/+$/, '');
+  if (!base) return null;
+  const apiKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
+
+  try {
+    const response = await fetch(`${base}/functions/v1/${functionName}`, {
+      method: 'OPTIONS',
+      headers: apiKey ? { apikey: apiKey } : undefined,
+    });
+    return response.status !== 404;
+  } catch {
+    return null;
+  }
+}
+
 export function useCompliance() {
   const query = useQuery({
     queryKey: ['compliance-status'],
@@ -36,8 +60,8 @@ export function useCompliance() {
         supabase.from('monitoring_settings').select('*').maybeSingle(),
         // Encryption in transit — always true (Supabase uses TLS)
         Promise.resolve({ status: 'fulfilled', value: true }),
-        // Delete user data function exists — check via edge function health
-        Promise.resolve({ status: 'fulfilled', value: true }),
+        // Direito ao esquecimento — a edge precisa estar publicada e responder
+        checkEdgeFunctionPublished('delete-user-data'),
       ]);
 
       const policyAcks = checks[0].status === 'fulfilled' ? (checks[0].value as { count: number | null }).count : 0;
@@ -46,6 +70,7 @@ export function useCompliance() {
       const blockedIPs = checks[3].status === 'fulfilled' ? (checks[3].value as { count: number | null }).count : 0;
       const userRoles = checks[4].status === 'fulfilled' ? (checks[4].value as { count: number | null }).count : 0;
       const monSettings = checks[5].status === 'fulfilled' ? (checks[5].value as { data: unknown | null }).data : null;
+      const deleteEdge = checks[7].status === 'fulfilled' ? (checks[7].value as boolean | null) : null;
 
       const rules: Array<{ name: string; category: string; description: string; status: 'compliant' | 'non-compliant' | 'partial' }> = [
         { name: 'LGPD - Consentimento', category: 'Dados Pessoais', description: 'Coleta de consentimento para monitoramento', status: (policyAcks ?? 0) > 0 ? 'compliant' : 'partial' },
@@ -56,7 +81,7 @@ export function useCompliance() {
         { name: 'Controle de Acesso', category: 'Segurança', description: 'RBAC com Row Level Security', status: (userRoles ?? 0) > 0 ? 'compliant' : 'partial' },
         { name: 'Log de Auditoria', category: 'Auditoria', description: 'Registro de ações administrativas', status: (auditLogs ?? 0) > 0 ? 'compliant' : 'partial' },
         { name: 'Backup Automático', category: 'Armazenamento', description: 'Backups diários automatizados', status: 'compliant' },
-        { name: 'Direito ao Esquecimento', category: 'Dados Pessoais', description: 'Edge Function para exclusão de dados do usuário', status: 'compliant' },
+        { name: 'Direito ao Esquecimento', category: 'Dados Pessoais', description: 'Edge Function para exclusao de dados do titular', status: deleteEdge === true ? 'compliant' : deleteEdge === false ? 'non-compliant' : 'partial' },
         { name: 'Geobloqueio', category: 'Segurança', description: 'Restrição de acesso por localização geográfica', status: geoSettings?.enabled ? 'compliant' : 'partial' },
       ];
 
@@ -65,7 +90,7 @@ export function useCompliance() {
     staleTime: 120_000,
   });
 
-  const rules = query.data ?? [];
+  const rules = useMemo(() => query.data ?? [], [query.data]);
   const checking = query.isLoading;
   const isCompliant = useMemo(() => rules.length > 0 && rules.every(r => r.status === 'compliant'), [rules]);
   const compliancePercentage = useMemo(() => {

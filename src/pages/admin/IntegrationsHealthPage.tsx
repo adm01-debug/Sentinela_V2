@@ -151,7 +151,7 @@ async function loadFcmHealth(): Promise<ChannelHealth> {
     supabase
       .from('edge_function_logs')
       .select('status, created_at, error_message')
-      .in('function_name', ['send-push-notification', 'notify-mobile-violation', 'batch-notifications'])
+      .in('function_name', ['send-push-notification', 'notify-dispute-decision', 'escalate-dispute-sla'])
       .gte('created_at', since)
       .order('created_at', { ascending: false }),
   ]);

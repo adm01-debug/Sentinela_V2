@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { CheckCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Trash2 } from 'lucide-react';
 import {
   PieChart, Pie, Cell, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -8,6 +9,8 @@ import {
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ROUTES } from '@/constants/routes';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCompliance } from '@/hooks/useCompliance';
@@ -20,6 +23,7 @@ export default function CompliancePage() {
   const compliant = rules.filter(i => i.status === 'compliant').length;
   const colors = useChartColors();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const employeeName = user?.name || user?.email || 'Funcionário';
   const handleAcknowledged = () => {
@@ -55,6 +59,12 @@ export default function CompliancePage() {
         title="Compliance"
         description="Status de conformidade e políticas"
         showBackButton={false}
+        actions={
+          <Button variant="outline" onClick={() => navigate(ROUTES.EMPLOYEES)}>
+            <Trash2 className="h-4 w-4 mr-2" />
+            Excluir dados de um titular
+          </Button>
+        }
       />
 
 
