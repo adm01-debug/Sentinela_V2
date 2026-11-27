@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c2ad18b1dae464ecadf459edd17791ba74b88aca` (2026-11-27T10:08:46-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a534ce0c9fa708c4273591fc220f400251f6e088` (2026-11-27T10:17:55-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -277,7 +277,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (26)
 - package.json (25)
 - src/routes/AppRoutes.tsx (25)
-- docs/pendencias/_linha-de-base.md (23)
+- docs/pendencias/_linha-de-base.md (24)
 - scripts/ci/eslint-baseline.json (22)
 - .github/workflows/deploy.yml (20)
 - scripts/ci/prettier-baseline.json (20)
@@ -437,6 +437,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-27 `a534ce0c9` chore: registra que mcp-query nao tem consumidor no repo (#381)
 - 2026-11-27 `c2ad18b1d` feat: painel de integracoes confere no gateway quais funcoes estao no ar (#380)
 - 2026-11-27 `2f1409cc3` test: contrato estatico da edge delete-user-data (LGPD) (#379)
 - 2026-11-26 `58dfcdbbc` feat: restaura exclusao de dados do titular (LGPD) de ponta a ponta (#378)
@@ -451,7 +452,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-26 `c4c0d3230` chore: remove tabelas de configuracao duplicadas sem consumidor (#365)
 - 2026-11-26 `7179a8646` chore: guarda de CI contra objeto no banco sem migration (#359)
 - 2026-11-26 `fd3364492` fix: fecha a forja da trilha de auditoria e audita user_roles (#364)
-- 2026-11-26 `cf5654370` feat: convite de usuario real e detalhe com papeis reais (#368)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c2ad18b1dae464ecadf459edd17791ba74b88aca",
+  "commit": "a534ce0c9fa708c4273591fc220f400251f6e088",
   "branch": "main",
-  "data_commit": "2026-11-27T10:08:46-03:00",
+  "data_commit": "2026-11-27T10:17:55-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a534ce0c9",
+    "data": "2026-11-27",
+    "assunto": "chore: registra que mcp-query nao tem consumidor no repo (#381)"
+   },
    {
     "sha": "c2ad18b1d",
     "data": "2026-11-27",
@@ -126,14 +131,9 @@
     "sha": "7190c8998",
     "data": "2026-11-26",
     "assunto": "feat: tela de trilha de auditoria de cadastro (audit_logs) (#358)"
-   },
-   {
-    "sha": "16d3063cd",
-    "data": "2026-11-26",
-    "assunto": "feat: historico de execucoes dos relatorios agendados (#357)"
    }
   ],
-  "arquivos_mudados_7d": 391,
+  "arquivos_mudados_7d": 388,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -145,7 +145,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 23
+    "mudancas": 24
    },
    {
     "pasta": "supabase/functions/_shared",
@@ -211,7 +211,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 23
+    "mudancas": 24
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 278
+    "commits": 279
    },
    {
     "autor": "dependabot[bot]",
