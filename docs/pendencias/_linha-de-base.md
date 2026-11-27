@@ -496,6 +496,12 @@ outra edge, nenhuma migration, nenhum workflow): `archive-data`, `audit-export`,
 `rotate-api-keys`, `search-activities`, `sentiment-analysis`, `sync-teams`,
 `validate-license`, `weekly-report`.
 
+> Atualizacao (PR de LGPD): `delete-user-data` **saiu desta lista**. A edge foi
+> recriada no repo com gate de admin e o front voltou a chama-la
+> (`EmployeeDetailPage` → `DeleteSubjectDataDialog`, com `dry_run` e confirmacao
+> do nome do titular). `useCompliance` passou a checar a publicacao real da
+> funcao em vez de assumir "conforme".
+
 Cuidado ao concluir "codigo morto": **`cron.job` nao aparece neste repo**. Os
 crons do SLA, do `expire-recordings` e dos dois de Slack foram criados pelo
 painel e so apareceram aqui quando uma migration passou a ler o `command` do job

@@ -1,5 +1,6 @@
 ﻿import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import CompliancePage from "@/pages/CompliancePage";
@@ -37,7 +38,9 @@ vi.mock("@/components/PolicyAcknowledgmentDialog", () => ({
 const renderPage = () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const Wrapper = ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    <QueryClientProvider client={client}>
+      <MemoryRouter>{children}</MemoryRouter>
+    </QueryClientProvider>
   );
   return render(<CompliancePage />, { wrapper: Wrapper });
 };
@@ -51,5 +54,10 @@ describe("CompliancePage", () => {
   it("explica que o aceite muda a regra LGPD de parcial para conforme", () => {
     renderPage();
     expect(screen.getByText(/Termo de ciência das políticas de monitoramento/i)).toBeTruthy();
+  });
+
+  it("leva o gestor ao caminho de exclusao de dados do titular", () => {
+    renderPage();
+    expect(screen.getByRole("button", { name: /Excluir dados de um titular/i })).toBeTruthy();
   });
 });
